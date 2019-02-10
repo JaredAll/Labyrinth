@@ -9,7 +9,7 @@ all: sketch_1 sketch_2
 sketch_1: sketch_1.o
 	$(CXX) $(LINKER_FLAGS) -o sketch_1 sketch_1.o
 
-sketch_1.o: sketch_1.cpp sprite.h sprite_layer.h background.h
+sketch_1.o: sketch_1.cpp sprite.h sprite_layer.h background.h character.h scene.h
 	$(CXX) $(CXX_FLAGS) -c sketch_1.cpp
 
 sketch_2: sketch_2.o

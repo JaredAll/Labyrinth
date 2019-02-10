@@ -4,7 +4,7 @@
 #include "cleanup.h"
 #include <iostream>
 #include <vector>
-#include "background.h"
+#include "scene.h"
 
 using namespace std;
 
@@ -56,10 +56,16 @@ int main( int argc, char* argv[] )
   uint fatty_y = 270;
   Sprite fatty = Sprite( "fattysheet.png", ren, fatty_x, fatty_y );
 
+  Character fatso = Character( fatty, fatty, 0, 0, 0 );
+
   uint fatty2_x = 1600;
   uint fatty2_y = 230;
-  Sprite fatty_2 = Sprite( "fattysheet.png", ren, fatty2_x, fatty2_y );
+  Sprite fatty_2 =
+    Sprite( "fattysheet.png", ren, fatty2_x, fatty2_y );
 
+  Character fatso2 = Character( fatty, fatty, 0, 0, 0 );
+
+  Character fatso3 = Character( fatty, fatty, 0, 0, 0 );
   
   int sign_x = 400;
   int sign_y = 150;
@@ -101,91 +107,16 @@ int main( int argc, char* argv[] )
   //render until click the x
   uint x_pos = 0;
   uint y_pos = 0;
+
+  vector< Character > characters;
+  characters.push_back( fatso2 );
+  characters.push_back( fatso3 );
+
+  Scene sketch_1 =
+    Scene( ren, background, characters, fatso, speed );
+
+  sketch_1.play();
   
-  SDL_Event e;
-  bool quit = false;
-  bool left = true;
-  uint steps = 0;
-  while( !quit )
-  {
-    if( sign_offset > window_width || sign_offset < ( window_width * -1 ) )
-    {
-      sign_offset = 0;
-    }
-    
-    while( SDL_PollEvent( &e ) )
-    {
-      if( e.type == SDL_QUIT )
-      {
-        quit = true;
-      }
-    }
-    if( e.type == SDL_KEYDOWN )
-    {
-      if( e.key.keysym.sym == SDLK_RIGHT )
-      {
-        fatty_stands = ( fatty_stands + 1 ) % 2;
-        
-        SDL_RenderClear( ren );
-
-        background.left( speed );
-        background.draw();
-        
-        fatty.set_source( &fatty_walks.at( fatty_stands ) );
-        fatty.draw();
-
-        fatty2_x -= speed;
-        fatty_2.set_position( fatty2_x, fatty2_y );
-        fatty_2.draw();
-        
-        SDL_RenderPresent( ren );
-        SDL_Delay( 250 );
-        left = false;
-      }
-      else if( e.key.keysym.sym == SDLK_LEFT )
-      {
-        fatty_stands = ( fatty_stands + 1 ) % 2;
-        
-        SDL_RenderClear( ren );
-
-        background.right( speed );
-        background.draw();
-
-        fatty2_x += speed;
-        fatty_2.set_position( fatty2_x, fatty2_y );
-        fatty_2.draw();
-
-        fatty.set_source( &fatty_walks.at( fatty_stands ) );
-        fatty.flip_draw();
-        
-        SDL_RenderPresent( ren );
-        SDL_Delay( 250 );
-        left = true;
-      }
-    }
-    else
-    {
-      fatty_stands = 1;
-      SDL_RenderClear( ren );
-      background.draw();
-      
-      fatty.set_source( &fatty_walks.at( fatty_stands ) );
-
-      if( left )
-      {
-        fatty.flip_draw();
-      }
-      else
-      {
-        fatty.draw();
-      }
-
-      fatty_2.draw();
-      SDL_RenderPresent( ren );
-    }
-    steps++;
-  }
   cleanup( ren, win );
   return 1;
-  
 }
