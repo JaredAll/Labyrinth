@@ -72,6 +72,17 @@ public:
    * @param new_y the new y coordinate
    */
   void set_position( int new_x, int new_y );
+  
+  /** 
+   * method to reset sprite position
+   */
+  void reset_position();
+
+  /**
+   * method to reset sprite position with offset
+   * @param offset the offset
+   */
+  void reset_position( int offset );
 
   /** 
    * method to get sprite position
@@ -94,6 +105,8 @@ private:
   SDL_Texture *sprite_texture;
   SDL_Rect *source;
   SDL_Renderer *renderer;
+  int initial_x;
+  int initial_y;
   int x;
   int y;
 
@@ -106,6 +119,8 @@ Sprite::Sprite( std::string image_path,
 {
   source = NULL;
   sprite_texture = loadTexture( image_path, renderer );
+  initial_x = x;
+  initial_y = y;
 }
 
 int Sprite::get_height()
@@ -164,6 +179,18 @@ vector< int > Sprite::get_position()
   coordinates.push_back( x );
   coordinates.push_back( y );
   return coordinates;
+}
+
+void Sprite::reset_position()
+{
+  x = initial_x;
+  y = initial_y;
+}
+
+void Sprite::reset_position( int new_x )
+{
+  x = initial_x + new_x;
+  y = initial_y;
 }
 
 #endif

@@ -39,6 +39,17 @@ public:
   void right( uint speed );
 
   /**
+   * reset sprite layer
+   */
+  void reset();
+
+  /**
+   * reset sprite layer
+   * @param offset the offset
+   */
+  void reset( int offset );
+
+  /**
    * draw the sprite layer
    * @param renderer the renderer
    */
@@ -47,7 +58,7 @@ public:
 private:
 
   Sprite layer_sprite;
-  uint distance;
+  int distance;
 
 };
 
@@ -96,6 +107,20 @@ void SpriteLayer::draw()
     layer_sprite.draw();
   }
 }
+
+void SpriteLayer::reset()
+{
+  layer_sprite.reset_position();
+}
+
+void SpriteLayer::reset( int offset )
+{
+  if( distance > 0 )
+  {
+    layer_sprite.reset_position( offset / distance ); 
+  }
+}
+
 
 
 #endif

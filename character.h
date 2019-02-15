@@ -74,6 +74,16 @@ public:
    */
   void update_pos( bool left, uint speed );
 
+  /**
+   * reset characters position
+   */
+  void reset();
+
+  /**
+   *reset characters position with offset
+   */
+  void reset( uint offset );
+
 
 
 private:
@@ -195,7 +205,7 @@ vector< int > Character::get_position()
 
 void Character::follow( Character leader, uint speed )
 {
-  uint follow_distance = 200;
+  uint follow_distance = 100;
   int leader_x = leader.get_position().at( 0 );
   int position_from_leader = leader_x - get_position().at( 0 );
 
@@ -227,19 +237,27 @@ void Character::update_pos( bool left, uint speed )
     set_screen_position(
       get_screen_position().at( 0 ) - speed,
       get_screen_position().at( 1 ) );
-    set_position(
-      get_position().at( 0 ) - speed,
-      get_position().at( 1 ) );
   }
   else
   {
     set_screen_position(
       get_screen_position().at( 0 ) + speed,
       get_screen_position().at( 1 ) );
-    set_position(
-      get_position().at( 0 ) + speed,
-      get_position().at( 1 ) );
   }
+}
+
+void Character::reset()
+{
+  x_pos = 0;
+  y_pos = 0;
+  full_body.reset_position();
+}
+
+void Character::reset( uint new_x )
+{
+  x_pos = new_x;
+  y_pos = 0;
+  full_body.reset_position();
 }
   
 

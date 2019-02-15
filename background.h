@@ -46,6 +46,16 @@ public:
   void right( uint speed );
 
   /**
+   * reset the background
+   */
+  void reset();
+
+  /**
+   * reset the background with offset
+   */
+  void reset( int offset );
+
+  /**
    * draw the background
    * @param renderer the renderer
    */
@@ -96,6 +106,22 @@ void Background::draw()
   for( SpriteLayer layer : layers )
   {
     layer.draw();
+  }
+}
+
+void Background::reset()
+{
+  for( uint sprite = 0; sprite < layers.size(); sprite++  )
+  {
+    layers.at( sprite ).reset();
+  }
+}
+
+void Background::reset( int offset )
+{
+  for( uint sprite = 0; sprite < layers.size(); sprite++  )
+  {
+    layers.at( sprite ).reset( offset );
   }
 }
 

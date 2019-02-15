@@ -22,12 +22,22 @@ public:
   /**
    * plays the scene
    */
-  void play();
+  bool play();
 
   /**
    * resets the scene
    */
   void reset();
+
+  /**
+   * sets the scene to the left
+   */
+  void stage_left();
+
+  /**
+   * sets the scene to the right
+   */
+  void stage_right();
 
   /**
    * Constructor
@@ -48,6 +58,8 @@ private:
   vector< Character > following_characters;
   Character main_character;
   uint speed;
+  int stage_left_pos;
+  int stage_right_pos;
 
 };
 
@@ -61,16 +73,30 @@ Scene::Scene(SDL_Renderer *param_renderer,
   renderer( param_renderer)  
 {
 
+  int STAGE_SIZE = 500;
+  stage_left_pos = STAGE_SIZE * -1;
+  stage_right_pos = STAGE_SIZE;
 }
 
-void Scene::play()
+bool Scene::play()
 {
   SDL_Event e;
   bool quit = false;
-  bool left = true;
-  uint steps = 0;
+  bool left;
   while( !quit )
   {
+    if( main_character.get_position().at( 0 ) > stage_right_pos )
+    {
+      quit = true;
+      left = false;
+    }
+
+    if( main_character.get_position().at( 0 ) < stage_left_pos )
+    {
+      quit = true;
+      left = true;
+    }
+   
     while( SDL_PollEvent( &e ) )
     {
       if( e.type == SDL_QUIT )
@@ -145,33 +171,51 @@ void Scene::play()
       for( uint i = 0; i < following_characters.size(); i++ )
       {
         if( i == 0 )
-          {
-            following_characters.at( i ).follow(
-              main_character, speed );
-          }
-          else
-          {
-            following_characters.at( i ).follow(
-              following_characters.at( i - 1 ),
-                                       speed );
-          }
+        {
+          following_characters.at( i ).follow(
+            main_character, speed );
+        }
+        else
+        {
+          following_characters.at( i ).follow(
+            following_characters.at( i - 1 ),
+            speed );
+        }
       }
       
       SDL_RenderPresent( renderer );
-      steps++;
     }
   }
+  return left;
 }
 
 void Scene::reset()
 {
-  main_character.set_position( 0, 0 );
-  main_character.stand();
-
+  background.reset();
+  main_character.reset();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).set_position( 0, 0 );
-    following_characters.at( i ).stand();
+    following_characters.at( i ).reset();
+  }
+}
+
+void Scene::stage_left()
+{
+  background.reset( stage_right_pos );
+  main_character.reset( stage_left_pos );
+  for( uint i = 0; i < following_characters.size(); i++ )
+  {
+    following_characters.at( i ).reset( stage_left_pos );
+  }
+}
+
+void Scene::stage_right()
+{
+  background.reset( stage_left_pos );
+  main_character.reset( stage_right_pos );
+  for( uint i = 0; i < following_characters.size(); i++ )
+  {
+    following_characters.at( i ).reset( stage_right_pos );
   }
 }
 

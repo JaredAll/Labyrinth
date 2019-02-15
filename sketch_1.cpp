@@ -72,6 +72,16 @@ int main( int argc, char* argv[] )
   Sprite sign = Sprite( "fattysign.png", ren, sign_x, sign_y );
 
   Sprite sign2 = Sprite( "fattysign.png", ren, 330, 130 );
+  Sprite tree1 = Sprite( "tree.png", ren, 400, 150 );
+  Sprite tree2 = Sprite( "tree.png", ren, 330, 130 );
+
+  SpriteLayer l_tree_1 = SpriteLayer( tree1, 2 );
+  SpriteLayer l_tree_2 = SpriteLayer( tree2, 1 );
+
+  Background trees = Background();
+  trees.add_layer( backdrop_layer );
+  trees.add_layer( l_tree_1 );
+  trees.add_layer( l_tree_2 );
 
   SpriteLayer l_sign = SpriteLayer( sign, 1 );
   SpriteLayer next_sign = SpriteLayer( sign2, 2 );
@@ -114,9 +124,27 @@ int main( int argc, char* argv[] )
 
   Scene sketch_1 =
     Scene( ren, background, characters, fatso, speed );
+  Scene tree_scene =
+    Scene( ren, trees, characters, fatso, speed );
 
-  sketch_1.play();
+  uint count = 0;
+  bool left = sketch_1.play();
+  while( count < 5 )
+  {
+    if( left )
+    {  
+      tree_scene.stage_right();
+      left = tree_scene.play();
+    }
+    else
+    {
+      sketch_1.stage_left();
+      left = sketch_1.play();
+    }
+    count++;
+  }
   
   cleanup( ren, win );
   return 1;
+
 }
