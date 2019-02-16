@@ -4,7 +4,7 @@
 #include "cleanup.h"
 #include <iostream>
 #include <vector>
-#include "scene.h"
+#include "game.h"
 
 using namespace std;
 
@@ -58,14 +58,17 @@ int main( int argc, char* argv[] )
 
   Character fatso = Character( fatty, fatty, 0, 0, 0 );
 
-  uint fatty2_x = 1600;
-  uint fatty2_y = 230;
+  uint fatty2_x = 300;
+  uint fatty2_y = 275;
   Sprite fatty_2 =
     Sprite( "fattysheet.png", ren, fatty2_x, fatty2_y );
 
   Character fatso2 = Character( fatty, fatty, 0, 0, 0 );
 
   Character fatso3 = Character( fatty, fatty, 0, 0, 0 );
+
+  Character fatso4 = Character( fatty, fatty, 0, 0, 0 );
+  fatso4.set_screen_position( fatty2_x, fatty2_y );
   
   int sign_x = 400;
   int sign_y = 150;
@@ -119,31 +122,24 @@ int main( int argc, char* argv[] )
   uint y_pos = 0;
 
   vector< Character > characters;
-  characters.push_back( fatso2 );
-  characters.push_back( fatso3 );
+  characters.push_back( fatso4 );
 
   Scene sketch_1 =
     Scene( ren, background, characters, fatso, speed );
+
+  characters.clear();
   Scene tree_scene =
     Scene( ren, trees, characters, fatso, speed );
 
-  uint count = 0;
-  bool left = sketch_1.play();
-  while( count < 5 )
-  {
-    if( left )
-    {  
-      tree_scene.stage_right();
-      left = tree_scene.play();
-    }
-    else
-    {
-      sketch_1.stage_left();
-      left = sketch_1.play();
-    }
-    count++;
-  }
-  
+  tree_scene.add_follower( fatso2 );
+  tree_scene.add_follower( fatso3 );
+
+  Game fatty_rolls = Game();
+  fatty_rolls.add_scene( sketch_1 );
+  fatty_rolls.add_scene( tree_scene );
+
+  fatty_rolls.play();
+
   cleanup( ren, win );
   return 1;
 

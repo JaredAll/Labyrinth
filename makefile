@@ -9,7 +9,7 @@ all: sketch_1 sketch_2
 sketch_1: sketch_1.o
 	$(CXX) $(LINKER_FLAGS) -o sketch_1 sketch_1.o
 
-sketch_1.o: sketch_1.cpp sprite.h sprite_layer.h background.h character.h scene.h
+sketch_1.o: sketch_1.cpp sprite.h sprite_layer.h background.h character.h scene.h game.h
 	$(CXX) $(CXX_FLAGS) -c sketch_1.cpp
 
 sketch_2: sketch_2.o
@@ -19,4 +19,4 @@ sketch_2.o: sketch_2.cpp
 	$(CXX) $(CXX_FLAGS) -c sketch_2.cpp
 
 clean:
-	rm *.o && rm $(EXE)
+	rm *.o && rm sketch_1 && rm sketch_2

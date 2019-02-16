@@ -30,6 +30,11 @@ public:
   void reset();
 
   /**
+   * adds a following character
+   */
+  void add_follower( Character character );
+
+  /**
    * sets the scene to the left
    */
   void stage_left();
@@ -53,9 +58,44 @@ public:
 
 private:
 
+  /**
+   * draw the stationary npcs
+   * @param left the direction
+   */
+  void draw_npcs( bool left );
+
+  /**
+   * draw the stationary npcs when standing
+   */
+  void draw_npcs();
+
+  /**
+   * draw the following characters
+   * @param left the direction
+   */
+  void ducklings( bool left );
+
+  /**
+   * draw the standing characters
+   */
+  void ducklings();
+
+  /**
+   * update the characters
+   * @param left the direction
+   */
+  void update_characters( bool left );
+
+  /**
+   * update the characters
+   * @param left the direction
+   */
+  void update_characters();
+  
   SDL_Renderer *renderer;
   Background background;
-  vector< Character > following_characters;
+  static vector< Character > following_characters;
+  vector< Character > characters;
   Character main_character;
   uint speed;
   int stage_left_pos;
@@ -63,16 +103,83 @@ private:
 
 };
 
+void Scene::update_characters( bool left )
+{
+  draw_npcs( left );
+  ducklings( left );
+}
+
+void Scene::update_characters()
+{
+  draw_npcs();
+  ducklings();
+}
+
+void Scene::ducklings( bool left )
+{
+  for( uint i = 0; i < following_characters.size(); i++ )
+  {
+    following_characters.at( i ).update_pos( left, speed );
+    if( i == 0 )
+    {
+      following_characters.at( i ).follow(
+        main_character, speed );
+    }
+    else
+    {
+      following_characters.at(
+        i ).follow( following_characters.at( i - 1 ),
+                    speed );
+    }
+  }
+}
+
+void Scene::ducklings()
+{
+  for( uint i = 0; i < following_characters.size(); i++ )
+  {
+    if( i == 0 )
+    {
+      following_characters.at( i ).follow(
+        main_character, speed );
+    }
+    else
+    {
+      following_characters.at( i ).follow(
+        following_characters.at( i - 1 ),
+        speed );
+    }
+  }
+}
+
+void Scene::draw_npcs( bool left )
+{
+  for( uint i = 0; i < characters.size(); i++ )
+    {
+      characters.at( i ).update_pos( left, speed );
+      characters.at( i ).stand();
+    }
+}
+
+void Scene::draw_npcs()
+{
+  for( uint i = 0; i < characters.size(); i++ )
+    {
+      characters.at( i ).stand();
+    }
+}
+
+vector< Character > Scene::following_characters;
+
 Scene::Scene(SDL_Renderer *param_renderer,
              Background param_background,
-             vector< Character > param_following_characters,
+             vector< Character > param_characters,
              Character param_main_character, uint param_speed )
 : background( param_background ),
-  following_characters( param_following_characters ),
+  characters( param_characters ),
   main_character( param_main_character ), speed( param_speed ),
   renderer( param_renderer)  
 {
-
   int STAGE_SIZE = 500;
   stage_left_pos = STAGE_SIZE * -1;
   stage_right_pos = STAGE_SIZE;
@@ -82,9 +189,9 @@ bool Scene::play()
 {
   SDL_Event e;
   bool quit = false;
-  bool left;
+  bool left = false;
   while( !quit )
-  {
+  {    
     if( main_character.get_position().at( 0 ) > stage_right_pos )
     {
       quit = true;
@@ -104,6 +211,7 @@ bool Scene::play()
         quit = true;
       }
     }
+    
     if( e.type == SDL_KEYDOWN )
     {
       if( e.key.keysym.sym == SDLK_RIGHT )
@@ -113,23 +221,10 @@ bool Scene::play()
 
         background.left( speed );
         background.draw();
+        draw_npcs( false );
         
         main_character.walk_right( speed );
-        for( uint i = 0; i < following_characters.size(); i++ )
-        {
-          following_characters.at( i ).update_pos( false, speed );
-          if( i == 0 )
-          {
-            following_characters.at( i ).follow(
-              main_character, speed );
-          }
-          else
-          {
-            following_characters.at(
-              i ).follow( following_characters.at( i - 1 ),
-                                       speed );
-          }
-        }
+        ducklings( false );
         
         SDL_RenderPresent( renderer );
         SDL_Delay( 200 );
@@ -140,23 +235,10 @@ bool Scene::play()
 
         background.right( speed );
         background.draw();
+        draw_npcs( true );
 
         main_character.walk_left( speed );
-        for( uint i = 0; i < following_characters.size(); i++ )
-        {
-          following_characters.at( i ).update_pos( true, speed );
-          if( i == 0 )
-          {
-            following_characters.at( i ).follow(
-              main_character, speed );
-          }
-          else
-          {
-            following_characters.at(
-              i ).follow( following_characters.at( i - 1 ),
-                                       speed );
-          }
-        }
+        ducklings( true );
         
         SDL_RenderPresent( renderer );
         SDL_Delay( 200 );
@@ -166,22 +248,10 @@ bool Scene::play()
     {
       SDL_RenderClear( renderer );
       background.draw();
-
+      draw_npcs();
+      
       main_character.stand();
-      for( uint i = 0; i < following_characters.size(); i++ )
-      {
-        if( i == 0 )
-        {
-          following_characters.at( i ).follow(
-            main_character, speed );
-        }
-        else
-        {
-          following_characters.at( i ).follow(
-            following_characters.at( i - 1 ),
-            speed );
-        }
-      }
+      ducklings();
       
       SDL_RenderPresent( renderer );
     }
@@ -217,6 +287,11 @@ void Scene::stage_right()
   {
     following_characters.at( i ).reset( stage_right_pos );
   }
+}
+
+void Scene::add_follower( Character character )
+{
+  following_characters.push_back( character );
 }
 
 #endif

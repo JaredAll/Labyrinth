@@ -35,10 +35,9 @@ public:
 
 
 private:
-  
+
   vector< Scene > scenes;
   uint current_scene;
-
 
 };
 
@@ -79,7 +78,7 @@ void Game::play()
     }
     else
     {
-      if( current_scene < scenes.size() )
+      if( current_scene < scenes.size() - 1 )
       {
         current_scene++;
         scenes.at( current_scene ).stage_left();
