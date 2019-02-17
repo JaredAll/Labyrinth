@@ -56,34 +56,38 @@ void Game::play()
 {
   SDL_Event e;
   bool quit = false;
-  bool left;
+  int status = 0;
   while( !quit )
   {
-    while( SDL_PollEvent( &e ) )
-    {
-      if( e.type == SDL_QUIT )
-      {
-        quit = true;
-      }
-    }
-
-    left = scenes.at( current_scene ).play();
-    if( left )
+    status = scenes.at( current_scene ).play();
+    if( status == 1 )
     {
       if( current_scene > 0 )
       {
         current_scene--;
         scenes.at( current_scene ).stage_right();
       }
+      else
+      {
+        scenes.at( current_scene ).stage_left();
+      }
     }
-    else
+    else if( status == 0 )
     {
       if( current_scene < scenes.size() - 1 )
       {
         current_scene++;
         scenes.at( current_scene ).stage_left();
       }
+      else
+      {
+        scenes.at( current_scene ).stage_right();
+      }
     }
+    else
+    {
+      quit = true;
+    }    
   }
 }
 

@@ -20,7 +20,7 @@ int main( int argc, char* argv[] )
 
 
   //create window
-  int window_width = 800;
+  int window_width = 1000;
   int window_height = 500;
   SDL_Window *win = SDL_CreateWindow("Labyrinth sketch 1",
                                      SDL_WINDOWPOS_CENTERED,
@@ -49,48 +49,54 @@ int main( int argc, char* argv[] )
 
   //get the background
   Background background = Background();
-  Sprite backdrop_sprite = Sprite( "background1.png", ren, 0, 0 );
-  SpriteLayer backdrop_layer = SpriteLayer( backdrop_sprite, 0 );
+  SpriteLayer backdrop_sprite = SpriteLayer( "base_bg.png", ren,
+                                             0, 0, 0 );
 
-  uint fatty_x = 400;
+  uint fatty_x = 500;
   uint fatty_y = 270;
-  Sprite fatty = Sprite( "fattysheet.png", ren, fatty_x, fatty_y );
 
-  Character fatso = Character( fatty, fatty, 0, 0, 0 );
+  uint doug_x = 500;
+  uint doug_y = 350;
+  
+  Sprite fatty = Sprite( "fattysheet.png", ren, fatty_x, fatty_y );
+  Sprite doug_s =
+    Sprite( "dougsheet.png", ren, doug_x, doug_y );
+
+  Sprite faces = Sprite( "facesheet.png", ren, 400, 0 );
+
+  Character fatso = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
   uint fatty2_x = 300;
   uint fatty2_y = 275;
   Sprite fatty_2 =
     Sprite( "fattysheet.png", ren, fatty2_x, fatty2_y );
 
-  Character fatso2 = Character( fatty, fatty, 0, 0, 0 );
+  Character fatso2 = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
-  Character fatso3 = Character( fatty, fatty, 0, 0, 0 );
+  Character fatso3 = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
-  Character fatso4 = Character( fatty, fatty, 0, 0, 0 );
-  fatso4.set_screen_position( fatty2_x, fatty2_y );
+  Character doug = Character( doug_s, faces, 0, 0, 0, 3, 2 );
   
   int sign_x = 400;
   int sign_y = 150;
-  Sprite sign = Sprite( "fattysign.png", ren, sign_x, sign_y );
+  SpriteLayer l_sign = SpriteLayer( "fattysign.png", ren,
+                               sign_x, sign_y, 1 );
 
-  Sprite sign2 = Sprite( "fattysign.png", ren, 330, 130 );
-  Sprite tree1 = Sprite( "tree.png", ren, 400, 150 );
-  Sprite tree2 = Sprite( "tree.png", ren, 330, 130 );
-
-  SpriteLayer l_tree_1 = SpriteLayer( tree1, 2 );
-  SpriteLayer l_tree_2 = SpriteLayer( tree2, 1 );
+  SpriteLayer next_sign = SpriteLayer( "fattysign.png", ren,
+                                  330, 130, 2 );
+  SpriteLayer third_layer = SpriteLayer( "fattysign.png", ren,
+                                         330, 130, 4 );
+  SpriteLayer l_tree_1 = SpriteLayer( "inn-01.png", ren,
+                                      400, 150, 2 );
+  SpriteLayer l_tree_2 = SpriteLayer( "inn-01.png", ren,
+                                      330, 75, 1 );
 
   Background trees = Background();
-  trees.add_layer( backdrop_layer );
+  trees.add_layer( backdrop_sprite );
   trees.add_layer( l_tree_1 );
   trees.add_layer( l_tree_2 );
 
-  SpriteLayer l_sign = SpriteLayer( sign, 1 );
-  SpriteLayer next_sign = SpriteLayer( sign2, 2 );
-  SpriteLayer third_layer = SpriteLayer( sign2, 4 );
-
-  background.add_layer( backdrop_layer );
+  background.add_layer( backdrop_sprite );
   background.add_layer( third_layer );
   background.add_layer( next_sign );
   background.add_layer( l_sign );
@@ -122,17 +128,17 @@ int main( int argc, char* argv[] )
   uint y_pos = 0;
 
   vector< Character > characters;
-  characters.push_back( fatso4 );
+  characters.push_back( doug );
 
   Scene sketch_1 =
-    Scene( ren, background, characters, fatso, speed );
+    Scene( ren, background, characters, doug, speed );
 
   characters.clear();
   Scene tree_scene =
-    Scene( ren, trees, characters, fatso, speed );
+    Scene( ren, trees, characters, doug, speed );
 
-  tree_scene.add_follower( fatso2 );
-  tree_scene.add_follower( fatso3 );
+  //tree_scene.add_follower( fatso2 );
+  //tree_scene.add_follower( fatso3 );
 
   Game fatty_rolls = Game();
   fatty_rolls.add_scene( sketch_1 );

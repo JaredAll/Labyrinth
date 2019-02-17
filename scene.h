@@ -22,7 +22,7 @@ public:
   /**
    * plays the scene
    */
-  bool play();
+  int play();
 
   /**
    * resets the scene
@@ -57,6 +57,31 @@ public:
          Character main_character, uint speed );
 
 private:
+
+  /**
+   * have a conversation with a character
+   */
+  void convo( uint character_index );
+
+  /**
+   * update the scene right
+   */
+  void right();
+
+  /**
+   * update the scene left
+   */
+  void left();
+
+  /**
+   * update the scene center
+   */
+  void center();
+
+  /**
+   * convert npc to follower
+   */
+  bool recruit();
 
   /**
    * draw the stationary npcs
@@ -102,6 +127,109 @@ private:
   int stage_right_pos;
 
 };
+
+bool Scene::recruit()
+{
+  uint recruit_proximity = 30;
+  uint recruit_index = 0;
+  bool found_recruit = false;
+  
+  for( uint i = 0; i < characters.size(); i++ )
+  {
+    int distance_from_recruit =
+      abs( characters.at( i ).get_position().at( 0 ) -
+           main_character.get_position().at( 0 ) );
+    if( distance_from_recruit < recruit_proximity )
+    {
+      recruit_index = i;
+      found_recruit = true;
+      convo( recruit_index );
+    }
+  }
+
+  if( found_recruit )
+  {
+    following_characters.push_back( characters.at( recruit_index ) );
+    vector< Character > remaining_characters;
+    for( uint i = 0; i < characters.size(); i++ )
+    {
+      if( i != recruit_index )
+      {
+        remaining_characters.push_back( characters.at( i ) );
+      }
+    }
+    characters = remaining_characters;
+  }
+  return found_recruit;
+  
+}
+
+void Scene::convo( uint character_index )
+{
+  bool talking = true;
+  SDL_Event e;
+  while( talking )
+  {
+    
+    while( SDL_PollEvent( &e ) )
+    {
+      if( e.type == SDL_KEYDOWN )
+      {
+        talking = false;
+      }
+    }
+    
+    SDL_RenderClear( renderer );
+    background.draw();
+    
+    characters.at( character_index ).talk();
+    
+    SDL_RenderPresent( renderer );
+  }
+}
+
+void Scene::center()
+{
+  SDL_RenderClear( renderer );
+  background.draw();
+  draw_npcs();
+  
+  main_character.stand();
+  ducklings();
+  
+  SDL_RenderPresent( renderer );
+}
+
+void Scene::right()
+{
+   
+  SDL_RenderClear( renderer );
+  
+  background.left( speed );
+  background.draw();
+  draw_npcs( false );
+  
+  main_character.walk_right( speed );
+  ducklings( false );
+  
+  SDL_RenderPresent( renderer );
+  SDL_Delay( 200 );
+}
+
+void Scene::left()
+{
+  SDL_RenderClear( renderer );
+          
+  background.right( speed );
+  background.draw();
+  draw_npcs( true );
+  
+  main_character.walk_left( speed );
+  ducklings( true );
+  
+  SDL_RenderPresent( renderer );
+  SDL_Delay( 200 );
+}
 
 void Scene::update_characters( bool left )
 {
@@ -185,78 +313,69 @@ Scene::Scene(SDL_Renderer *param_renderer,
   stage_right_pos = STAGE_SIZE;
 }
 
-bool Scene::play()
+int Scene::play()
 {
   SDL_Event e;
-  bool quit = false;
-  bool left = false;
-  while( !quit )
-  {    
+  bool push = false;
+  int status = 0;
+  bool in_bounds = true;
+  bool play = true;
+  
+  while( in_bounds && play )
+  {
     if( main_character.get_position().at( 0 ) > stage_right_pos )
     {
-      quit = true;
-      left = false;
+      in_bounds = false;
+      status = 0;
     }
 
     if( main_character.get_position().at( 0 ) < stage_left_pos )
     {
-      quit = true;
-      left = true;
+      in_bounds = false;
+      status = 1;
     }
-   
+    
     while( SDL_PollEvent( &e ) )
     {
       if( e.type == SDL_QUIT )
       {
-        quit = true;
+        status = 2;
+        play = false;
+      }
+      if( e.type == SDL_KEYDOWN )
+      {
+        push = true;
+      }
+      else
+      {
+        push = false;
       }
     }
     
-    if( e.type == SDL_KEYDOWN )
+    if( play )
     {
-      if( e.key.keysym.sym == SDLK_RIGHT )
+      if( push )
       {
-        
-        SDL_RenderClear( renderer );
-
-        background.left( speed );
-        background.draw();
-        draw_npcs( false );
-        
-        main_character.walk_right( speed );
-        ducklings( false );
-        
-        SDL_RenderPresent( renderer );
-        SDL_Delay( 200 );
+        if( e.key.keysym.sym == SDLK_DOWN )
+        {
+          recruit();
+        }
+        if( e.key.keysym.sym == SDLK_RIGHT )
+        {
+          right();
+        }
+        else if( e.key.keysym.sym == SDLK_LEFT )
+        {        
+          left();
+        }
       }
-      else if( e.key.keysym.sym == SDLK_LEFT )
-      {        
-        SDL_RenderClear( renderer );
-
-        background.right( speed );
-        background.draw();
-        draw_npcs( true );
-
-        main_character.walk_left( speed );
-        ducklings( true );
-        
-        SDL_RenderPresent( renderer );
-        SDL_Delay( 200 );
+      else
+      {
+        center();
       }
-    }
-    else
-    {
-      SDL_RenderClear( renderer );
-      background.draw();
-      draw_npcs();
-      
-      main_character.stand();
-      ducklings();
-      
-      SDL_RenderPresent( renderer );
     }
   }
-  return left;
+  return status;
 }
 
 void Scene::reset()
