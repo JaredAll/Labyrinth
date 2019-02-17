@@ -15,7 +15,7 @@
  * @version 8 February 2019
  */
 
-class SpriteLayer
+class SpriteLayer : public Sprite
 {
 public:
 
@@ -24,7 +24,9 @@ public:
    * @param sprite the sprite 
    * @param distance the distance
    */
-  SpriteLayer( Sprite sprite, uint distance );
+  SpriteLayer( std::string image_path,
+               SDL_Renderer *renderer, int x, int y,
+               uint distance );
 
   /**
    * move layer to the left
@@ -57,36 +59,36 @@ public:
   
 private:
 
-  Sprite layer_sprite;
   int distance;
 
 };
 
-SpriteLayer::SpriteLayer( Sprite param_sprite, uint param_distance )
-: layer_sprite( param_sprite ), distance( param_distance )
+SpriteLayer::SpriteLayer( std::string image_path,
+                          SDL_Renderer *renderer, int x, int y,
+                          uint param_distance )
+: Sprite::Sprite( image_path, renderer, x, y ),
+  distance( param_distance )
 {
-
+  
 }
 
 void SpriteLayer::left( uint speed )
 {
   if( distance > 0 )
   {
-    vector< int > sprite_pos = layer_sprite.get_position();
-    layer_sprite.set_position(
-      sprite_pos.at( 0 ) - ( speed  / distance ),
-      sprite_pos.at( 1 ) );
+    set_position(
+      get_x() - ( speed  / distance ),
+      get_y() );
   }
 }
 
 void SpriteLayer::right( uint speed )
 {
   if( distance > 0 )
-  {
-    vector< int > sprite_pos = layer_sprite.get_position();  
-    layer_sprite.set_position(
-      sprite_pos.at( 0 ) + ( speed / distance ),
-      sprite_pos.at( 1 ) );
+  { 
+    set_position(
+      get_x() + ( speed  / distance ),
+      get_y() );
   }
 }
 
@@ -94,30 +96,29 @@ void SpriteLayer::draw()
 {
   if( distance > 1 )
   {
-    vector< int > coordinates = layer_sprite.get_position();
     SDL_Rect destination;
-    destination.x = coordinates.at( 0 );
-    destination.y = coordinates.at( 1 );
-    destination.w = layer_sprite.get_width() / distance;
-    destination.h = layer_sprite.get_height() / distance;
-    layer_sprite.draw( destination );
+    destination.x = get_x();
+    destination.y = get_y();
+    destination.w = get_width() / distance;
+    destination.h = get_height() / distance;
+    Sprite::draw( destination );
   }
   else
   {
-    layer_sprite.draw();
+    Sprite::draw();
   }
 }
 
 void SpriteLayer::reset()
 {
-  layer_sprite.reset_position();
+  reset_position();
 }
 
 void SpriteLayer::reset( int offset )
 {
   if( distance > 0 )
   {
-    layer_sprite.reset_position( offset / distance ); 
+    reset_position( offset / distance ); 
   }
 }
 

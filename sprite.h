@@ -85,10 +85,15 @@ public:
   void reset_position( int offset );
 
   /** 
-   * method to get sprite position
+   * method to get sprite x position
    */
-  vector< int > get_position();
+  int get_x();
 
+  /** 
+   * method to get sprite y position
+   */
+  int get_y();
+  
   /**
    * get the sprite's height
    */
@@ -173,13 +178,16 @@ void Sprite::flip_draw( SDL_Rect destination )
   renderTextureFlip( sprite_texture, renderer, destination, source );
 }
 
-vector< int > Sprite::get_position()
+int Sprite::get_x()
 {
-  vector< int > coordinates;
-  coordinates.push_back( x );
-  coordinates.push_back( y );
-  return coordinates;
+  return x;
 }
+
+int Sprite::get_y()
+{
+  return y;
+}
+
 
 void Sprite::reset_position()
 {

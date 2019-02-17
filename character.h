@@ -24,7 +24,13 @@ public:
    * @param torso the torso sprite
    */
   Character( Sprite full_body, Sprite torso, uint force,
-             uint diversion, uint stealth );
+             uint diversion, uint stealth, uint num_walking_sprites,
+             uint num_talking_sprites );
+
+  /**
+   * talk to the character 
+   */
+  void talk();
   
   /**
    * make the character walk left
@@ -92,6 +98,9 @@ private:
   int x_pos;
   int y_pos;
 
+  uint num_walking_sprites;
+  uint num_talking_sprites;
+
   Sprite full_body;
   vector< SDL_Rect > walking_clips;
   uint stride;
@@ -108,25 +117,28 @@ private:
 
 Character::Character( Sprite param_full_body,
                       Sprite param_torso, uint param_force,
-                      uint param_diversion, uint param_stealth )
+                      uint param_diversion, uint param_stealth,
+                      uint param_num_walking,
+                      uint param_num_talking )
 : full_body( param_full_body ), torso( param_torso ),
   force( param_force ), diversion( param_diversion ),
-  stealth( param_stealth )
+  stealth( param_stealth ), num_walking_sprites( param_num_walking ),
+  num_talking_sprites( param_num_talking )
 {
 
-  uint walking_sprites = 2;
-  for( uint i = 0; i < walking_sprites; i++ )
+  for( uint i = 0; i < num_walking_sprites; i++ )
   {
     SDL_Rect clip;
     walking_clips.push_back( clip );
-    walking_clips.at( i ).x = i * ( full_body.get_width() / 2 );
+    walking_clips.at( i ).x = i * ( full_body.get_width() /
+      num_walking_sprites );
     walking_clips.at( i ).y = 0;
     walking_clips.at( i ).h = full_body.get_height();
-    walking_clips.at( i ).w = full_body.get_width() / 2;
+    walking_clips.at( i ).w = full_body.get_width() /
+      num_walking_sprites;
   }
 
-  uint talking_sprites = 2;
-  for( uint i = 0; i < talking_sprites; i++ )
+  for( uint i = 0; i < num_talking_sprites; i++ )
   {
     SDL_Rect clip;
     talking_clips.push_back( clip );
@@ -142,6 +154,14 @@ Character::Character( Sprite param_full_body,
   facing_left = false;
 
 }
+
+void Character::talk()
+{
+  uint face = 0;
+  torso.set_source( &talking_clips.at( face ) );
+  torso.draw();
+}
+  
 
 void Character::walk_right( uint speed )
 {
@@ -190,9 +210,12 @@ void Character::set_screen_position( int new_x, int new_y )
   full_body.set_position( new_x, new_y );
 }
 
-vector< int > Character::get_screen_position()
+vector< int >Character::get_screen_position()
 {
-  return full_body.get_position();
+  vector< int > position;
+  position.push_back( full_body.get_x() );
+  position.push_back( full_body.get_y() );
+  return position;
 }
 
 vector< int > Character::get_position()
@@ -205,7 +228,7 @@ vector< int > Character::get_position()
 
 void Character::follow( Character leader, uint speed )
 {
-  uint follow_distance = 100;
+  uint follow_distance = 130;
   int leader_x = leader.get_position().at( 0 );
   int position_from_leader = leader_x - get_position().at( 0 );
 
