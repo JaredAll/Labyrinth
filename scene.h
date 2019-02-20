@@ -116,6 +116,12 @@ private:
    * @param left the direction
    */
   void update_characters();
+
+  /**
+   * fade into and out of scenes
+   * @param left the direction
+   */
+  void scene_fade( bool left );
   
   SDL_Renderer *renderer;
   Background background;
@@ -125,8 +131,21 @@ private:
   uint speed;
   int stage_left_pos;
   int stage_right_pos;
+  int stage_size;
 
 };
+
+void Scene::scene_fade( bool left )
+{
+  uint SCREEN_CENTER = 400;
+  int distance_from_edge = stage_size - abs(
+    main_character.get_position().at( 0 ) );
+  if( distance_from_edge < SCREEN_CENTER )
+  {
+    main_character.update_pos( left, speed );
+  }
+  
+}
 
 bool Scene::recruit()
 {
@@ -137,8 +156,8 @@ bool Scene::recruit()
   for( uint i = 0; i < characters.size(); i++ )
   {
     int distance_from_recruit =
-      abs( characters.at( i ).get_position().at( 0 ) -
-           main_character.get_position().at( 0 ) );
+      abs( characters.at( i ).get_screen_position().at( 0 ) -
+           main_character.get_screen_position().at( 0 ) );
     if( distance_from_recruit < recruit_proximity )
     {
       recruit_index = i;
@@ -166,25 +185,49 @@ bool Scene::recruit()
 
 void Scene::convo( uint character_index )
 {
+  
+  SDL_RenderClear( renderer );
+  background.draw();
+    
+  characters.at( character_index ).happy();
+    
+  SDL_RenderPresent( renderer );
+
+  
   bool talking = true;
   SDL_Event e;
   while( talking )
   {
-    
     while( SDL_PollEvent( &e ) )
     {
       if( e.type == SDL_KEYDOWN )
       {
-        talking = false;
+        if( e.key.keysym.sym == SDLK_RIGHT )
+        {
+                
+          SDL_RenderClear( renderer );
+          background.draw();
+          
+          characters.at( character_index ).gasp();
+    
+          SDL_RenderPresent( renderer );
+        }
+        else if( e.key.keysym.sym == SDLK_LEFT )
+        {
+          
+          SDL_RenderClear( renderer );
+          background.draw();
+          
+          characters.at( character_index ).happy();
+    
+          SDL_RenderPresent( renderer );
+        }
+        else if( e.key.keysym.sym == SDLK_DOWN )
+        {
+          talking = false;
+        }
       }
     }
-    
-    SDL_RenderClear( renderer );
-    background.draw();
-    
-    characters.at( character_index ).talk();
-    
-    SDL_RenderPresent( renderer );
   }
 }
 
@@ -210,6 +253,7 @@ void Scene::right()
   draw_npcs( false );
   
   main_character.walk_right( speed );
+  //scene_fade( true );
   ducklings( false );
   
   SDL_RenderPresent( renderer );
@@ -225,6 +269,7 @@ void Scene::left()
   draw_npcs( true );
   
   main_character.walk_left( speed );
+  //scene_fade( false );
   ducklings( true );
   
   SDL_RenderPresent( renderer );
@@ -308,9 +353,9 @@ Scene::Scene(SDL_Renderer *param_renderer,
   main_character( param_main_character ), speed( param_speed ),
   renderer( param_renderer)  
 {
-  int STAGE_SIZE = 500;
-  stage_left_pos = STAGE_SIZE * -1;
-  stage_right_pos = STAGE_SIZE;
+  stage_size = 500;
+  stage_left_pos = stage_size * -1;
+  stage_right_pos = stage_size;
 }
 
 int Scene::play()

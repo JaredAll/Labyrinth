@@ -28,9 +28,14 @@ public:
              uint num_talking_sprites );
 
   /**
-   * talk to the character 
+   * set character happy expression 
    */
-  void talk();
+  void happy();
+  
+  /**
+   * set character gasp expression
+   */
+  void gasp();
   
   /**
    * make the character walk left
@@ -155,9 +160,16 @@ Character::Character( Sprite param_full_body,
 
 }
 
-void Character::talk()
+void Character::happy()
 {
   uint face = 0;
+  torso.set_source( &talking_clips.at( face ) );
+  torso.draw();
+}
+
+void Character::gasp()
+{
+  uint face = 1;
   torso.set_source( &talking_clips.at( face ) );
   torso.draw();
 }
@@ -197,6 +209,7 @@ void Character::stand()
   {
     full_body.draw();
   }
+
 }
 
 void Character::set_position( int new_x, int new_y )
@@ -229,8 +242,9 @@ vector< int > Character::get_position()
 void Character::follow( Character leader, uint speed )
 {
   uint follow_distance = 130;
-  int leader_x = leader.get_position().at( 0 );
-  int position_from_leader = leader_x - get_position().at( 0 );
+  int leader_x = leader.get_screen_position().at( 0 );
+  int position_from_leader = leader_x -
+    get_screen_position().at( 0 );
 
   uint distance_from_leader = abs( position_from_leader );
 
@@ -257,6 +271,7 @@ void Character::update_pos( bool left, uint speed )
 {
   if( !left )
   {
+    
     set_screen_position(
       get_screen_position().at( 0 ) - speed,
       get_screen_position().at( 1 ) );
