@@ -57,12 +57,20 @@ int main( int argc, char* argv[] )
 
   uint doug_x = 500;
   uint doug_y = 350;
+
+  uint knut_x = 300;
+  uint knut_y = 290;
   
   Sprite fatty = Sprite( "fattysheet.png", ren, fatty_x, fatty_y );
   Sprite doug_s =
     Sprite( "dougsheet.png", ren, doug_x, doug_y );
 
+  Sprite Lun_Knut = 
+        Sprite( "luniusknut_sheet2.png", ren, knut_x, knut_y );
+  
   Sprite faces = Sprite( "facesheet.png", ren, 400, 0 );
+
+  Character lunius = Character( Lun_Knut, faces, 0, 0, 0, 3, 2 );
 
   Character fatso = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
@@ -131,6 +139,7 @@ int main( int argc, char* argv[] )
 
   vector< Character > characters;
   characters.push_back( fatso );
+  characters.push_back( lunius );
   //characters.push_back( doug2 );
 
   Scene sketch_1 =
