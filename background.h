@@ -125,4 +125,5 @@ void Background::reset( int offset )
   }
 }
 
+
 #endif
