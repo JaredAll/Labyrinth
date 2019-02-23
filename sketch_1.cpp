@@ -4,6 +4,7 @@
 #include "cleanup.h"
 #include <iostream>
 #include <vector>
+#include "easy_sdl.h"
 #include "game.h"
 
 using namespace std;

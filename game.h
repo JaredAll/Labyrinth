@@ -8,7 +8,6 @@
 #include <iostream>
 #include <vector>
 #include "scene.h"
-#include "easy_sdl.h"
 
 using namespace std;
 
