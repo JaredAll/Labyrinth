@@ -49,8 +49,9 @@ int main( int argc, char* argv[] )
 
   //get the background
   Background background = Background();
-  SpriteLayer backdrop_sprite = SpriteLayer( "base_bg.png", ren,
+  SpriteLayer backdrop_sprite = SpriteLayer( "bg1.2.png", ren,
                                              0, 0, 0 );
+
 
   uint fatty_x = 500;
   uint fatty_y = 290;
@@ -103,10 +104,23 @@ int main( int argc, char* argv[] )
 
   Background trees = Background();
   trees.add_layer( backdrop_sprite );
-  trees.add_layer( l_tree_1 );
-  trees.add_layer( l_tree_2 );
 
   background.add_layer( backdrop_sprite );
+  
+  int num_grounds = 2;
+  for( int i = num_grounds * ( -1 ); i < num_grounds; i++ )
+  {
+    uint ground_y = 0;
+    uint ground_x = 0 + 1000 * i;
+    SpriteLayer ground = SpriteLayer( "grass1.png", ren,
+                                    ground_x, ground_y, 1 );
+    background.add_layer( ground );
+    trees.add_layer( ground );
+  }
+
+  trees.add_layer( l_tree_1 );
+  trees.add_layer( l_tree_2 );
+  
   background.add_layer( third_layer );
   background.add_layer( next_sign );
   background.add_layer( l_sign );

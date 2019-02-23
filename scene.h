@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <stdio.h>
+#include <SDL_ttf.h>
 #include <SDL_image.h>
 #include "cleanup.h"
 #include <iostream>
@@ -191,6 +192,29 @@ void Scene::convo( uint character_index )
     
   characters.at( character_index ).happy();
     
+
+
+  TTF_Init();
+  TTF_Font *font;
+  font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
+
+  if( font == NULL )
+  {
+    printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+  }
+  
+  SDL_Color White = {0, 0, 0};
+  SDL_Surface *message_surface =
+    TTF_RenderText_Solid( font, "HUGH HUGH HUGH", White );
+  SDL_Texture *message =
+    SDL_CreateTextureFromSurface( renderer,
+                                  message_surface );
+  SDL_Rect message_rect;
+  message_rect.x = 0;
+  message_rect.y = 0;
+  message_rect.w = 400;
+  message_rect.h = 300;
+
   SDL_RenderPresent( renderer );
 
   
@@ -209,6 +233,8 @@ void Scene::convo( uint character_index )
           background.draw();
           
           characters.at( character_index ).gasp();
+
+          SDL_RenderCopy( renderer, message, NULL, &message_rect );
     
           SDL_RenderPresent( renderer );
         }
