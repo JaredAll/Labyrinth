@@ -14,7 +14,7 @@ int main( int argc, char* argv[] )
   //initialize video
   if (SDL_Init(SDL_INIT_VIDEO) != 0)
   {
-    //logSDLError( std::cout, "SDL_Init" );
+    logSDLError( std::cout, "SDL_Init" );
     return 1;
   }
 
@@ -29,7 +29,7 @@ int main( int argc, char* argv[] )
                                      SDL_WINDOW_SHOWN);
   if (win == nullptr)
   {
-    //logSDLError( std::cout, "CreateWindow" );
+    logSDLError( std::cout, "CreateWindow" );
     SDL_Quit();
     return 1;
   }
@@ -42,7 +42,7 @@ int main( int argc, char* argv[] )
   if (ren == nullptr)
   {
     cleanup( win );
-    //logSDLError( std::cout, "CreateRenderer" );
+    logSDLError( std::cout, "CreateRenderer" );
     SDL_Quit();
     return 1;
   }
