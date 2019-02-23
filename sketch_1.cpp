@@ -14,7 +14,7 @@ int main( int argc, char* argv[] )
   //initialize video
   if (SDL_Init(SDL_INIT_VIDEO) != 0)
   {
-    logSDLError( std::cout, "SDL_Init" );
+    //logSDLError( std::cout, "SDL_Init" );
     return 1;
   }
 
@@ -29,7 +29,7 @@ int main( int argc, char* argv[] )
                                      SDL_WINDOW_SHOWN);
   if (win == nullptr)
   {
-    logSDLError( std::cout, "CreateWindow" );
+    //logSDLError( std::cout, "CreateWindow" );
     SDL_Quit();
     return 1;
   }
@@ -42,14 +42,14 @@ int main( int argc, char* argv[] )
   if (ren == nullptr)
   {
     cleanup( win );
-    logSDLError( std::cout, "CreateRenderer" );
+    //logSDLError( std::cout, "CreateRenderer" );
     SDL_Quit();
     return 1;
   }
 
   //get the background
   Background background = Background();
-  SpriteLayer backdrop_sprite = SpriteLayer( "bg1.2.png", ren,
+  SpriteLayer backdrop_sprite = SpriteLayer( "sprites/bg1.2.png", ren,
                                              0, 0, 0 );
 
 
@@ -62,14 +62,14 @@ int main( int argc, char* argv[] )
   uint knut_x = 300;
   uint knut_y = 290;
   
-  Sprite fatty = Sprite( "fattysheet.png", ren, fatty_x, fatty_y );
+  Sprite fatty = Sprite( "sprites/fattysheet.png", ren, fatty_x, fatty_y );
   Sprite doug_s =
-    Sprite( "dougsheet.png", ren, doug_x, doug_y );
+    Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
 
   Sprite Lun_Knut = 
-        Sprite( "luniusknut_sheet2.png", ren, knut_x, knut_y );
+        Sprite( "sprites/luniusknut_sheet2.png", ren, knut_x, knut_y );
   
-  Sprite faces = Sprite( "facesheet.png", ren, 400, 0 );
+  Sprite faces = Sprite( "sprites/facesheet.png", ren, 400, 0 );
 
   Character lunius = Character( Lun_Knut, faces, 0, 0, 0, 3, 2 );
 
@@ -78,7 +78,7 @@ int main( int argc, char* argv[] )
   uint fatty2_x = 300;
   uint fatty2_y = 275;
   Sprite fatty_2 =
-    Sprite( "fattysheet.png", ren, fatty2_x, fatty2_y );
+    Sprite( "sprites/fattysheet.png", ren, fatty2_x, fatty2_y );
 
   Character fatso2 = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
@@ -90,16 +90,16 @@ int main( int argc, char* argv[] )
   
   int sign_x = 400;
   int sign_y = 150;
-  SpriteLayer l_sign = SpriteLayer( "fattysign.png", ren,
+  SpriteLayer l_sign = SpriteLayer( "sprites/fattysign.png", ren,
                                sign_x, sign_y, 1 );
 
-  SpriteLayer next_sign = SpriteLayer( "fattysign.png", ren,
+  SpriteLayer next_sign = SpriteLayer( "sprites/fattysign.png", ren,
                                   330, 130, 2 );
-  SpriteLayer third_layer = SpriteLayer( "fattysign.png", ren,
+  SpriteLayer third_layer = SpriteLayer( "sprites/fattysign.png", ren,
                                          330, 130, 4 );
-  SpriteLayer l_tree_1 = SpriteLayer( "inn-01.png", ren,
+  SpriteLayer l_tree_1 = SpriteLayer( "sprites/inn-01.png", ren,
                                       400, 150, 2 );
-  SpriteLayer l_tree_2 = SpriteLayer( "inn-01.png", ren,
+  SpriteLayer l_tree_2 = SpriteLayer( "sprites/inn-01.png", ren,
                                       330, 75, 1 );
 
   Background trees = Background();
@@ -112,7 +112,7 @@ int main( int argc, char* argv[] )
   {
     uint ground_y = 0;
     uint ground_x = 0 + 1000 * i;
-    SpriteLayer ground = SpriteLayer( "grass1.png", ren,
+    SpriteLayer ground = SpriteLayer( "sprites/grass1.png", ren,
                                     ground_x, ground_y, 1 );
     background.add_layer( ground );
     trees.add_layer( ground );
