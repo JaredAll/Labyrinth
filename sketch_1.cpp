@@ -68,11 +68,13 @@ int main( int argc, char* argv[] )
     Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
 
   Sprite Lun_Knut = 
-        Sprite( "sprites/luniusknut_sheet2.png", ren, knut_x, knut_y );
-  
-  Sprite faces = Sprite( "sprites/facesheet.png", ren, 400, 0 );
+        Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
 
-  Character lunius = Character( Lun_Knut, faces, 0, 0, 0, 3, 2 );
+  Sprite Dirk_sprite = Sprite( "sprites/4dirk.png", ren, knut_x, knut_y );
+  
+  Sprite faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
+
+  Character lunius = Character( Lun_Knut, faces, 0, 0, 0, 4, 2 );
 
   Character fatso = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
@@ -86,8 +88,8 @@ int main( int argc, char* argv[] )
   Character fatso3 = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
   Character doug = Character( doug_s, faces, 0, 0, 0, 3, 2 );
-  Character doug2 = Character( doug_s, faces, 0, 0, 0, 3, 2 );
-  doug2.set_screen_position( 600, 330 );
+  Character dirk = Character( Dirk_sprite, faces, 0, 0, 0, 4, 2 );
+  dirk.set_screen_position( 600, 330 );
   
   int sign_x = 400;
   int sign_y = 150;
@@ -155,14 +157,14 @@ int main( int argc, char* argv[] )
   vector< Character > characters;
   characters.push_back( fatso );
   characters.push_back( lunius );
-  //characters.push_back( doug2 );
+  characters.push_back( doug );
 
   Scene sketch_1 =
-    Scene( ren, background, characters, doug, speed );
+    Scene( ren, background, characters, dirk, speed );
 
   characters.clear();
   Scene tree_scene =
-    Scene( ren, trees, characters, doug, speed );
+    Scene( ren, trees, characters, dirk, speed );
 
   //tree_scene.add_follower( fatso2 );
   //tree_scene.add_follower( fatso3 );

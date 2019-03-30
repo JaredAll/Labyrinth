@@ -1,4 +1,4 @@
-CXX = clang++-3.8
+CXX = clang++
 SDL_LIB = -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf
 SDL_INCLUDE = -I/usr/include/SDL2
 CXX_FLAGS = -Werror -pedantic-errors -O0 -Wno-c++98-compat-pedantic -Wno-padded -std=c++11 $(SDL_INCLUDE)
