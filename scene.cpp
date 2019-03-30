@@ -27,7 +27,7 @@ bool Scene::recruit()
     {
       recruit_index = i;
       found_recruit = true;
-      convo( recruit_index );
+      convo( recruit_index, conversations.at( 0 ) );
     }
   }
 
@@ -48,31 +48,16 @@ bool Scene::recruit()
   
 }
 
-void Scene::convo( uint character_index )
+void Scene::convo( uint character_index, Conversation conversation )
 {
   
   SDL_RenderClear( renderer );
   background.draw();
     
   characters.at( character_index ).happy();
-    
 
-
-  TTF_Init();
-  TTF_Font *font;
-  font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
-
-  if( font == NULL )
-  {
-    printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
-  }
   
-  SDL_Color White = {0, 0, 0};
-  SDL_Surface *message_surface =
-    TTF_RenderText_Solid( font, "HUGH HUGH HUGH", White );
-  SDL_Texture *message =
-    SDL_CreateTextureFromSurface( renderer,
-                                  message_surface );
+  SDL_Texture* message = conversation.get_dialogue( 0 );
   SDL_Rect message_rect;
   message_rect.x = 0;
   message_rect.y = 0;
@@ -119,6 +104,11 @@ void Scene::convo( uint character_index )
       }
     }
   }
+}
+
+void Scene::add_conversation( Conversation conversation )
+{
+  conversations.push_back( conversation );
 }
 
 void Scene::center()
@@ -237,11 +227,13 @@ vector< Character > Scene::following_characters;
 Scene::Scene(SDL_Renderer *param_renderer,
              Background param_background,
              vector< Character > param_characters,
-             Character param_main_character, uint param_speed )
+             Character param_main_character,
+	     vector< Conversation > param_conversations,
+	     uint param_speed )
 : background( param_background ),
   characters( param_characters ),
   main_character( param_main_character ), speed( param_speed ),
-  renderer( param_renderer)  
+  renderer( param_renderer), conversations( param_conversations )
 {
   stage_size = 500;
   stage_left_pos = stage_size * -1;

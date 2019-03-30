@@ -78,6 +78,11 @@ int main( int argc, char* argv[] )
 
   Character fatso = Character( fatty, faces, 0, 0, 0, 2, 2 );
 
+  Conversation lunius_convo = Conversation();
+  char greeting[] = "hello there.";
+  char* lunius_greeting = &greeting[ 0 ];
+  lunius_convo.add_dialogue( lunius_greeting, ren );
+
   uint fatty2_x = 300;
   uint fatty2_y = 275;
   Sprite fatty_2 =
@@ -159,12 +164,16 @@ int main( int argc, char* argv[] )
   characters.push_back( lunius );
   characters.push_back( doug );
 
+  vector< Conversation > sketch_1_convos;
+  sketch_1_convos.push_back( lunius_convo );
+
   Scene sketch_1 =
-    Scene( ren, background, characters, dirk, speed );
+    Scene( ren, background, characters, dirk,
+	   sketch_1_convos, speed );
 
   characters.clear();
   Scene tree_scene =
-    Scene( ren, trees, characters, dirk, speed );
+    Scene( ren, trees, characters, dirk, sketch_1_convos, speed );
 
   //tree_scene.add_follower( fatso2 );
   //tree_scene.add_follower( fatso3 );

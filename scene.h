@@ -10,6 +10,7 @@
 #include <vector>
 #include "background.h"
 #include "character.h"
+#include "conversation.h"
 
 using namespace std;
 
@@ -48,6 +49,11 @@ public:
   void stage_right();
 
   /**
+   * adds conversation to scene
+   */
+  void add_conversation( Conversation conversation );
+
+  /**
    * Constructor
    * @param renderer the renderer
    * @param background the background
@@ -57,14 +63,17 @@ public:
    */
   Scene( SDL_Renderer *renderer, Background background,
          vector< Character > characters,
-         Character main_character, uint speed );
+         Character main_character,
+	 vector< Conversation > conversations,
+	 uint speed );
 
 private:
 
   /**
    * have a conversation with a character
+   * @param conversation the conversation
    */
-  void convo( uint character_index );
+  void convo( uint character_index, Conversation conversation );
 
   /**
    * update the scene right
@@ -130,6 +139,7 @@ private:
   Background background;
   static vector< Character > following_characters;
   vector< Character > characters;
+  vector< Conversation > conversations;
   Character main_character;
   uint speed;
   int stage_left_pos;
