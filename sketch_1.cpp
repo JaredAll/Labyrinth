@@ -76,11 +76,17 @@ int main( int argc, char* argv[] )
   Sprite doug_faces = Sprite( "sprites/dougFsheet.png", ren, 400,
 			      0 );
 
-  Character lunius = Character( Lun_Knut, knut_faces, 0, 0, 0,
+  Character lunius = Character( "lunius",
+                                Lun_Knut, knut_faces, 0, 0, 0,
 				4, 2 );
 
   Conversation lunius_convo =
     Conversation( "lunius_conversation.txt", ren );
+
+  Conversation doug_convo =
+    Conversation( "doug_conversation.txt", ren );
+  Conversation doug_c2 =
+    Conversation( "doug_c2.txt", ren );
 
   /*
   char greeting[] = "hello there.";
@@ -95,9 +101,13 @@ int main( int argc, char* argv[] )
   Sprite fatty_2 =
     Sprite( "sprites/fattysheet.png", ren, fatty2_x, fatty2_y );
 
-  Character doug = Character( doug_s, doug_faces, 0, 0, 0, 3, 2 );
-  Character dirk = Character( Dirk_sprite, doug_faces, 0, 0, 0,
+  Character doug = Character( "doug",
+                              doug_s, doug_faces, 0, 0, 0, 3, 2 );
+  
+  Character dirk = Character( "dirk",
+                              Dirk_sprite, doug_faces, 0, 0, 0,
 			      4, 2 );
+  
   dirk.set_screen_position( 600, 330 );
   
   int sign_x = 400;
@@ -167,16 +177,25 @@ int main( int argc, char* argv[] )
   characters.push_back( lunius );
   characters.push_back( doug );
 
+  vector< Character* > character_ps;
+  character_ps.push_back( &lunius );
+  character_ps.push_back( &doug );
+
   vector< Conversation > sketch_1_convos;
   sketch_1_convos.push_back( lunius_convo );
 
+  Script sketch_script = Script( character_ps );
+  sketch_script.insert_conversation( &lunius, lunius_convo );
+  sketch_script.insert_conversation( &doug, doug_convo );
+  sketch_script.insert_conversation( &doug, doug_c2 );
+
   Scene sketch_1 =
     Scene( ren, background, characters, dirk,
-	   sketch_1_convos, speed );
+	   sketch_script, speed );
 
   characters.clear();
   Scene tree_scene =
-    Scene( ren, trees, characters, dirk, sketch_1_convos, speed );
+    Scene( ren, trees, characters, dirk, sketch_script, speed );
 
   //tree_scene.add_follower( fatso2 );
   //tree_scene.add_follower( fatso3 );

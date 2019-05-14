@@ -1,10 +1,11 @@
 #include "character.h"
-Character::Character( Sprite param_full_body,
+Character::Character( string param_name,
+  Sprite param_full_body,
                       Sprite param_torso, uint param_force,
                       uint param_diversion, uint param_stealth,
                       uint param_num_walking,
                       uint param_num_talking )
-: full_body( param_full_body ), torso( param_torso ),
+  : name( param_name ), full_body( param_full_body ), torso( param_torso ),
   force( param_force ), diversion( param_diversion ),
   stealth( param_stealth ), num_walking_sprites( param_num_walking ),
   num_talking_sprites( param_num_talking )
@@ -175,5 +176,15 @@ void Character::reset( uint new_x )
   x_pos = new_x;
   y_pos = 0;
   full_body.reset_position();
+}
+
+string Character::get_name()
+{
+  return name;
+}
+
+bool Character::equals( Character character )
+{
+  return ( name == character.get_name() );
 }
   

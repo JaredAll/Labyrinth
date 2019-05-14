@@ -25,7 +25,8 @@ public:
    * @param full_body the full body sprite
    * @param torso the torso sprite
    */
-  Character( Sprite full_body, Sprite torso, uint force,
+  Character( string name,
+             Sprite full_body, Sprite torso, uint force,
              uint diversion, uint stealth, uint num_walking_sprites,
              uint num_talking_sprites );
 
@@ -97,9 +98,21 @@ public:
    */
   void reset( uint offset );
 
+  /**
+   * determine if two characters are equal
+   */
+  bool equals( Character character );
+
+  /**
+   * gets the name of the character
+   */
+  string get_name();
+
 
 
 private:
+
+  string name;
 
   bool facing_left;
   int x_pos;

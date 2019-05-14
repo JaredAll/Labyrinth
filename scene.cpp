@@ -12,6 +12,30 @@ void Scene::scene_fade( bool left )
   
 }
 
+void Scene::speak()
+{
+
+  uint speak_proximity = 30;
+  uint speak_index = 0;
+  bool found_speaker = false;
+  
+  for( uint i = 0; i < following_characters.size(); i++ )
+  {
+    int distance_from_speaker =
+      abs( following_characters.at( i )
+           .get_screen_position().at( 0 ) -
+           main_character.get_screen_position().at( 0 ) );
+    if( distance_from_speaker < speak_proximity )
+    {
+      speak_index = i;
+      found_speaker = true;
+      convo( speak_index,
+             scene_dialogue.speak_to( &following_characters.at(
+                                        speak_index ) ) );
+    }
+  }
+}
+
 bool Scene::recruit()
 {
   uint recruit_proximity = 30;
@@ -27,7 +51,9 @@ bool Scene::recruit()
     {
       recruit_index = i;
       found_recruit = true;
-      convo( recruit_index, conversations.at( 0 ) );
+      convo( recruit_index,
+             scene_dialogue.speak_to( &characters.at(
+                                        recruit_index ) ) );
     }
   }
 
@@ -109,11 +135,6 @@ void Scene::convo( uint character_index, Conversation conversation )
       }
     }
   }
-}
-
-void Scene::add_conversation( Conversation conversation )
-{
-  conversations.push_back( conversation );
 }
 
 void Scene::center()
@@ -233,12 +254,12 @@ Scene::Scene(SDL_Renderer *param_renderer,
              Background param_background,
              vector< Character > param_characters,
              Character param_main_character,
-	     vector< Conversation > param_conversations,
+	     Script param_scene_dialogue,
 	     uint param_speed )
 : background( param_background ),
   characters( param_characters ),
   main_character( param_main_character ), speed( param_speed ),
-  renderer( param_renderer), conversations( param_conversations )
+  renderer( param_renderer), scene_dialogue( param_scene_dialogue )
 {
   stage_size = 500;
   stage_left_pos = stage_size * -1;
@@ -291,6 +312,7 @@ int Scene::play()
         if( e.key.keysym.sym == SDLK_DOWN )
         {
           recruit();
+          speak();
         }
         if( e.key.keysym.sym == SDLK_RIGHT )
         {

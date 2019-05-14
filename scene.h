@@ -11,6 +11,7 @@
 #include "background.h"
 #include "character.h"
 #include "conversation.h"
+#include "script.h"
 
 using namespace std;
 
@@ -64,7 +65,7 @@ public:
   Scene( SDL_Renderer *renderer, Background background,
          vector< Character > characters,
          Character main_character,
-	 vector< Conversation > conversations,
+	 Script scene_dialogue,
 	 uint speed );
 
 private:
@@ -94,6 +95,11 @@ private:
    * convert npc to follower
    */
   bool recruit();
+
+  /**
+   * speak to npc
+   */
+  void speak();
 
   /**
    * draw the stationary npcs
@@ -139,7 +145,7 @@ private:
   Background background;
   static vector< Character > following_characters;
   vector< Character > characters;
-  vector< Conversation > conversations;
+  Script scene_dialogue;
   Character main_character;
   uint speed;
   int stage_left_pos;
