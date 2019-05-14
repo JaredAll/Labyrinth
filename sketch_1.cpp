@@ -61,7 +61,7 @@ int main( int argc, char* argv[] )
   uint doug_y = 350;
 
   uint knut_x = 300;
-  uint knut_y = 290;
+  uint knut_y = 330;
   
   Sprite fatty = Sprite( "sprites/fattysheet.png", ren, fatty_x, fatty_y );
   Sprite doug_s =
@@ -70,30 +70,34 @@ int main( int argc, char* argv[] )
   Sprite Lun_Knut = 
         Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
 
-  Sprite Dirk_sprite = Sprite( "sprites/4dirk.png", ren, knut_x, knut_y );
+  Sprite Dirk_sprite = Sprite( "sprites/dirkwalk.png", ren, knut_x, knut_y );
   
-  Sprite faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
+  Sprite knut_faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
+  Sprite doug_faces = Sprite( "sprites/dougFsheet.png", ren, 400,
+			      0 );
 
-  Character lunius = Character( Lun_Knut, faces, 0, 0, 0, 4, 2 );
+  Character lunius = Character( Lun_Knut, knut_faces, 0, 0, 0,
+				4, 2 );
 
-  Character fatso = Character( fatty, faces, 0, 0, 0, 2, 2 );
+  Conversation lunius_convo =
+    Conversation( "lunius_conversation.txt", ren );
 
-  Conversation lunius_convo = Conversation();
+  /*
   char greeting[] = "hello there.";
+  char race_declaration[] = "I'm an elf.";
   char* lunius_greeting = &greeting[ 0 ];
   lunius_convo.add_dialogue( lunius_greeting, ren );
+  lunius_convo.add_dialogue( &race_declaration[ 0 ], ren );
+  */
 
   uint fatty2_x = 300;
   uint fatty2_y = 275;
   Sprite fatty_2 =
     Sprite( "sprites/fattysheet.png", ren, fatty2_x, fatty2_y );
 
-  Character fatso2 = Character( fatty, faces, 0, 0, 0, 2, 2 );
-
-  Character fatso3 = Character( fatty, faces, 0, 0, 0, 2, 2 );
-
-  Character doug = Character( doug_s, faces, 0, 0, 0, 3, 2 );
-  Character dirk = Character( Dirk_sprite, faces, 0, 0, 0, 4, 2 );
+  Character doug = Character( doug_s, doug_faces, 0, 0, 0, 3, 2 );
+  Character dirk = Character( Dirk_sprite, doug_faces, 0, 0, 0,
+			      4, 2 );
   dirk.set_screen_position( 600, 330 );
   
   int sign_x = 400;
@@ -160,7 +164,6 @@ int main( int argc, char* argv[] )
   uint y_pos = 0;
 
   vector< Character > characters;
-  characters.push_back( fatso );
   characters.push_back( lunius );
   characters.push_back( doug );
 

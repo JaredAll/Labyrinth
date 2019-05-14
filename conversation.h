@@ -5,6 +5,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -20,7 +22,7 @@ class Conversation
   /**
    * Constructor
    */
-  Conversation();
+  Conversation( string filepath, SDL_Renderer* renderer );
 
   /**
    * get dialogue at the index provided
@@ -31,6 +33,11 @@ class Conversation
    * add dialogue to conversation
    */
   void add_dialogue( char* words, SDL_Renderer* renderer );
+
+  /**
+   * get length of the dialogue vector
+   */
+  uint get_length();
 
 
 

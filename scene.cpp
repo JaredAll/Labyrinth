@@ -55,6 +55,7 @@ void Scene::convo( uint character_index, Conversation conversation )
   background.draw();
     
   characters.at( character_index ).happy();
+  uint convo_length = conversation.get_length();
 
   
   SDL_Texture* message = conversation.get_dialogue( 0 );
@@ -62,12 +63,13 @@ void Scene::convo( uint character_index, Conversation conversation )
   message_rect.x = 0;
   message_rect.y = 0;
   message_rect.w = 400;
-  message_rect.h = 300;
+  message_rect.h = 100;
 
   SDL_RenderPresent( renderer );
 
   
   bool talking = true;
+  uint conversation_position = 0;
   SDL_Event e;
   while( talking )
   {
@@ -86,6 +88,9 @@ void Scene::convo( uint character_index, Conversation conversation )
           SDL_RenderCopy( renderer, message, NULL, &message_rect );
     
           SDL_RenderPresent( renderer );
+
+	  conversation_position++;
+	  message = conversation.get_dialogue( conversation_position % convo_length );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {

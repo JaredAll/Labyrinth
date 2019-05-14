@@ -1,0 +1,24 @@
+#ifndef SCRIPT_H
+#define SCRIPT_H
+
+#include <SDL.h>
+#include <stdio.h>
+#include <SDL_ttf.h>
+#include <SDL_image.h>
+#include "cleanup.h"
+#include <iostream>
+#include <vector>
+#include "background.h"
+#include "character.h"
+#include "conversation.h"
+
+using namespace std;
+
+/**
+ * A scene class
+ * @author Jared Allen
+ * @version 8 February 2019
+ */
+class Scene
+{
+public:
