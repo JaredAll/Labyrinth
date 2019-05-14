@@ -36,6 +36,9 @@ sketch_2: sketch_2.o
 sketch_2.o: sketch_2.cpp
 	$(CXX) $(CXX_FLAGS) -c sketch_2.cpp
 
+script.o: script.h script.cpp
+	$(CXX) $(CXX_FLAGS) -c script.cpp
+
 easy_sdl.o: easy_sdl.h easy_sdl.cpp
 	$(CXX) $(CXX_FLAGS) -c easy_sdl.cpp
 

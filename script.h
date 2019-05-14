@@ -10,6 +10,7 @@
 #include <vector>
 #include "conversation.h"
 #include "character.h"
+#include <map>
 
 using namespace std;
 
@@ -25,14 +26,15 @@ class Script
   /**
    * talk to this character
    * @param character the character to speak to
+   * @return the conversation to be had
    */
-  void speak_to( Character &character );
+  Conversation ( Character &character );
 
 
   
  private:
 
-   vector< Conversation > conversations;
+  map< Character&, vector< Conversation > > conversations;
 
 
 
