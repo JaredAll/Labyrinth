@@ -73,8 +73,10 @@ private:
   /**
    * have a conversation with a character
    * @param conversation the conversation
+   * @param following if the character is currently following
    */
-  void convo( uint character_index, Conversation conversation );
+  void convo( uint character_index, Conversation conversation,
+    bool following );
 
   /**
    * update the scene right

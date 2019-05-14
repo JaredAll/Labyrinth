@@ -17,7 +17,6 @@ void Scene::speak()
 
   uint speak_proximity = 30;
   uint speak_index = 0;
-  bool found_speaker = false;
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
@@ -25,15 +24,16 @@ void Scene::speak()
       abs( following_characters.at( i )
            .get_screen_position().at( 0 ) -
            main_character.get_screen_position().at( 0 ) );
+    
     if( distance_from_speaker < speak_proximity )
     {
       speak_index = i;
-      found_speaker = true;
       convo( speak_index,
              scene_dialogue.speak_to( &following_characters.at(
-                                        speak_index ) ) );
+                                        speak_index ) ), true );
     }
   }
+  return;
 }
 
 bool Scene::recruit()
@@ -53,7 +53,7 @@ bool Scene::recruit()
       found_recruit = true;
       convo( recruit_index,
              scene_dialogue.speak_to( &characters.at(
-                                        recruit_index ) ) );
+                                        recruit_index ) ), false );
     }
   }
 
@@ -74,13 +74,24 @@ bool Scene::recruit()
   
 }
 
-void Scene::convo( uint character_index, Conversation conversation )
+void Scene::convo( uint character_index, Conversation conversation,
+                   bool following )
 {
   
   SDL_RenderClear( renderer );
   background.draw();
+
+  Character* speaker;
+  if( following )
+  {
+    speaker = &following_characters.at( character_index );
+  }
+  else
+  {
+    speaker = &characters.at( character_index );
+  }
     
-  characters.at( character_index ).happy();
+  (*speaker).happy();
   uint convo_length = conversation.get_length();
 
   
@@ -109,7 +120,7 @@ void Scene::convo( uint character_index, Conversation conversation )
           SDL_RenderClear( renderer );
           background.draw();
           
-          characters.at( character_index ).gasp();
+          (*speaker).gasp();
 
           SDL_RenderCopy( renderer, message, NULL, &message_rect );
     
@@ -124,11 +135,11 @@ void Scene::convo( uint character_index, Conversation conversation )
           SDL_RenderClear( renderer );
           background.draw();
           
-          characters.at( character_index ).happy();
+          (*speaker).happy();
     
           SDL_RenderPresent( renderer );
         }
-        else if( e.key.keysym.sym == SDLK_DOWN )
+        else if( e.key.keysym.sym == SDLK_DOWN || e.key.keysym.sym == SDLK_UP )
         {
           talking = false;
         }
@@ -250,6 +261,10 @@ void Scene::draw_npcs()
 
 vector< Character > Scene::following_characters;
 
+
+
+
+
 Scene::Scene(SDL_Renderer *param_renderer,
              Background param_background,
              vector< Character > param_characters,
@@ -265,6 +280,10 @@ Scene::Scene(SDL_Renderer *param_renderer,
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
 }
+
+
+
+
 
 int Scene::play()
 {
@@ -309,10 +328,14 @@ int Scene::play()
     {
       if( push )
       {
+        if( e.key.keysym.sym == SDLK_UP )
+        {
+          speak();
+          push = false;
+        }
         if( e.key.keysym.sym == SDLK_DOWN )
         {
           recruit();
-          speak();
         }
         if( e.key.keysym.sym == SDLK_RIGHT )
         {
