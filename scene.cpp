@@ -168,18 +168,16 @@ void Scene::right()
    
   SDL_RenderClear( renderer );
 
-  uint STAGE_CENTER = 225;
+  int stage_center_width = 300;
   int main_char_pos = main_character.get_position().at( 0 );
-  int distance_from_edge = stage_size - abs(
-    main_char_pos );
-  if( distance_from_edge < STAGE_CENTER ||
-      main_char_pos < STAGE_CENTER )
+  if( main_char_pos < ( -1 * stage_center_width ) ||
+      main_char_pos > stage_center_width )
   {
     background.draw();
     main_character.update_pos( true, speed );
     main_character.walk_right( speed );
     draw_npcs();
-    ducklings( false );
+    ducklings();
   } 
   else
   {
@@ -188,7 +186,6 @@ void Scene::right()
     draw_npcs( false );
   
     main_character.walk_right( speed );
-    //scene_fade( true );
     ducklings( false );
   }
   
@@ -200,18 +197,16 @@ void Scene::left()
 {
   SDL_RenderClear( renderer );
 
-  uint STAGE_CENTER = 225;
+  int stage_center_width = 275;
   int main_char_pos = main_character.get_position().at( 0 );
-  int distance_from_edge = stage_size - abs(
-    main_char_pos );
-  if( distance_from_edge < STAGE_CENTER ||
-      main_char_pos < STAGE_CENTER )
+  if( main_char_pos < ( -1 * stage_center_width ) ||
+      main_char_pos > stage_center_width )
   {
     background.draw();
     main_character.update_pos( false, speed );
     main_character.walk_left( speed );
     draw_npcs();
-    ducklings( true );
+    ducklings();
   } 
   else
   {
@@ -220,7 +215,6 @@ void Scene::left()
     draw_npcs( true );
   
     main_character.walk_left( speed );
-    //scene_fade( true );
     ducklings( true );
   }
   
@@ -311,7 +305,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
   main_character( param_main_character ), speed( param_speed ),
   renderer( param_renderer), scene_dialogue( param_scene_dialogue )
 {
-  stage_size = 500;
+  stage_size = 800;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
 }
@@ -402,7 +396,9 @@ void Scene::reset()
 
 void Scene::stage_left()
 {
-  background.reset( stage_right_pos );
+  int stage_width = 280;
+  int stage_size = 800;
+  background.reset( stage_width );
   main_character.stage_left();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
@@ -412,7 +408,9 @@ void Scene::stage_left()
 
 void Scene::stage_right()
 {
-  background.reset( stage_left_pos );
+  int stage_width = 340;
+  int stage_size = 800;
+  background.reset( stage_width * -1 );
   main_character.stage_right();
   for( uint i = 0; i < following_characters.size(); i++ )
   {

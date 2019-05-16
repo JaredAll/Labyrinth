@@ -194,13 +194,17 @@ bool Character::equals( Character character )
 
 void Character::stage_left()
 {
-  int stage_left_pos = 25;
-  full_body.set_position( stage_left_pos );
+  int stage_left_screen = 20;
+  int stage_left = -780;
+  x_pos = stage_left;
+  full_body.set_position( stage_left_screen );
 }
 
 void Character::stage_right()
 {
-  int stage_right_pos = 775;
-  full_body.set_position( stage_right_pos );
+  int stage_right_screen = 960;
+  int stage_right = 780;
+  x_pos = stage_right;
+  full_body.set_position( stage_right_screen );
 }
   
