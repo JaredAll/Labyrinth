@@ -1,17 +1,5 @@
 #include "scene.h"
 
-void Scene::scene_fade( bool left )
-{
-  uint STAGE_CENTER = 100;
-  int distance_from_edge = stage_size - abs(
-    main_character.get_position().at( 0 ) );
-  if( distance_from_edge < STAGE_CENTER )
-  {
-    main_character.update_pos( left, speed );
-  }
-  
-}
-
 void Scene::speak()
 {
 
@@ -180,14 +168,26 @@ void Scene::right()
    
   SDL_RenderClear( renderer );
 
-  background.left( speed );
-  background.draw();
-  draw_npcs( false );
+  int stage_center_width = 300;
+  int main_char_pos = main_character.get_position().at( 0 );
+  if( main_char_pos < ( -1 * stage_center_width ) ||
+      main_char_pos > stage_center_width )
+  {
+    background.draw();
+    main_character.update_pos( true, speed );
+    main_character.walk_right( speed );
+    draw_npcs();
+    ducklings();
+  } 
+  else
+  {
+    background.left( speed );
+    background.draw();
+    draw_npcs( false );
   
-  main_character.walk_right( speed );
-  //scene_fade( true );
-  ducklings( false );
-
+    main_character.walk_right( speed );
+    ducklings( false );
+  }
   
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
@@ -196,14 +196,27 @@ void Scene::right()
 void Scene::left()
 {
   SDL_RenderClear( renderer );
-          
-  background.right( speed );
-  background.draw();
-  draw_npcs( true );
+
+  int stage_center_width = 300;
+  int main_char_pos = main_character.get_position().at( 0 );
+  if( main_char_pos < ( -1 * stage_center_width ) ||
+      main_char_pos > stage_center_width )
+  {
+    background.draw();
+    main_character.update_pos( false, speed );
+    main_character.walk_left( speed );
+    draw_npcs();
+    ducklings();
+  } 
+  else
+  {
+    background.right( speed );
+    background.draw();
+    draw_npcs( true );
   
-  main_character.walk_left( speed );
-  //scene_fade( false );
-  ducklings( true );
+    main_character.walk_left( speed );
+    ducklings( true );
+  }
   
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
@@ -292,7 +305,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
   main_character( param_main_character ), speed( param_speed ),
   renderer( param_renderer), scene_dialogue( param_scene_dialogue )
 {
-  stage_size = 500;
+  stage_size = 800;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
 }
@@ -383,21 +396,25 @@ void Scene::reset()
 
 void Scene::stage_left()
 {
-  background.reset( stage_right_pos );
-  main_character.reset( stage_left_pos );
+  int stage_width = 280;
+  int stage_size = 800;
+  background.reset( stage_width );
+  main_character.stage_left();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).reset( stage_left_pos );
+    following_characters.at( i ).stage_left();
   }
 }
 
 void Scene::stage_right()
 {
-  background.reset( stage_left_pos );
-  main_character.reset( stage_right_pos );
+  int stage_width = 340;
+  int stage_size = 800;
+  background.reset( stage_width * -1 );
+  main_character.stage_right();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).reset( stage_right_pos );
+    following_characters.at( i ).stage_right();
   }
 }
 

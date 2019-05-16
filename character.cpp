@@ -1,6 +1,6 @@
 #include "character.h"
 Character::Character( string param_name,
-  Sprite param_full_body,
+                      Sprite param_full_body,
                       Sprite param_torso, uint param_force,
                       uint param_diversion, uint param_stealth,
                       uint param_num_walking,
@@ -64,6 +64,8 @@ void Character::walk_right( uint speed )
   set_position( x_pos + speed,
                 y_pos );
   facing_left = false;
+
+  cout << x_pos << endl;
 }
 
 void Character::walk_left( uint speed )
@@ -75,6 +77,8 @@ void Character::walk_left( uint speed )
   set_position( x_pos - speed,
                 y_pos );
   facing_left = true;
+
+  cout << x_pos << endl;
 }
 
 void Character::stand()
@@ -186,5 +190,21 @@ string Character::get_name()
 bool Character::equals( Character character )
 {
   return ( name == character.get_name() );
+}
+
+void Character::stage_left()
+{
+  int stage_left_screen = 20;
+  int stage_left = -780;
+  x_pos = stage_left;
+  full_body.set_position( stage_left_screen );
+}
+
+void Character::stage_right()
+{
+  int stage_right_screen = 960;
+  int stage_right = 780;
+  x_pos = stage_right;
+  full_body.set_position( stage_right_screen );
 }
   

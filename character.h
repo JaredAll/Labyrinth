@@ -108,6 +108,15 @@ public:
    */
   string get_name();
 
+  /**
+   * set character to stage left position
+   */
+  void stage_left();
+
+  /** set character to stage right position
+   */
+  void stage_right();
+
 
 
 private:
