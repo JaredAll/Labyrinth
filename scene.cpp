@@ -180,27 +180,14 @@ void Scene::right()
    
   SDL_RenderClear( renderer );
 
-  uint STAGE_CENTER = 225;
-  int distance_from_edge = stage_size - abs(
-    main_character.get_position().at( 0 ) );
-  if( distance_from_edge < STAGE_CENTER )
-  {
-    background.draw();
-    main_character.update_pos( true, speed );
-    main_character.walk_right( speed );
-    draw_npcs();
-    ducklings( false );
-  } 
-  else
-  {
-    background.left( speed );
-    background.draw();
-    draw_npcs( false );
+  background.left( speed );
+  background.draw();
+  draw_npcs( false );
   
-    main_character.walk_right( speed );
-    //scene_fade( true );
-    ducklings( false );
-  }
+  main_character.walk_right( speed );
+  //scene_fade( true );
+  ducklings( false );
+
   
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
