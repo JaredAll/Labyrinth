@@ -73,6 +73,12 @@ public:
    * @param new_y the new y coordinate
    */
   void set_position( int new_x, int new_y );
+
+  /**
+   * method to change sprite position
+   * @param new_x the new x coordinate
+   */
+  void set_position( int new_x );
   
   /** 
    * method to reset sprite position

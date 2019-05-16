@@ -2,10 +2,10 @@
 
 void Scene::scene_fade( bool left )
 {
-  uint SCREEN_CENTER = 400;
+  uint STAGE_CENTER = 100;
   int distance_from_edge = stage_size - abs(
     main_character.get_position().at( 0 ) );
-  if( distance_from_edge < SCREEN_CENTER )
+  if( distance_from_edge < STAGE_CENTER )
   {
     main_character.update_pos( left, speed );
   }
@@ -106,7 +106,7 @@ void Scene::convo( uint character_index, Conversation conversation,
 
   
   bool talking = true;
-  uint conversation_position = 0;
+  uint conversation_position = -1;
   SDL_Event e;
   while( talking )
   {
@@ -122,12 +122,23 @@ void Scene::convo( uint character_index, Conversation conversation,
           
           (*speaker).gasp();
 
+          conversation_position++;
+
+          if( conversation_position == convo_length )
+          {
+            talking = false;
+          }
+
+          if( conversation_position < convo_length )
+          {
+            message =
+              conversation.get_dialogue(
+                conversation_position );
+          }
+
           SDL_RenderCopy( renderer, message, NULL, &message_rect );
     
           SDL_RenderPresent( renderer );
-
-	  conversation_position++;
-	  message = conversation.get_dialogue( conversation_position % convo_length );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {
@@ -136,6 +147,10 @@ void Scene::convo( uint character_index, Conversation conversation,
           background.draw();
           
           (*speaker).happy();
+
+          message = conversation.get_angry_response();
+
+          SDL_RenderCopy( renderer, message, NULL, &message_rect );
     
           SDL_RenderPresent( renderer );
         }
@@ -164,14 +179,28 @@ void Scene::right()
 {
    
   SDL_RenderClear( renderer );
+
+  uint STAGE_CENTER = 225;
+  int distance_from_edge = stage_size - abs(
+    main_character.get_position().at( 0 ) );
+  if( distance_from_edge < STAGE_CENTER )
+  {
+    background.draw();
+    main_character.update_pos( true, speed );
+    main_character.walk_right( speed );
+    draw_npcs();
+    ducklings( false );
+  } 
+  else
+  {
+    background.left( speed );
+    background.draw();
+    draw_npcs( false );
   
-  background.left( speed );
-  background.draw();
-  draw_npcs( false );
-  
-  main_character.walk_right( speed );
-  //scene_fade( true );
-  ducklings( false );
+    main_character.walk_right( speed );
+    //scene_fade( true );
+    ducklings( false );
+  }
   
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );

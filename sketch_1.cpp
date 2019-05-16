@@ -12,6 +12,8 @@ using namespace std;
 int main( int argc, char* argv[] )
 {
 
+  /* Setup Window */
+
   //initialize video
   if (SDL_Init(SDL_INIT_VIDEO) != 0)
   {
@@ -48,58 +50,72 @@ int main( int argc, char* argv[] )
     return 1;
   }
 
+  /* End Window Setup */
+
   //get the background
   Background background = Background();
   SpriteLayer backdrop_sprite = SpriteLayer( "sprites/bg1.2.png", ren,
                                              0, 0, 0 );
 
-
-  uint fatty_x = 500;
-  uint fatty_y = 290;
-
+  /* Set Character Sprites */
+  
   uint doug_x = 500;
   uint doug_y = 350;
 
   uint knut_x = 300;
   uint knut_y = 330;
+
+  uint dirk_x = 500;
+  uint dirk_y = 330;
   
-  Sprite fatty = Sprite( "sprites/fattysheet.png", ren, fatty_x, fatty_y );
   Sprite doug_s =
     Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
 
   Sprite Lun_Knut = 
         Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
 
-  Sprite Dirk_sprite = Sprite( "sprites/dirkwalk.png", ren, knut_x, knut_y );
+  Sprite Dirk_sprite = Sprite( "sprites/dirkwalk.png", ren, dirk_x,
+                               dirk_y );
   
   Sprite knut_faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
   Sprite doug_faces = Sprite( "sprites/dougFsheet.png", ren, 400,
 			      0 );
 
-  Character lunius = Character( "lunius",
-                                Lun_Knut, knut_faces, 0, 0, 0,
-				4, 2 );
+  /* End Character Sprites */
+
+
+
+  
+  /* Create Conversations */
 
   Conversation lunius_convo =
     Conversation( "lunius_conversation.txt", ren );
+  char lunius_angry_response[ 100 ] = "I hate humans.";
+  lunius_convo.set_angry_response( lunius_angry_response, ren );
 
   Conversation doug_convo =
     Conversation( "doug_conversation.txt", ren );
   Conversation doug_c2 =
     Conversation( "doug_c2.txt", ren );
 
-  /*
-  char greeting[] = "hello there.";
-  char race_declaration[] = "I'm an elf.";
-  char* lunius_greeting = &greeting[ 0 ];
-  lunius_convo.add_dialogue( lunius_greeting, ren );
-  lunius_convo.add_dialogue( &race_declaration[ 0 ], ren );
-  */
+  char doug_angry_response[ 100 ] = "I need some oil.";
+  doug_convo.set_angry_response( doug_angry_response, ren );
 
-  uint fatty2_x = 300;
-  uint fatty2_y = 275;
-  Sprite fatty_2 =
-    Sprite( "sprites/fattysheet.png", ren, fatty2_x, fatty2_y );
+  doug_c2.set_angry_response( doug_angry_response, ren );
+
+  Conversation doug_s2_c1 =
+    Conversation( "doug_scene2.txt", ren );
+  doug_s2_c1.set_angry_response( doug_angry_response, ren );
+
+  Conversation lunius_s2 =
+    Conversation( "lunius_scene2.txt", ren );
+  lunius_s2.set_angry_response( lunius_angry_response, ren );
+
+  /* End Conversations */
+
+
+  
+  /* Create Characters */
 
   Character doug = Character( "doug",
                               doug_s, doug_faces, 0, 0, 0, 3, 2 );
@@ -107,8 +123,18 @@ int main( int argc, char* argv[] )
   Character dirk = Character( "dirk",
                               Dirk_sprite, doug_faces, 0, 0, 0,
 			      4, 2 );
+
+  Character lunius = Character( "lunius",
+                                Lun_Knut, knut_faces, 0, 0, 0,
+				4, 2 );
   
-  dirk.set_screen_position( 600, 330 );
+  dirk.set_screen_position( 500, 330 );
+
+  /* End Create Characters */
+
+
+  
+  /* Initialize Backgrounds */
   
   int sign_x = 400;
   int sign_y = 150;
@@ -123,12 +149,29 @@ int main( int argc, char* argv[] )
                                       400, 150, 2 );
   SpriteLayer l_tree_2 = SpriteLayer( "sprites/inn-01.png", ren,
                                       330, 75, 1 );
+  SpriteLayer b_bush_1 = SpriteLayer( "sprites/berrybush.png", ren,
+                                      330, 225, 1 );
+  SpriteLayer b_bush_2 = SpriteLayer( "sprites/berrybush.png", ren,
+                                      330, 225, 2 );
 
   Background trees = Background();
   trees.add_layer( backdrop_sprite );
 
   background.add_layer( backdrop_sprite );
   
+  int num_grounds_2 = 4;
+  for( int i = num_grounds_2 * ( -1 ); i < num_grounds_2; i++ )
+  {
+    uint ground_y = 110;
+    uint ground_x = 0 + 500 * i;
+    SpriteLayer ground_2 = SpriteLayer( "sprites/grass1.png", ren,
+                                    ground_x, ground_y, 2 );
+    SpriteLayer ground_2_c = SpriteLayer ( "sprites/grass1.png", ren,
+                                           ground_x, 160, 2 );
+    trees.add_layer( ground_2 );
+    trees.add_layer( ground_2_c );
+  }
+
   int num_grounds = 2;
   for( int i = num_grounds * ( -1 ); i < num_grounds; i++ )
   {
@@ -136,42 +179,29 @@ int main( int argc, char* argv[] )
     uint ground_x = 0 + 1000 * i;
     SpriteLayer ground = SpriteLayer( "sprites/grass1.png", ren,
                                     ground_x, ground_y, 1 );
+    SpriteLayer ground_2 = SpriteLayer( "sprites/grass1.png", ren,
+                                    ground_x, ground_y, 2 );
     background.add_layer( ground );
     trees.add_layer( ground );
   }
 
+  
+  trees.add_layer( b_bush_2 );
   trees.add_layer( l_tree_1 );
   trees.add_layer( l_tree_2 );
   
   background.add_layer( third_layer );
   background.add_layer( next_sign );
   background.add_layer( l_sign );
+  background.add_layer( b_bush_1 );
 
-  int sign_offset = 0;
+  /* End Backgrounds */
 
-  //clip sheet for fatty walking
-  uint fatty_clip_width = 100;
-  uint fatty_clip_height = 200;
   
-  uint num_sprites = 2;
-  vector< SDL_Rect > fatty_walks;
-  for( uint i = 0; i < num_sprites; i++ )
-  {
-    SDL_Rect fatty_clip;
-    fatty_walks.push_back( fatty_clip );
-    fatty_walks.at( i ).x = i * ( fatty_clip_width );
-    fatty_walks.at( i ).y = 0;
-    fatty_walks.at( i ).h = fatty_clip_height;
-    fatty_walks.at( i ).w = fatty_clip_width;
-  }
 
-  uint fatty_stands = 0;
-  fatty_2.set_source( &fatty_walks.at( 1 ) );
+  /* Initialize Scenes */
+
   uint speed = 20;
-
-  //render until click the x
-  uint x_pos = 0;
-  uint y_pos = 0;
 
   vector< Character > characters;
   characters.push_back( lunius );
@@ -189,16 +219,22 @@ int main( int argc, char* argv[] )
   sketch_script.insert_conversation( &doug, doug_convo );
   sketch_script.insert_conversation( &doug, doug_c2 );
 
+  Script scene2_script = Script( character_ps );
+  scene2_script.insert_conversation( &doug, doug_s2_c1 );
+  scene2_script.insert_conversation( &lunius, lunius_s2 );
+
   Scene sketch_1 =
     Scene( ren, background, characters, dirk,
 	   sketch_script, speed );
 
   characters.clear();
   Scene tree_scene =
-    Scene( ren, trees, characters, dirk, sketch_script, speed );
+    Scene( ren, trees, characters, dirk, scene2_script, speed );
 
-  //tree_scene.add_follower( fatso2 );
-  //tree_scene.add_follower( fatso3 );
+  /* End Scenes */
+
+  
+  /* Create Game and Play */
 
   Game fatty_rolls = Game();
   fatty_rolls.add_scene( sketch_1 );

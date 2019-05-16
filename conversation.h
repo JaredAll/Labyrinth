@@ -39,12 +39,23 @@ class Conversation
    */
   uint get_length();
 
+  /**
+   * set an angry response
+   */
+  void set_angry_response( char* words, SDL_Renderer* renderer );
+
+  /**
+   * get angry response
+   */
+  SDL_Texture* get_angry_response();
+
 
 
 
  private:
 
   vector< SDL_Texture* > dialogue;
+  SDL_Texture* angry_response;
 
 
 
