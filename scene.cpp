@@ -1,17 +1,5 @@
 #include "scene.h"
 
-void Scene::scene_fade( bool left )
-{
-  uint STAGE_CENTER = 100;
-  int distance_from_edge = stage_size - abs(
-    main_character.get_position().at( 0 ) );
-  if( distance_from_edge < STAGE_CENTER )
-  {
-    main_character.update_pos( left, speed );
-  }
-  
-}
-
 void Scene::speak()
 {
 
@@ -181,9 +169,11 @@ void Scene::right()
   SDL_RenderClear( renderer );
 
   uint STAGE_CENTER = 225;
+  int main_char_pos = main_character.get_position().at( 0 );
   int distance_from_edge = stage_size - abs(
-    main_character.get_position().at( 0 ) );
-  if( distance_from_edge < STAGE_CENTER )
+    main_char_pos );
+  if( distance_from_edge < STAGE_CENTER ||
+      main_char_pos < STAGE_CENTER )
   {
     background.draw();
     main_character.update_pos( true, speed );
@@ -209,14 +199,30 @@ void Scene::right()
 void Scene::left()
 {
   SDL_RenderClear( renderer );
-          
-  background.right( speed );
-  background.draw();
-  draw_npcs( true );
+
+  uint STAGE_CENTER = 225;
+  int main_char_pos = main_character.get_position().at( 0 );
+  int distance_from_edge = stage_size - abs(
+    main_char_pos );
+  if( distance_from_edge < STAGE_CENTER ||
+      main_char_pos < STAGE_CENTER )
+  {
+    background.draw();
+    main_character.update_pos( false, speed );
+    main_character.walk_left( speed );
+    draw_npcs();
+    ducklings( true );
+  } 
+  else
+  {
+    background.right( speed );
+    background.draw();
+    draw_npcs( true );
   
-  main_character.walk_left( speed );
-  //scene_fade( false );
-  ducklings( true );
+    main_character.walk_left( speed );
+    //scene_fade( true );
+    ducklings( true );
+  }
   
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
@@ -397,20 +403,20 @@ void Scene::reset()
 void Scene::stage_left()
 {
   background.reset( stage_right_pos );
-  main_character.reset( stage_left_pos );
+  main_character.stage_left();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).reset( stage_left_pos );
+    following_characters.at( i ).stage_left();
   }
 }
 
 void Scene::stage_right()
 {
   background.reset( stage_left_pos );
-  main_character.reset( stage_right_pos );
+  main_character.stage_right();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).reset( stage_right_pos );
+    following_characters.at( i ).stage_right();
   }
 }
 
