@@ -3,7 +3,7 @@
 void Scene::speak()
 {
 
-  uint speak_proximity = 30;
+  uint speak_proximity = 60;
   uint speak_index = 0;
   
   for( uint i = 0; i < following_characters.size(); i++ )
@@ -26,9 +26,10 @@ void Scene::speak()
 
 bool Scene::recruit()
 {
-  uint recruit_proximity = 30;
+  uint recruit_proximity = 60;
   uint recruit_index = 0;
   bool found_recruit = false;
+  bool recruit_success = false;
   
   for( uint i = 0; i < characters.size(); i++ )
   {
@@ -42,10 +43,13 @@ bool Scene::recruit()
       convo( recruit_index,
              scene_dialogue.speak_to( &characters.at(
                                         recruit_index ) ), false );
+      recruit_success = confirm_recruit(
+        &characters.at( recruit_index ) );
+      
     }
   }
 
-  if( found_recruit )
+  if( recruit_success )
   {
     following_characters.push_back( characters.at( recruit_index ) );
     vector< Character > remaining_characters;
@@ -58,8 +62,92 @@ bool Scene::recruit()
     }
     characters = remaining_characters;
   }
-  return found_recruit;
+  return recruit_success;
+}
+
+bool Scene::confirm_recruit( Character* character )
+{
+
+  char prompt_recruitment[ 100 ] =
+    "Recruit? y/n";
   
+  SDL_Color White = {0, 0, 0};
+  SDL_Surface *message_surface =
+    TTF_RenderText_Solid( font, prompt_recruitment, White );
+  SDL_Texture *message =
+    SDL_CreateTextureFromSurface( renderer,
+                                  message_surface );
+
+  SDL_Rect message_rect;
+  message_rect.x = 0;
+  message_rect.y = 400;
+  message_rect.w = 300;
+  message_rect.h = 100;
+
+  SDL_RenderClear( renderer );
+  background.draw();
+          
+  (*character).gasp();
+
+  SDL_RenderCopy( renderer, message, NULL, &message_rect );
+  SDL_RenderPresent( renderer );
+
+  bool recruit = false;
+  bool deciding = true;
+  SDL_Event e;
+
+  while( deciding )
+  {
+    while( SDL_PollEvent( &e ) )
+    {
+      if( e.type == SDL_KEYDOWN )
+      {
+        if( e.key.keysym.sym == SDLK_y )
+        {
+          recruit = true;
+        }
+        else if( e.key.keysym.sym == SDLK_n )
+        {
+          recruit = false;
+        }
+        deciding = false;
+      }
+    }
+  }
+  return recruit; 
+}
+
+void Scene::prompt_speak()
+{
+
+  char prompt_speak[ 100 ] =
+    "down to speak";
+  
+  SDL_Color White = {0, 0, 0};
+  SDL_Surface *message_surface =
+    TTF_RenderText_Solid( font, prompt_speak, White );
+  SDL_Texture *message =
+    SDL_CreateTextureFromSurface( renderer,
+                                  message_surface );
+
+  SDL_Rect message_rect;
+  message_rect.x = 0;
+  message_rect.y = 400;
+  message_rect.w = 300;
+  message_rect.h = 100;
+
+  uint speaker_proximity = 60;
+  
+  for( uint i = 0; i < characters.size(); i++ )
+  {
+    int distance_from_speaker =
+      abs( characters.at( i ).get_screen_position().at( 0 ) -
+           main_character.get_screen_position().at( 0 ) );
+    if( distance_from_speaker < speaker_proximity )
+    {
+        SDL_RenderCopy( renderer, message, NULL, &message_rect );
+    }
+  }
 }
 
 void Scene::convo( uint character_index, Conversation conversation,
@@ -159,7 +247,7 @@ void Scene::center()
   
   main_character.stand();
   ducklings();
-  
+  prompt_speak();
   SDL_RenderPresent( renderer );
 }
 
@@ -188,7 +276,7 @@ void Scene::right()
     main_character.walk_right( speed );
     ducklings( false );
   }
-  
+  prompt_speak();
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
 }
@@ -217,7 +305,7 @@ void Scene::left()
     main_character.walk_left( speed );
     ducklings( true );
   }
-  
+  prompt_speak();
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
 }
@@ -310,6 +398,15 @@ Scene::Scene(SDL_Renderer *param_renderer,
   window_size = 1000;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
+  
+  TTF_Init();
+  font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
+
+  if( font == NULL )
+  {
+    printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+  }
+  
 }
 
 
@@ -367,6 +464,7 @@ int Scene::play()
         if( e.key.keysym.sym == SDLK_DOWN )
         {
           recruit();
+          push = false;
         }
         if( e.key.keysym.sym == SDLK_RIGHT )
         {

@@ -100,9 +100,19 @@ private:
   bool recruit();
 
   /**
+   * ask to confirm recruitment
+   */
+  bool confirm_recruit( Character* character );
+
+  /**
    * speak to npc
    */
   void speak();
+
+  /** 
+   * prompt to speak
+   */
+  void prompt_speak();
 
   /**
    * draw the stationary npcs
@@ -155,6 +165,7 @@ private:
   int stage_right_pos;
   int stage_size;
   int window_size;
+  TTF_Font *font;
 
 };
 
