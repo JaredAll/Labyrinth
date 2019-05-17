@@ -117,6 +117,53 @@ bool Scene::confirm_recruit( Character* character )
   return recruit; 
 }
 
+bool Scene::enter()
+{
+  bool entry = false;
+  uint entry_proximity = 60;
+
+  int distance_from_entry =
+    abs( junction_pos -
+           main_character.get_position().at( 0 ) );
+  
+  if( distance_from_entry < entry_proximity )
+  {
+    entry = true;
+  }
+  return entry;
+}
+
+void Scene::prompt_enter_linked_scene()
+{
+
+  char prompt_enter[ 100 ] =
+    "e to enter";
+  
+  SDL_Color White = {0, 0, 0};
+  SDL_Surface *message_surface =
+    TTF_RenderText_Solid( font, prompt_enter, White );
+  SDL_Texture *message =
+    SDL_CreateTextureFromSurface( renderer,
+                                  message_surface );
+
+  SDL_Rect message_rect;
+  message_rect.x = 0;
+  message_rect.y = 400;
+  message_rect.w = 300;
+  message_rect.h = 100;
+
+  uint entry_proximity = 60;
+
+  int distance_from_entry =
+    abs( junction_pos -
+           main_character.get_position().at( 0 ) );
+  
+  if( distance_from_entry < entry_proximity )
+  {
+    SDL_RenderCopy( renderer, message, NULL, &message_rect );
+  }
+}
+
 void Scene::prompt_speak()
 {
 
@@ -248,6 +295,7 @@ void Scene::center()
   main_character.stand();
   ducklings();
   prompt_speak();
+  prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
 }
 
@@ -277,6 +325,7 @@ void Scene::right()
     ducklings( false );
   }
   prompt_speak();
+  prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
 }
@@ -306,6 +355,7 @@ void Scene::left()
     ducklings( true );
   }
   prompt_speak();
+  prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   SDL_Delay( 200 );
 }
@@ -398,6 +448,8 @@ Scene::Scene(SDL_Renderer *param_renderer,
   window_size = 1000;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
+
+  junction_pos = INT_MAX;
   
   TTF_Init();
   font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
@@ -420,8 +472,9 @@ int Scene::play()
   int status = 0;
   bool in_bounds = true;
   bool play = true;
+  bool linked_scene_entry = false;
   
-  while( in_bounds && play )
+  while( in_bounds && play && !linked_scene_entry )
   {
     if( main_character.get_position().at( 0 ) > stage_right_pos )
     {
@@ -456,6 +509,12 @@ int Scene::play()
     {
       if( push )
       {
+        if( e.key.keysym.sym == SDLK_RSHIFT )
+        {
+          cout << "e" << endl;
+          linked_scene_entry = enter();
+          push = false;
+        }
         if( e.key.keysym.sym == SDLK_UP )
         {
           speak();
@@ -471,7 +530,7 @@ int Scene::play()
           right();
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
-        {        
+        {
           left();
         }
       }
@@ -479,6 +538,11 @@ int Scene::play()
       {
         center();
       }
+    }
+
+    if( linked_scene_entry )
+    {
+      status = 3;
     }
   }
   return status;
@@ -528,6 +592,11 @@ void Scene::stage_right()
       window_size - 2 * main_char_width,
       stage_size - main_char_width );
   }
+}
+
+void Scene::set_junction( int position )
+{
+  junction_pos = position;
 }
 
 void Scene::add_follower( Character character )

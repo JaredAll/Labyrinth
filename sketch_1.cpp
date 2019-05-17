@@ -221,8 +221,6 @@ int main( int argc, char* argv[] )
 
   uint speed = 20;
 
-  SceneJunction junction = SceneJunction( 20 );
-
   vector< Character > characters;
   characters.push_back( lunius );
   characters.push_back( doug );
@@ -269,9 +267,11 @@ int main( int argc, char* argv[] )
 
   Game fatty_rolls = Game();
   fatty_rolls.add_scene( sketch_1 );
-    fatty_rolls.add_scene( bush_inn );
+  fatty_rolls.add_scene( bush_inn );
   fatty_rolls.add_scene( tree_scene );
   fatty_rolls.add_scene( bush_inn );
+
+  fatty_rolls.join_scenes( 0, 1, 300 );
 
   fatty_rolls.play();
 

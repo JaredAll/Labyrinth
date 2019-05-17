@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "scene.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ public:
    * Constructor
    * @param position the position of the junction
    */
-  SceneJunction( int position );
+  SceneJunction( Scene* scene1, Scene* scene2, int position );
 
   /**
    * default constructor
@@ -29,7 +30,7 @@ public:
   /**
    * set the junction position
    */
-  void set_position( int position );
+  void link_scenes( Scene* scene1, Scene* scene2, int position );
 
   /**
    * get junction position
@@ -39,6 +40,8 @@ public:
 private:
   
   int junction_pos;
+  Scene* scene1;
+  Scene* scene2;
 
 
 };

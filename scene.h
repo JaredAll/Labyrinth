@@ -8,11 +8,11 @@
 #include "cleanup.h"
 #include <iostream>
 #include <vector>
+#include <climits>
 #include "background.h"
 #include "character.h"
 #include "conversation.h"
 #include "script.h"
-#include "sceneJunction.h"
 
 using namespace std;
 
@@ -70,6 +70,19 @@ public:
 	 uint speed,
          uint stage_size );
 
+  /**
+   * set scene junction
+   * @param scene1 the first scene
+   * @param scene2 the second scene
+   * @param pos the junction position
+   */
+  void set_junction( int position );
+
+  /**
+   * determine entry to linked scene
+   */
+  bool enter();
+
 private:
 
   /**
@@ -114,6 +127,11 @@ private:
    * prompt to speak
    */
   void prompt_speak();
+
+  /**
+   * prompt to enter linked scene
+   */
+  void prompt_enter_linked_scene();
 
   /**
    * draw the stationary npcs
@@ -167,10 +185,10 @@ private:
   int stage_right_pos;
   int stage_size;
   int window_size;
+
+  int junction_pos;
   
   TTF_Font *font;
-
-  //SceneJunction junction;
 
 };
 
