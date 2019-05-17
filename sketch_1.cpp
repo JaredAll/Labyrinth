@@ -223,13 +223,17 @@ int main( int argc, char* argv[] )
   scene2_script.insert_conversation( &doug, doug_s2_c1 );
   scene2_script.insert_conversation( &lunius, lunius_s2 );
 
+  uint scene_1_size = 1000;
+  uint scene_2_size = 2000;
+
   Scene sketch_1 =
     Scene( ren, background, characters, dirk,
-	   sketch_script, speed );
+	   sketch_script, speed, scene_1_size );
 
   characters.clear();
   Scene tree_scene =
-    Scene( ren, trees, characters, dirk, scene2_script, speed );
+    Scene( ren, trees, characters, dirk, scene2_script, speed,
+      scene_2_size );
 
   /* End Scenes */
 

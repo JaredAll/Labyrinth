@@ -168,7 +168,7 @@ void Scene::right()
    
   SDL_RenderClear( renderer );
 
-  int stage_center_width = 300;
+  int stage_center_width = stage_size - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
   if( main_char_pos < ( -1 * stage_center_width ) ||
       main_char_pos > stage_center_width )
@@ -197,7 +197,7 @@ void Scene::left()
 {
   SDL_RenderClear( renderer );
 
-  int stage_center_width = 275;
+  int stage_center_width = stage_size - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
   if( main_char_pos < ( -1 * stage_center_width ) ||
       main_char_pos > stage_center_width )
@@ -299,13 +299,15 @@ Scene::Scene(SDL_Renderer *param_renderer,
              vector< Character > param_characters,
              Character param_main_character,
 	     Script param_scene_dialogue,
-	     uint param_speed )
+	     uint param_speed,
+             uint param_stage_size )
 : background( param_background ),
   characters( param_characters ),
   main_character( param_main_character ), speed( param_speed ),
-  renderer( param_renderer), scene_dialogue( param_scene_dialogue )
+  renderer( param_renderer), scene_dialogue( param_scene_dialogue ),
+  stage_size( param_stage_size )
 {
-  stage_size = 800;
+  window_size = 1000;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
 }
@@ -396,25 +398,37 @@ void Scene::reset()
 
 void Scene::stage_left()
 {
-  int stage_width = 280;
-  int stage_size = 800;
+  int main_char_width = 20;
+  
+  int stage_width =
+    stage_size - ( window_size / 2 ) - main_char_width;
   background.reset( stage_width );
-  main_character.stage_left();
+  
+  main_character.set_stage_pos(
+    main_char_width, (-1 * stage_size + main_char_width ) );
+  
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).stage_left();
+    following_characters.at( i ).set_stage_pos(
+    main_char_width, (-1 * stage_size + main_char_width ) );
   }
 }
 
 void Scene::stage_right()
 {
-  int stage_width = 340;
-  int stage_size = 800;
+  int main_char_width = 20;
+  int stage_width =
+    stage_size - ( window_size / 2 ) + 2 * main_char_width;
   background.reset( stage_width * -1 );
-  main_character.stage_right();
+  
+  main_character.set_stage_pos( window_size - 2 * main_char_width,
+                                stage_size - main_char_width );
+  
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).stage_right();
+    following_characters.at( i ).set_stage_pos(
+      window_size - 2 * main_char_width,
+      stage_size - main_char_width );
   }
 }
 
