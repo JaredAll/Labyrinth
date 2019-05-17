@@ -66,7 +66,8 @@ public:
          vector< Character > characters,
          Character main_character,
 	 Script scene_dialogue,
-	 uint speed );
+	 uint speed,
+         uint stage_size);
 
 private:
 
@@ -153,6 +154,7 @@ private:
   int stage_left_pos;
   int stage_right_pos;
   int stage_size;
+  int window_size;
 
 };
 

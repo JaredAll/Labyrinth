@@ -192,6 +192,13 @@ bool Character::equals( Character character )
   return ( name == character.get_name() );
 }
 
+void Character::set_stage_pos( int screen_pos, int pos )
+{
+  x_pos = pos;
+  full_body.set_position( screen_pos );
+}
+
+/*
 void Character::stage_left()
 {
   int stage_left_screen = 20;
@@ -207,4 +214,5 @@ void Character::stage_right()
   x_pos = stage_right;
   full_body.set_position( stage_right_screen );
 }
+*/
   
