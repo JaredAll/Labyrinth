@@ -64,8 +64,6 @@ void Character::walk_right( uint speed )
   set_position( x_pos + speed,
                 y_pos );
   facing_left = false;
-
-  cout << x_pos << endl;
 }
 
 void Character::walk_left( uint speed )
@@ -77,8 +75,6 @@ void Character::walk_left( uint speed )
   set_position( x_pos - speed,
                 y_pos );
   facing_left = true;
-
-  cout << x_pos << endl;
 }
 
 void Character::stand()
@@ -197,22 +193,4 @@ void Character::set_stage_pos( int screen_pos, int pos )
   x_pos = pos;
   full_body.set_position( screen_pos );
 }
-
-/*
-void Character::stage_left()
-{
-  int stage_left_screen = 20;
-  int stage_left = -780;
-  x_pos = stage_left;
-  full_body.set_position( stage_left_screen );
-}
-
-void Character::stage_right()
-{
-  int stage_right_screen = 960;
-  int stage_right = 780;
-  x_pos = stage_right;
-  full_body.set_position( stage_right_screen );
-}
-*/
   
