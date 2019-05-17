@@ -1,0 +1,27 @@
+#ifndef SCENEJUNCTION_H
+#define SCENEJUNCTION_H
+
+using namespace std;
+
+/**
+ * A scene junction class
+ * @author Jared Allen
+ * @version 17 May 2019
+ */
+class SceneJunction
+{
+public:
+
+  /**
+   * get junction position
+   */
+  int get_position()
+  {
+    return junction_pos;
+  }
+
+private:
+  int junction_pos;
+
+
+};

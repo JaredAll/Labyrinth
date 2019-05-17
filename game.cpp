@@ -13,6 +13,11 @@ void Game::add_scene( Scene scene )
   scenes.push_back( scene );
 }
 
+void Game::join_scenes( Scene scene1, Scene scene2 )
+{
+  scene_junctions.insert( { &scene1, &scene2 } );
+}
+
 void Game::play()
 {
   SDL_Event e;

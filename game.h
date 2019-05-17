@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include "scene.h"
+#include <map>
 
 using namespace std;
 
@@ -35,10 +36,18 @@ public:
    */
   void add_scene( Scene scene );
 
+  /**
+   * join two scenes
+   * @param scene1 the first scene
+   * @param scene2 the second scene
+   */
+  void join_scenes( Scene scene1, Scene scene2 );
+
 
 private:
 
   vector< Scene > scenes;
+  map< Scene*, Scene* > scene_junctions;
   uint current_scene;
 
 };

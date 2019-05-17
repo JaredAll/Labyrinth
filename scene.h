@@ -12,6 +12,7 @@
 #include "character.h"
 #include "conversation.h"
 #include "script.h"
+#include "sceneJunction.h"
 
 using namespace std;
 
@@ -153,6 +154,12 @@ private:
    * @param left the direction
    */
   void scene_fade( bool left );
+
+  /**
+   * insert new scene junction
+   * @param junction the scene junction
+   */
+  void insert_junction( SceneJunction junction );
   
   SDL_Renderer *renderer;
   Background background;
@@ -161,11 +168,15 @@ private:
   Script scene_dialogue;
   Character main_character;
   uint speed;
+  
   int stage_left_pos;
   int stage_right_pos;
   int stage_size;
   int window_size;
+  
   TTF_Font *font;
+
+  vector< SceneJunction > junctions;
 
 };
 
