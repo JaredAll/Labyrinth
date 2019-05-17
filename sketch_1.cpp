@@ -90,9 +90,15 @@ int main( int argc, char* argv[] )
 
   Conversation lunius_convo =
     Conversation( "lunius_conversation.txt", ren );
+
+  Conversation lunius_s1_c2 =
+    Conversation( "lunius_s1_c2.txt", ren );
+  
   char lunius_angry_response[ 100 ] = "I hate humans.";
   lunius_convo.set_angry_response( lunius_angry_response, ren );
 
+  lunius_s1_c2.set_angry_response( lunius_angry_response, ren);
+  
   Conversation doug_convo =
     Conversation( "doug_conversation.txt", ren );
   Conversation doug_c2 =
@@ -216,6 +222,7 @@ int main( int argc, char* argv[] )
 
   Script sketch_script = Script( character_ps );
   sketch_script.insert_conversation( &lunius, lunius_convo );
+  sketch_script.insert_conversation( &lunius, lunius_s1_c2 );
   sketch_script.insert_conversation( &doug, doug_convo );
   sketch_script.insert_conversation( &doug, doug_c2 );
 
