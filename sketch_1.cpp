@@ -221,6 +221,8 @@ int main( int argc, char* argv[] )
 
   uint speed = 20;
 
+  SceneJunction junction = SceneJunction( 20 );
+
   vector< Character > characters;
   characters.push_back( lunius );
   characters.push_back( doug );

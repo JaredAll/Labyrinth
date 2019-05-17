@@ -37,6 +37,7 @@ public:
   int get_position();
 
 private:
+  
   int junction_pos;
 
 

@@ -68,7 +68,7 @@ public:
          Character main_character,
 	 Script scene_dialogue,
 	 uint speed,
-         uint stage_size);
+         uint stage_size );
 
 private:
 
@@ -154,12 +154,6 @@ private:
    * @param left the direction
    */
   void scene_fade( bool left );
-
-  /**
-   * insert new scene junction
-   * @param junction the scene junction
-   */
-  void insert_junction( SceneJunction junction );
   
   SDL_Renderer *renderer;
   Background background;
@@ -176,7 +170,7 @@ private:
   
   TTF_Font *font;
 
-  vector< SceneJunction > junctions;
+  //SceneJunction junction;
 
 };
 

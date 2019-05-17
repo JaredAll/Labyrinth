@@ -534,8 +534,3 @@ void Scene::add_follower( Character character )
 {
   following_characters.push_back( character );
 }
-
-void Scene::insert_junction( SceneJunction junction )
-{
-  junctions.push_back( junction );
-}
