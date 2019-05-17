@@ -159,8 +159,13 @@ int main( int argc, char* argv[] )
                                       330, 225, 1 );
   SpriteLayer b_bush_2 = SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 2 );
+    SpriteLayer b_bush_3 = SpriteLayer( "sprites/berrybush.png", ren,
+                                      530, 225, 1 );
 
   Background trees = Background();
+  Background berry_inn = Background();
+
+  berry_inn.add_layer( backdrop_sprite );
   trees.add_layer( backdrop_sprite );
 
   background.add_layer( backdrop_sprite );
@@ -176,6 +181,8 @@ int main( int argc, char* argv[] )
                                            ground_x, 160, 2 );
     trees.add_layer( ground_2 );
     trees.add_layer( ground_2_c );
+    berry_inn.add_layer( ground_2 );
+    berry_inn.add_layer( ground_2_c );
   }
 
   int num_grounds = 2;
@@ -189,6 +196,7 @@ int main( int argc, char* argv[] )
                                     ground_x, ground_y, 2 );
     background.add_layer( ground );
     trees.add_layer( ground );
+    berry_inn.add_layer( ground );
   }
 
   
@@ -200,6 +208,10 @@ int main( int argc, char* argv[] )
   background.add_layer( next_sign );
   background.add_layer( l_sign );
   background.add_layer( b_bush_1 );
+
+  berry_inn.add_layer( l_tree_1 );
+  berry_inn.add_layer( b_bush_3 );
+  berry_inn.add_layer( b_bush_1 );
 
   /* End Backgrounds */
 
@@ -231,16 +243,22 @@ int main( int argc, char* argv[] )
   scene2_script.insert_conversation( &lunius, lunius_s2 );
 
   uint scene_1_size = 1000;
-  uint scene_2_size = 2000;
+  uint scene_2_size = 1500;
+  uint scene_3_size = 500;
 
   Scene sketch_1 =
     Scene( ren, background, characters, dirk,
 	   sketch_script, speed, scene_1_size );
 
   characters.clear();
+  
   Scene tree_scene =
     Scene( ren, trees, characters, dirk, scene2_script, speed,
       scene_2_size );
+
+  Scene bush_inn =
+    Scene( ren, berry_inn, characters, dirk, scene2_script, speed,
+      scene_3_size );
 
   /* End Scenes */
 
@@ -249,7 +267,9 @@ int main( int argc, char* argv[] )
 
   Game fatty_rolls = Game();
   fatty_rolls.add_scene( sketch_1 );
+    fatty_rolls.add_scene( bush_inn );
   fatty_rolls.add_scene( tree_scene );
+  fatty_rolls.add_scene( bush_inn );
 
   fatty_rolls.play();
 
