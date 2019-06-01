@@ -72,8 +72,6 @@ public:
 
   /**
    * set scene junction
-   * @param scene1 the first scene
-   * @param scene2 the second scene
    * @param pos the junction position
    */
   void set_junction( int position );

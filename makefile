@@ -4,6 +4,7 @@ SDL_INCLUDE = -I/usr/include/SDL2
 CXX_FLAGS = -Werror -pedantic-errors -O0 -Wno-c++98-compat-pedantic -Wno-padded -std=c++11 $(SDL_INCLUDE)
 LINKER_FLAGS = $(SDL_LIB)
 
+
 all: sketch_1 sketch_2
 
 sketch_1.o: sketch_1.cpp
@@ -50,3 +51,5 @@ sketch_1: sketch_1.o sprite.o sprite_layer.o background.o character.o conversati
 
 clean:
 	rm *.o && rm sketch_1 && rm sketch_2
+build_linux:
+	cp *.o builds/linux/ && cp sketch_1 builds/linux/ && cp sketch_2 builds/linux/

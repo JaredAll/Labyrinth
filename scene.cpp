@@ -475,7 +475,7 @@ int Scene::play()
   bool linked_scene_entry = false;
   
   while( in_bounds && play && !linked_scene_entry )
-  {
+  {    
     if( main_character.get_position().at( 0 ) > stage_right_pos )
     {
       in_bounds = false;
@@ -539,7 +539,6 @@ int Scene::play()
         center();
       }
     }
-
     if( linked_scene_entry )
     {
       status = 3;

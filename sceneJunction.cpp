@@ -1,29 +1,38 @@
 #include "sceneJunction.h"
 
-SceneJunction::SceneJunction( Scene* scene1, Scene* scene2,
-                              int position )
+SceneJunction::SceneJunction( uint scene1_index_param,
+                              uint scene2_index_param )
 {
-  this -> scene1 = scene1;
-  this -> scene2 = scene2;
-  junction_pos = position;
+  scene1_index = scene1_index_param;
+  scene2_index = scene2_index_param;
 }
 
 SceneJunction::SceneJunction()
 {
-  junction_pos = 0;
-  scene1 = nullptr;
-  scene2 = nullptr;
+  scene1_index = 0;
+  scene2_index = 0;
 }
 
-int SceneJunction::get_position()
+void SceneJunction::link_scenes( uint scene1_pos,
+                                 uint scene2_pos )
 {
-  return junction_pos;
+  scene1_index = scene1_pos;
+  scene2_index = scene2_pos;
 }
 
-void SceneJunction::link_scenes( Scene* scene1,
-                                 Scene* scene2, int position )
+uint SceneJunction::get_next_scene( bool main_scene )
 {
-  this -> scene1 = scene1;
-  this -> scene2 = scene2;
-  junction_pos = position;
+  if( main_scene )
+  {
+    return scene2_index;
+  }
+  else
+  {
+    return scene1_index;
+  }
+}
+
+bool SceneJunction::contains( uint scene_pos )
+{
+  return ( scene_pos == scene1_index || scene_pos == scene2_index );
 }

@@ -67,6 +67,9 @@ int main( int argc, char* argv[] )
 
   uint dirk_x = 500;
   uint dirk_y = 330;
+
+  uint al_x = 700;
+  uint al_y = 330;
   
   Sprite doug_s =
     Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
@@ -76,6 +79,8 @@ int main( int argc, char* argv[] )
 
   Sprite Dirk_sprite = Sprite( "sprites/dirkwalk.png", ren, dirk_x,
                                dirk_y );
+
+  Sprite Al_sprite = Sprite( "sprites/walkingAL.png", ren, al_x, al_y );
   
   Sprite knut_faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
   Sprite doug_faces = Sprite( "sprites/dougFsheet.png", ren, 400,
@@ -133,6 +138,8 @@ int main( int argc, char* argv[] )
   Character lunius = Character( "lunius",
                                 Lun_Knut, knut_faces, 0, 0, 0,
 				4, 2 );
+
+  Character al = Character( "al", Al_sprite, knut_faces, 0, 0, 0, 4, 2 );
   
   dirk.set_screen_position( 500, 330 );
 
@@ -151,9 +158,9 @@ int main( int argc, char* argv[] )
                                   330, 130, 2 );
   SpriteLayer third_layer = SpriteLayer( "sprites/fattysign.png", ren,
                                          330, 130, 4 );
-  SpriteLayer l_tree_1 = SpriteLayer( "sprites/inn-01.png", ren,
+  SpriteLayer l_tree_1 = SpriteLayer( "sprites/town1.png", ren,
                                       400, 150, 2 );
-  SpriteLayer l_tree_2 = SpriteLayer( "sprites/inn-01.png", ren,
+  SpriteLayer l_tree_2 = SpriteLayer( "sprites/town1.png", ren,
                                       330, 75, 1 );
   SpriteLayer b_bush_1 = SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 1 );
@@ -224,10 +231,12 @@ int main( int argc, char* argv[] )
   vector< Character > characters;
   characters.push_back( lunius );
   characters.push_back( doug );
+  characters.push_back( al );
 
   vector< Character* > character_ps;
   character_ps.push_back( &lunius );
   character_ps.push_back( &doug );
+  character_ps.push_back( &al );
 
   vector< Conversation > sketch_1_convos;
   sketch_1_convos.push_back( lunius_convo );
@@ -237,6 +246,7 @@ int main( int argc, char* argv[] )
   sketch_script.insert_conversation( &lunius, lunius_s1_c2 );
   sketch_script.insert_conversation( &doug, doug_convo );
   sketch_script.insert_conversation( &doug, doug_c2 );
+  sketch_script.insert_conversation( &al, lunius_convo );
 
   Script scene2_script = Script( character_ps );
   scene2_script.insert_conversation( &doug, doug_s2_c1 );
@@ -267,11 +277,11 @@ int main( int argc, char* argv[] )
 
   Game fatty_rolls = Game();
   fatty_rolls.add_scene( sketch_1 );
-  fatty_rolls.add_scene( bush_inn );
+  fatty_rolls.add_joined_scene( bush_inn );
   fatty_rolls.add_scene( tree_scene );
-  fatty_rolls.add_scene( bush_inn );
+  //fatty_rolls.add_scene( bush_inn );
 
-  fatty_rolls.join_scenes( 0, 1, 300 );
+  fatty_rolls.join_scenes( 0, 0, 300, 0 );
 
   fatty_rolls.play();
 

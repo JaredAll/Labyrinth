@@ -20,7 +20,7 @@ public:
    * Constructor
    * @param position the position of the junction
    */
-  SceneJunction( Scene* scene1, Scene* scene2, int position );
+  SceneJunction( uint scene1_index, uint scene2_index );
 
   /**
    * default constructor
@@ -30,18 +30,25 @@ public:
   /**
    * set the junction position
    */
-  void link_scenes( Scene* scene1, Scene* scene2, int position );
+  void link_scenes( uint scene1_index,
+                    uint scene2_index );
 
   /**
-   * get junction position
+   * get next scene
+   * @param main_scene whether the scene is on the main track
+   * or not
    */
-  int get_position();
+  uint get_next_scene( bool main_scene );
 
-private:
+  /**
+   * determine whether sceneJunction contains a scene
+   */
+  bool contains( uint scene_pos );
   
-  int junction_pos;
-  Scene* scene1;
-  Scene* scene2;
+private:
+
+  uint scene1_index;
+  uint scene2_index;
 
 
 };

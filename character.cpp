@@ -60,6 +60,7 @@ void Character::walk_right( uint speed )
   stride = ( stride + 1 ) % walking_clips.size();
   full_body.set_source( &walking_clips.at( stride ) );
   full_body.draw();
+
   
   set_position( x_pos + speed,
                 y_pos );
@@ -71,6 +72,7 @@ void Character::walk_left( uint speed )
   stride = ( stride + 1 ) % walking_clips.size();
   full_body.set_source( &walking_clips.at( stride ) );
   full_body.flip_draw();
+
   
   set_position( x_pos - speed,
                 y_pos );
