@@ -252,7 +252,7 @@ void Scene::convo( uint character_index, Conversation conversation,
             talking = false;
           }
 
-          if( conversation_position < convo_length )
+          if( conversation_position < convo length )
           {
             message =
               conversation.get_dialogue(
@@ -460,7 +460,6 @@ Scene::Scene(SDL_Renderer *param_renderer,
   }
   
 }
-
 
 
 
