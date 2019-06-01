@@ -1,5 +1,5 @@
 #include "text_box.h"
-#include <SDL_ttf.h>
+
 
 Text_box::Text_box( uint param_x, uint param_y, uint param_h,
                     uint param_w )
