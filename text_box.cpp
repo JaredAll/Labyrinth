@@ -1,6 +1,4 @@
 #include "text_box.h"
-#include <SDL_ttf.h>
-#include <unistd.h>
 
 Text_box::Text_box( uint param_x, uint param_y, uint param_h,
                     uint param_w )
@@ -14,12 +12,14 @@ Text_box::Text_box( uint param_x, uint param_y, uint param_h,
 }
 
 void Text_box::display( string message, SDL_Renderer *renderer,
-  TTF_Font *font )
+                        TTF_Font *font, uint letters )
 {
-  message_rect.w = 25 * message.length();
+  string to_be_rendered = message.substr( 0, letters );
+
+  message_rect.w = to_be_rendered.length() * 25;
   
   char message_array[ 100 ];
-  strcpy( message_array, message.c_str() );
+  strcpy( message_array, to_be_rendered.c_str() );
     
   SDL_Color color = {0, 0, 0};
   SDL_Surface *message_surface =

@@ -75,7 +75,8 @@ bool Scene::confirm_recruit( Character* character )
           
   (*character).gasp();
   
-  prompt_display.display( prompt_recruitment, renderer, font );
+  prompt_display.display( prompt_recruitment, renderer, font,
+                          prompt_recruitment.length() );
   SDL_RenderPresent( renderer );
 
   bool recruit = false;
@@ -132,7 +133,8 @@ void Scene::prompt_enter_linked_scene()
   
   if( distance_from_entry < entry_proximity )
   {
-    prompt_display.display( prompt_enter, renderer, font );
+    prompt_display.display( prompt_enter, renderer, font,
+                            prompt_enter.length() );
   }
 }
 
@@ -150,7 +152,8 @@ void Scene::prompt_speak()
            main_character.get_screen_position().at( 0 ) );
     if( distance_from_speaker < speaker_proximity )
     {
-      prompt_display.display( prompt_speak, renderer, font );
+      prompt_display.display( prompt_speak, renderer, font,
+                              prompt_speak.length() );
     }
   }
 }
@@ -175,16 +178,24 @@ void Scene::convo( uint character_index, Conversation conversation,
   (*speaker).happy();
   uint convo_length = conversation.get_length();
 
-  
   string message = conversation.get_dialogue( 0 );
 
-  dialogue_display.display( message, renderer, font );
-
-  SDL_RenderPresent( renderer );
-
   
+  for( uint letters = 0; letters <= message.length();
+       letters++ )
+  {
+    uint milliseconds = 300;
+    SDL_RenderClear( renderer );
+    background.draw();
+    (*speaker).happy();
+    dialogue_display.display( message, renderer, font, letters );
+    SDL_RenderPresent( renderer );
+    usleep( milliseconds * milliseconds );
+  }
+
+    
   bool talking = true;
-  uint conversation_position = -1;
+  uint conversation_position = 0;
   SDL_Event e;
   while( talking )
   {
@@ -212,11 +223,25 @@ void Scene::convo( uint character_index, Conversation conversation,
             message =
               conversation.get_dialogue(
                 conversation_position );
+
+            for( uint letters = 0; letters <= message.length();
+                 letters++ )
+            {
+              uint milliseconds = 300;
+              SDL_RenderClear( renderer );
+              background.draw();
+              (*speaker).happy();
+              dialogue_display.display( message, renderer, font, letters );
+              SDL_RenderPresent( renderer );
+              usleep( milliseconds * milliseconds );
+            }
+
           }
 
-          dialogue_display.display( message, renderer, font );
+          // dialogue_display.display( message, renderer, font,
+          //                           message.length() );
           
-          SDL_RenderPresent( renderer );
+          // SDL_RenderPresent( renderer );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {
@@ -228,7 +253,8 @@ void Scene::convo( uint character_index, Conversation conversation,
 
           message = conversation.get_angry_response();
 
-          dialogue_display.display( message, renderer, font );
+          dialogue_display.display( message, renderer, font,
+                                    message.length() );
           
           SDL_RenderPresent( renderer );
         }
