@@ -31,7 +31,7 @@ public:
    * @param message the message to be displayed 
    */
   void display( string message, SDL_Renderer *renderer,
-    TTF_Font *font );
+                TTF_Font *font, uint letters );
   
 private:
 

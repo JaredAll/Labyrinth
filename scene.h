@@ -14,6 +14,7 @@
 #include "conversation.h"
 #include "script.h"
 #include "text_box.h"
+#include <unistd.h>
 
 using namespace std;
 
