@@ -175,7 +175,8 @@ private:
    * @param speaker the speaker
    */
   void scroll_dialogue( string message, SDL_Renderer *renderer,
-                        TTF_Font *font, Character *speaker );
+                        TTF_Font *font, Character *speaker,
+                        bool happy );
 
   /**
    * fade into and out of scenes

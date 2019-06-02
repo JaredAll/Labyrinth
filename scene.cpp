@@ -175,12 +175,11 @@ void Scene::convo( uint character_index, Conversation conversation,
     speaker = &characters.at( character_index );
   }
     
-  (*speaker).happy();
+  bool is_happy = true;
   uint convo_length = conversation.get_length();
-
   string message = conversation.get_dialogue( 0 );
 
-  scroll_dialogue( message, renderer, font, speaker );
+  scroll_dialogue( message, renderer, font, speaker, is_happy );
     
   bool talking = true;
   uint conversation_position = 0;
@@ -197,8 +196,8 @@ void Scene::convo( uint character_index, Conversation conversation,
           SDL_RenderClear( renderer );
           background.draw();
           
-          (*speaker).happy();
-
+          is_happy = true;
+          
           conversation_position++;
 
           if( conversation_position == convo_length )
@@ -212,7 +211,8 @@ void Scene::convo( uint character_index, Conversation conversation,
               conversation.get_dialogue(
                 conversation_position );
 
-            scroll_dialogue( message, renderer, font, speaker );
+            scroll_dialogue( message, renderer, font,
+                             speaker, is_happy );
 
           }
         }
@@ -222,11 +222,12 @@ void Scene::convo( uint character_index, Conversation conversation,
           SDL_RenderClear( renderer );
           background.draw();
           
-          (*speaker).happy();
+          is_happy = false;
 
           message = conversation.get_angry_response();
 
-          scroll_dialogue( message, renderer, font, speaker );
+          scroll_dialogue( message, renderer, font, speaker,
+                           is_happy );
 
           
           SDL_RenderPresent( renderer );
@@ -563,7 +564,8 @@ void Scene::add_follower( Character character )
 }
 
 void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
-                        TTF_Font *font, Character *speaker )
+                             TTF_Font *font, Character *speaker,
+                             bool happy )
 {
   for( uint letters = 0; letters <= message.length();
        letters++ )
@@ -571,7 +573,7 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
     uint milliseconds = 250;
     SDL_RenderClear( renderer );
     background.draw();
-    (*speaker).gasp();
+    happy ? (*speaker).gasp() : (*speaker).happy();
     dialogue_display.display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
     usleep( milliseconds * milliseconds );
