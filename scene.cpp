@@ -68,28 +68,14 @@ bool Scene::recruit()
 bool Scene::confirm_recruit( Character* character )
 {
 
-  char prompt_recruitment[ 100 ] =
-    "Recruit? y/n";
+  string prompt_recruitment = "Recruit? y/n";
   
-  SDL_Color White = {0, 0, 0};
-  SDL_Surface *message_surface =
-    TTF_RenderText_Solid( font, prompt_recruitment, White );
-  SDL_Texture *message =
-    SDL_CreateTextureFromSurface( renderer,
-                                  message_surface );
-
-  SDL_Rect message_rect;
-  message_rect.x = 0;
-  message_rect.y = 400;
-  message_rect.w = 300;
-  message_rect.h = 100;
-
   SDL_RenderClear( renderer );
   background.draw();
           
   (*character).gasp();
-
-  SDL_RenderCopy( renderer, message, NULL, &message_rect );
+  
+  prompt_display.display( prompt_recruitment, renderer, font );
   SDL_RenderPresent( renderer );
 
   bool recruit = false;
@@ -136,21 +122,7 @@ bool Scene::enter()
 void Scene::prompt_enter_linked_scene()
 {
 
-  char prompt_enter[ 100 ] =
-    "e to enter";
-  
-  SDL_Color White = {0, 0, 0};
-  SDL_Surface *message_surface =
-    TTF_RenderText_Solid( font, prompt_enter, White );
-  SDL_Texture *message =
-    SDL_CreateTextureFromSurface( renderer,
-                                  message_surface );
-
-  SDL_Rect message_rect;
-  message_rect.x = 0;
-  message_rect.y = 400;
-  message_rect.w = 300;
-  message_rect.h = 100;
+  string prompt_enter = "right shift to enter";
 
   uint entry_proximity = 60;
 
@@ -160,29 +132,15 @@ void Scene::prompt_enter_linked_scene()
   
   if( distance_from_entry < entry_proximity )
   {
-    SDL_RenderCopy( renderer, message, NULL, &message_rect );
+    prompt_display.display( prompt_enter, renderer, font );
   }
 }
 
 void Scene::prompt_speak()
 {
 
-  char prompt_speak[ 100 ] =
-    "down to speak";
+  string prompt_speak = "down to speak";
   
-  SDL_Color White = {0, 0, 0};
-  SDL_Surface *message_surface =
-    TTF_RenderText_Solid( font, prompt_speak, White );
-  SDL_Texture *message =
-    SDL_CreateTextureFromSurface( renderer,
-                                  message_surface );
-
-  SDL_Rect message_rect;
-  message_rect.x = 0;
-  message_rect.y = 400;
-  message_rect.w = 300;
-  message_rect.h = 100;
-
   uint speaker_proximity = 60;
   
   for( uint i = 0; i < characters.size(); i++ )
@@ -192,7 +150,7 @@ void Scene::prompt_speak()
            main_character.get_screen_position().at( 0 ) );
     if( distance_from_speaker < speaker_proximity )
     {
-        SDL_RenderCopy( renderer, message, NULL, &message_rect );
+      prompt_display.display( prompt_speak, renderer, font );
     }
   }
 }
@@ -218,12 +176,9 @@ void Scene::convo( uint character_index, Conversation conversation,
   uint convo_length = conversation.get_length();
 
   
-  SDL_Texture* message = conversation.get_dialogue( 0 );
-  SDL_Rect message_rect;
-  message_rect.x = 0;
-  message_rect.y = 0;
-  message_rect.w = 400;
-  message_rect.h = 100;
+  string message = conversation.get_dialogue( 0 );
+
+  dialogue_display.display( message, renderer, font );
 
   SDL_RenderPresent( renderer );
 
@@ -252,15 +207,15 @@ void Scene::convo( uint character_index, Conversation conversation,
             talking = false;
           }
 
-          if( conversation_position < convo length )
+          if( conversation_position < convo_length )
           {
             message =
               conversation.get_dialogue(
                 conversation_position );
           }
 
-          SDL_RenderCopy( renderer, message, NULL, &message_rect );
-    
+          dialogue_display.display( message, renderer, font );
+          
           SDL_RenderPresent( renderer );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
@@ -273,8 +228,8 @@ void Scene::convo( uint character_index, Conversation conversation,
 
           message = conversation.get_angry_response();
 
-          SDL_RenderCopy( renderer, message, NULL, &message_rect );
-    
+          dialogue_display.display( message, renderer, font );
+          
           SDL_RenderPresent( renderer );
         }
         else if( e.key.keysym.sym == SDLK_DOWN || e.key.keysym.sym == SDLK_UP )
@@ -439,12 +394,18 @@ Scene::Scene(SDL_Renderer *param_renderer,
 	     Script param_scene_dialogue,
 	     uint param_speed,
              uint param_stage_size )
-: background( param_background ),
+  :
+  background( param_background ),
   characters( param_characters ),
-  main_character( param_main_character ), speed( param_speed ),
-  renderer( param_renderer), scene_dialogue( param_scene_dialogue ),
-  stage_size( param_stage_size )
+  main_character( param_main_character ),
+  speed( param_speed ),
+  renderer( param_renderer),
+  scene_dialogue( param_scene_dialogue ),
+  stage_size( param_stage_size ),
+  dialogue_display( 0, 0, 100, 400 ),
+  prompt_display( 0, 400, 100, 300 )
 {
+  
   window_size = 1000;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;

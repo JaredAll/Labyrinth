@@ -13,6 +13,7 @@
 #include "character.h"
 #include "conversation.h"
 #include "script.h"
+#include "text_box.h"
 
 using namespace std;
 
@@ -187,6 +188,8 @@ private:
   int junction_pos;
   
   TTF_Font *font;
+  Text_box dialogue_display;
+  Text_box prompt_display;
 
 };
 

@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <string>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ public:
    * display message on text box
    * @param message the message to be displayed 
    */
-  void display( char *message, SDL_Renderer *renderer,
+  void display( string message, SDL_Renderer *renderer,
     TTF_Font *font );
   
 private:
