@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -23,8 +24,7 @@ public:
    * @param param_h the height
    * @param param_w the width 
    */
-  Text_box( uint param_x, uint param_y, uint param_h,
-            uint param_w );
+  Text_box( uint param_x, uint param_y, uint param_h );
 
   /**
    * display message on text box
@@ -37,9 +37,8 @@ private:
 
   uint x_pos;
   uint y_pos;
-  uint box_width;
-  uint box_height;
-  SDL_Rect message_rect;
+  uint height;
+  vector< SDL_Rect > letter_slots;
 
 };
 
