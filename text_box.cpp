@@ -11,17 +11,31 @@ void Text_box::display( string message, SDL_Renderer *renderer,
 {  
   string to_be_rendered = message.substr( 0, letters );
 
-  uint letter_width = height / 4;
-    
+  uint next_x = 0;
   for( uint letter = 0; letter < to_be_rendered.length(); letter++ )
   {
     SDL_Rect letter_slot;
-    letter_slot.x = x_pos + letter * letter_width;
+    uint letter_width;
+    if( to_be_rendered.at( letter ) == 'i' ||
+        to_be_rendered.at( letter ) == 'l' ||
+        to_be_rendered.at( letter ) == 'I' ||
+        to_be_rendered.at( letter ) == ' ' )
+    {
+      letter_width = height / 7;
+    }
+    else
+    {
+      letter_width = height / 4;
+    }
+    
+    letter_slot.x = x_pos + next_x;
     letter_slot.y = y_pos;
     letter_slot.h = height;
     letter_slot.w = letter_width;
     
     letter_slots.push_back( letter_slot );
+
+    next_x += letter_width;
   }
   
   char message_array[ 100 ];

@@ -197,7 +197,7 @@ void Scene::convo( uint character_index, Conversation conversation,
           SDL_RenderClear( renderer );
           background.draw();
           
-          (*speaker).gasp();
+          (*speaker).happy();
 
           conversation_position++;
 
@@ -568,10 +568,10 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   for( uint letters = 0; letters <= message.length();
        letters++ )
   {
-    uint milliseconds = 300;
+    uint milliseconds = 250;
     SDL_RenderClear( renderer );
     background.draw();
-    (*speaker).happy();
+    (*speaker).gasp();
     dialogue_display.display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
     usleep( milliseconds * milliseconds );
