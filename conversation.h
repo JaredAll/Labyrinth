@@ -27,7 +27,7 @@ class Conversation
   /**
    * get dialogue at the index provided
    */
-  SDL_Texture* get_dialogue( uint index );
+  string get_dialogue( uint index );
 
   /**
    * add dialogue to conversation
@@ -47,15 +47,15 @@ class Conversation
   /**
    * get angry response
    */
-  SDL_Texture* get_angry_response();
+  string get_angry_response();
 
 
 
 
  private:
 
-  vector< SDL_Texture* > dialogue;
-  SDL_Texture* angry_response;
+  vector< string > dialogue;
+  string angry_response;
 
 
 
