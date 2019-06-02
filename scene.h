@@ -168,6 +168,16 @@ private:
   void update_characters();
 
   /**
+   * scroll dialogue
+   * @param message the message to display
+   * @param renderer the renderer
+   * @param font the font
+   * @param speaker the speaker
+   */
+  void scroll_dialogue( string message, SDL_Renderer *renderer,
+                        TTF_Font *font, Character *speaker );
+
+  /**
    * fade into and out of scenes
    * @param left the direction
    */

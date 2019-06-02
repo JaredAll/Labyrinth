@@ -17,6 +17,12 @@ void Text_box::display( string message, SDL_Renderer *renderer,
   string to_be_rendered = message.substr( 0, letters );
 
   message_rect.w = to_be_rendered.length() * 25;
+
+  // for( uint i = 0; i < ( message.length() - to_be_rendered.length());
+  //      i++ )
+  // {
+  //   to_be_rendered = to_be_rendered + ".";
+  // }
   
   char message_array[ 100 ];
   strcpy( message_array, to_be_rendered.c_str() );
@@ -30,4 +36,3 @@ void Text_box::display( string message, SDL_Renderer *renderer,
 
   SDL_RenderCopy( renderer, message_texture, NULL, &message_rect );
 }
-
