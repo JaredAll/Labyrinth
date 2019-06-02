@@ -180,19 +180,6 @@ void Scene::convo( uint character_index, Conversation conversation,
 
   string message = conversation.get_dialogue( 0 );
 
-  
-  // for( uint letters = 0; letters <= message.length();
-  //      letters++ )
-  // {
-  //   uint milliseconds = 300;
-  //   SDL_RenderClear( renderer );
-  //   background.draw();
-  //   (*speaker).happy();
-  //   dialogue_display.display( message, renderer, font, letters );
-  //   SDL_RenderPresent( renderer );
-  //   usleep( milliseconds * milliseconds );
-  // }
-
   scroll_dialogue( message, renderer, font, speaker );
     
   bool talking = true;
@@ -225,26 +212,9 @@ void Scene::convo( uint character_index, Conversation conversation,
               conversation.get_dialogue(
                 conversation_position );
 
-            // for( uint letters = 0; letters <= message.length();
-            //      letters++ )
-            // {
-            //   uint milliseconds = 300;
-            //   SDL_RenderClear( renderer );
-            //   background.draw();
-            //   (*speaker).happy();
-            //   dialogue_display.display( message, renderer, font, letters );
-            //   SDL_RenderPresent( renderer );
-            //   usleep( milliseconds * milliseconds );
-            // }
-
             scroll_dialogue( message, renderer, font, speaker );
 
           }
-
-          // dialogue_display.display( message, renderer, font,
-          //                           message.length() );
-          
-          // SDL_RenderPresent( renderer );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {
@@ -431,8 +401,8 @@ Scene::Scene(SDL_Renderer *param_renderer,
   renderer( param_renderer),
   scene_dialogue( param_scene_dialogue ),
   stage_size( param_stage_size ),
-  dialogue_display( 0, 0, 100, 400 ),
-  prompt_display( 0, 400, 100, 300 )
+  dialogue_display( 0, 0, 100 ),
+  prompt_display( 0, 400, 100 )
 {
   
   window_size = 1000;
