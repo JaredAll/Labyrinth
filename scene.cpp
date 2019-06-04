@@ -1,5 +1,7 @@
 #include "scene.h"
 
+uint counted_frames = 0;
+
 void Scene::speak()
 {
 
@@ -78,6 +80,7 @@ bool Scene::confirm_recruit( Character* character )
   prompt_display.display( prompt_recruitment, renderer, font,
                           prompt_recruitment.length() );
   SDL_RenderPresent( renderer );
+  ++counted_frames;
 
   bool recruit = false;
   bool deciding = true;
@@ -231,6 +234,8 @@ void Scene::convo( uint character_index, Conversation conversation,
 
           
           SDL_RenderPresent( renderer );
+          ++counted_frames;
+          
         }
         else if( e.key.keysym.sym == SDLK_DOWN || e.key.keysym.sym == SDLK_UP )
         {
@@ -252,6 +257,7 @@ void Scene::center()
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
+  ++counted_frames;
 }
 
 void Scene::right()
@@ -282,6 +288,7 @@ void Scene::right()
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
+  ++counted_frames;
   SDL_Delay( 200 );
 }
 
@@ -312,6 +319,7 @@ void Scene::left()
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
+  ++counted_frames;
   SDL_Delay( 200 );
 }
 
@@ -433,6 +441,8 @@ int Scene::play()
   bool in_bounds = true;
   bool play = true;
   bool linked_scene_entry = false;
+
+  float avg_frames_per_second = 0;
   
   while( in_bounds && play && !linked_scene_entry )
   {    
@@ -504,6 +514,9 @@ int Scene::play()
       status = 3;
     }
   }
+  avg_frames_per_second = ( counted_frames ) /
+    ( SDL_GetTicks() / 1000.f );
+  cout << avg_frames_per_second << "\r";
   return status;
 }
 
@@ -576,6 +589,7 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
     happy ? (*speaker).gasp() : (*speaker).happy();
     dialogue_display.display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
+    ++counted_frames;
     usleep( milliseconds * milliseconds );
   }
 }

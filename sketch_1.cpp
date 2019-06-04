@@ -122,6 +122,10 @@ int main( int argc, char* argv[] )
     Conversation( "lunius_scene2.txt", ren );
   lunius_s2.set_angry_response( lunius_angry_response, ren );
 
+  Conversation al_s1_c1 =
+    Conversation( "al_s1_c1.txt", ren );
+  
+
   /* End Conversations */
 
 
@@ -166,7 +170,7 @@ int main( int argc, char* argv[] )
                                       330, 225, 1 );
   SpriteLayer b_bush_2 = SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 2 );
-    SpriteLayer b_bush_3 = SpriteLayer( "sprites/berrybush.png", ren,
+  SpriteLayer b_bush_3 = SpriteLayer( "sprites/berrybush.png", ren,
                                       530, 225, 1 );
 
   Background trees = Background();
@@ -246,7 +250,7 @@ int main( int argc, char* argv[] )
   sketch_script.insert_conversation( &lunius, lunius_s1_c2 );
   sketch_script.insert_conversation( &doug, doug_convo );
   sketch_script.insert_conversation( &doug, doug_c2 );
-  sketch_script.insert_conversation( &al, lunius_convo );
+  sketch_script.insert_conversation( &al, al_s1_c1 );
 
   Script scene2_script = Script( character_ps );
   scene2_script.insert_conversation( &doug, doug_s2_c1 );
