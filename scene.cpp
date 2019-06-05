@@ -95,6 +95,7 @@ bool Scene::confirm_recruit( Character* character )
         if( e.key.keysym.sym == SDLK_y )
         {
           recruit = true;
+          (*character).set_recruited();
         }
         else if( e.key.keysym.sym == SDLK_n )
         {
@@ -112,13 +113,17 @@ bool Scene::enter()
   bool entry = false;
   uint entry_proximity = 60;
 
-  int distance_from_entry =
-    abs( junction_pos -
+  for( uint i = 0; i < scene_junction_positions.size();
+       i++ )
+  { 
+    int distance_from_entry =
+      abs( scene_junction_positions.at( i ) -
            main_character.get_position().at( 0 ) );
   
-  if( distance_from_entry < entry_proximity )
-  {
-    entry = true;
+    if( distance_from_entry < entry_proximity )
+    {
+      entry = true;
+    }
   }
   return entry;
 }
@@ -130,14 +135,17 @@ void Scene::prompt_enter_linked_scene()
 
   uint entry_proximity = 60;
 
-  int distance_from_entry =
-    abs( junction_pos -
+  for( uint i = 0; i < scene_junction_positions.size(); i++ )
+  {
+    int distance_from_entry =
+      abs( scene_junction_positions.at( i ) -
            main_character.get_position().at( 0 ) );
   
-  if( distance_from_entry < entry_proximity )
-  {
-    prompt_display.display( prompt_enter, renderer, font,
-                            prompt_enter.length() );
+    if( distance_from_entry < entry_proximity )
+    {
+      prompt_display.display( prompt_enter, renderer, font,
+                              prompt_enter.length() );
+    }
   }
 }
 
@@ -272,8 +280,8 @@ void Scene::right()
   {
     background.draw();
     main_character.update_pos( true, speed );
-    main_character.walk_right( speed );
     draw_npcs();
+    main_character.walk_right( speed );
     ducklings();
   } 
   else
@@ -303,8 +311,8 @@ void Scene::left()
   {
     background.draw();
     main_character.update_pos( false, speed );
-    main_character.walk_left( speed );
     draw_npcs();
+    main_character.walk_left( speed );
     ducklings();
   } 
   else
@@ -417,8 +425,6 @@ Scene::Scene(SDL_Renderer *param_renderer,
   window_size = 1000;
   stage_left_pos = stage_size * -1;
   stage_right_pos = stage_size;
-
-  junction_pos = INT_MAX;
   
   TTF_Init();
   font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
@@ -445,7 +451,12 @@ int Scene::play()
   float avg_frames_per_second = 0;
   
   while( in_bounds && play && !linked_scene_entry )
-  {    
+  {
+    
+    avg_frames_per_second = ( counted_frames ) /
+      ( SDL_GetTicks() / 1000.f );
+    cout << avg_frames_per_second << "\r";
+    
     if( main_character.get_position().at( 0 ) > stage_right_pos )
     {
       in_bounds = false;
@@ -514,9 +525,7 @@ int Scene::play()
       status = 3;
     }
   }
-  avg_frames_per_second = ( counted_frames ) /
-    ( SDL_GetTicks() / 1000.f );
-  cout << avg_frames_per_second << "\r";
+  
   return status;
 }
 
@@ -568,7 +577,7 @@ void Scene::stage_right()
 
 void Scene::set_junction( int position )
 {
-  junction_pos = position;
+  scene_junction_positions.push_back( position );
 }
 
 void Scene::add_follower( Character character )

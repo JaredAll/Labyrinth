@@ -44,12 +44,21 @@ class Script
   void insert_conversation( Character* character, Conversation
 			    conversation );
 
+  /**
+   * insert recruitment conversation into a character's dialogue
+   * @param character the character pointer
+   * @param conversation the conversation pointer
+   */
+  void insert_recruit_conversation(
+    Character* character,
+    Conversation conversation );
 
   
  private:
 
   vector< Character* > characters;
   map< Character*, vector< Conversation > > conversations;
+  map< Character*, vector< Conversation > > recruit_conversations;
   map< Character*, uint > lines;
 
 

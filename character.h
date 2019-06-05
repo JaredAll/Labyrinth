@@ -113,11 +113,21 @@ public:
    */
   void set_stage_pos( int screen_pos, int pos );
 
+  /**
+   * recruit a character
+   */
+  void set_recruited();
+
+  /**
+   * determine if character has been recruited
+   */
+  bool is_recruited();
 
 
 private:
 
   string name;
+  bool recruited;
 
   bool facing_left;
   int x_pos;

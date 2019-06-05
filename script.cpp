@@ -11,10 +11,10 @@ Conversation Script::speak_to( Character* character )
     }
   }
 
-  vector< Conversation > dialogue =
-    conversations.find(
-      characters.at( speaker_index ) ) -> second;
-  
+  vector< Conversation > dialogue;  
+  dialogue = conversations.find(
+    characters.at( speaker_index ) ) -> second;
+
   uint line =
     lines.find( characters.at( speaker_index ) ) -> second;
 
@@ -34,6 +34,10 @@ characters( param_characters )
     vector< Conversation > dialogue;
     conversations.insert( { characters.at( i ), dialogue } );
     lines.insert( { characters.at( i ), 0 } );
+
+    vector< Conversation > recruitment;
+    recruit_conversations.insert( { characters.at( i ),
+          recruitment } );
   }
 
 }
@@ -43,4 +47,12 @@ void Script::insert_conversation( Character* character,
 {
   ( conversations.find( character ) -> second ).push_back( conversation );
   
+}
+
+void Script::insert_recruit_conversation(
+  Character* character,
+  Conversation conversation )
+{
+  ( recruit_conversations.find( character ) -> second ).push_back(
+    conversation );
 }

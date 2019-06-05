@@ -36,8 +36,9 @@ void Game::play()
   bool quit = false;
   bool main_track = true;
   int status = 0;
+
   while( !quit )
-  {
+  {     
     if( main_track )
     {
       status = scenes.at( current_scene ).play();

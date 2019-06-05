@@ -37,6 +37,7 @@ Character::Character( string param_name,
   y_pos = 0;
   stride = 1;
   facing_left = false;
+  recruited = false;
 
 }
 
@@ -64,6 +65,8 @@ void Character::walk_right( uint speed )
   
   set_position( x_pos + speed,
                 y_pos );
+
+  // cout << x_pos << " " << endl;
   facing_left = false;
 }
 
@@ -195,4 +198,13 @@ void Character::set_stage_pos( int screen_pos, int pos )
   x_pos = pos;
   full_body.set_position( screen_pos );
 }
-  
+
+void Character::set_recruited()
+{
+  recruited = true;
+}
+
+bool Character::is_recruited()
+{
+  return recruited;
+}

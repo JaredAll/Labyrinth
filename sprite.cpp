@@ -45,7 +45,6 @@ void Sprite::set_position( int new_x, int new_y )
 void Sprite::set_position( int new_x )
 {
   x = new_x;
-  y = initial_y;
 }
 
 void Sprite::draw( SDL_Rect destination )

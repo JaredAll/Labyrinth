@@ -18,6 +18,7 @@
 
 using namespace std;
 
+
 /**
  * A scene class
  * @author Jared Allen
@@ -197,7 +198,7 @@ private:
   int stage_size;
   int window_size;
 
-  int junction_pos;
+  vector< int > scene_junction_positions;
   
   TTF_Font *font;
   Text_box dialogue_display;
