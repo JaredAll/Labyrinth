@@ -58,7 +58,7 @@ class Script
 
   vector< Character* > characters;
   map< Character*, vector< Conversation > > conversations;
-  map< Character*, vector< Conversation > > recruit_conversations;
+  map< Character*, Conversation > recruit_conversations;
   map< Character*, uint > lines;
 
 

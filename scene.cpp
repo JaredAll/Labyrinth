@@ -123,6 +123,16 @@ bool Scene::enter()
     if( distance_from_entry < entry_proximity )
     {
       entry = true;
+
+      for( uint i = 0; i < following_characters.size(); i++ )
+      {
+        following_characters.at( i ).
+          set_stage_pos( main_character
+                         .get_screen_position().at( 0 ),
+                         main_character
+                         .get_position().at( 0 ) );
+      }
+      
     }
   }
   return entry;
@@ -260,9 +270,11 @@ void Scene::center()
   background.draw();
   draw_npcs();
   
-  main_character.stand();
   ducklings();
   prompt_speak();
+
+  main_character.stand();
+  
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
@@ -281,17 +293,17 @@ void Scene::right()
     background.draw();
     main_character.update_pos( true, speed );
     draw_npcs();
-    main_character.walk_right( speed );
     ducklings();
+    main_character.walk_right( speed );
   } 
   else
   {
     background.left( speed );
     background.draw();
     draw_npcs( false );
-  
+    
+    ducklings( false );  
     main_character.walk_right( speed );
-    ducklings( false );
   }
   prompt_speak();
   prompt_enter_linked_scene();
@@ -312,17 +324,18 @@ void Scene::left()
     background.draw();
     main_character.update_pos( false, speed );
     draw_npcs();
-    main_character.walk_left( speed );
+    
     ducklings();
+    main_character.walk_left( speed );
   } 
   else
   {
     background.right( speed );
     background.draw();
     draw_npcs( true );
-  
+    
+    ducklings( true );  
     main_character.walk_left( speed );
-    ducklings( true );
   }
   prompt_speak();
   prompt_enter_linked_scene();

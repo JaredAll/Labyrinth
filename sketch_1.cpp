@@ -52,11 +52,6 @@ int main( int argc, char* argv[] )
 
   /* End Window Setup */
 
-  //get the background
-
-  SpriteLayer backdrop_sprite = SpriteLayer( "sprites/bg1.2.png", ren,
-                                             0, 0, 0 );
-
   /* Set Character Sprites */
 
   uint character_plane_x = 450;
@@ -109,35 +104,35 @@ int main( int argc, char* argv[] )
   /* Create Conversations */
 
   Conversation lunius_s1_c1 =
-    Conversation( "lunius_s1_c1.txt", ren );
+    Conversation( "convos/lunius_s1_c1.txt", ren );
 
   Conversation lunius_s1_c2 =
-    Conversation( "lunius_s1_c2.txt", ren );
+    Conversation( "convos/lunius_s1_c2.txt", ren );
   
   char lunius_angry_response[ 100 ] = "I hate humans.";
   lunius_s1_c1.set_angry_response( lunius_angry_response, ren );
   lunius_s1_c2.set_angry_response( lunius_angry_response, ren);
   
   Conversation doug_s1_c1 =
-    Conversation( "doug_conversation.txt", ren );
+    Conversation( "convos/doug_s1_c1.txt", ren );
   
   Conversation doug_s1_c2 =
-    Conversation( "doug_c2.txt", ren );
+    Conversation( "convos/doug_s1_c2.txt", ren );
 
   char doug_angry_response[ 100 ] = "I need some oil.";
   doug_s1_c1.set_angry_response( doug_angry_response, ren );
   doug_s1_c2.set_angry_response( doug_angry_response, ren );
 
   Conversation doug_s2_c1 =
-    Conversation( "doug_scene2.txt", ren );
+    Conversation( "convos/doug_s2_c1.txt", ren );
   doug_s2_c1.set_angry_response( doug_angry_response, ren );
 
   Conversation lunius_s2_c1 =
-    Conversation( "lunius_scene2.txt", ren );
+    Conversation( "convos/lunius_s2_c1.txt", ren );
   lunius_s2_c1.set_angry_response( lunius_angry_response, ren );
 
   Conversation al_s1_c1 =
-    Conversation( "al_s1_c1.txt", ren );
+    Conversation( "convos/al_s1_c1.txt", ren );
   
   /* End Conversations */
 
@@ -163,6 +158,9 @@ int main( int argc, char* argv[] )
 
   
   /* Initialize Backgrounds */
+
+  SpriteLayer backdrop_sprite = SpriteLayer( "sprites/bg1.2.png",
+                                             ren, 0, 0, 0 );
   
   SpriteLayer far_town = SpriteLayer( "sprites/town1.png", ren,
                                       400, 150, 2 );
@@ -175,9 +173,9 @@ int main( int argc, char* argv[] )
   SpriteLayer b_bush_3 = SpriteLayer( "sprites/berrybush.png", ren,
                                       530, 225, 1 );
 
-  Background background = Background();
-  Background trees = Background();
-  Background berry_inn = Background();
+  Background background = Background( ren );
+  Background trees = Background( ren );
+  Background berry_inn = Background( ren );
 
   berry_inn.add_layer( backdrop_sprite );
   trees.add_layer( backdrop_sprite );
@@ -239,19 +237,22 @@ int main( int argc, char* argv[] )
   character_ps.push_back( &doug );
   character_ps.push_back( &al );
 
+  
   vector< Conversation > sketch_1_convos;
   sketch_1_convos.push_back( lunius_s1_c1 );
 
   Script sketch_script = Script( character_ps );
-  sketch_script.insert_conversation( &lunius, lunius_s1_c1 );
+  sketch_script.insert_recruit_conversation( &lunius, lunius_s1_c1 );
   sketch_script.insert_conversation( &lunius, lunius_s1_c2 );
-  sketch_script.insert_conversation( &doug, doug_s1_c1 );
+  sketch_script.insert_recruit_conversation( &doug, doug_s1_c1 );
   sketch_script.insert_conversation( &doug, doug_s1_c2 );
-  sketch_script.insert_conversation( &al, al_s1_c1 );
+  sketch_script.insert_recruit_conversation( &al, al_s1_c1 );
 
   Script scene2_script = Script( character_ps );
-  scene2_script.insert_conversation( &doug, doug_s2_c1 );
+  scene2_script.insert_recruit_conversation( &doug, doug_s2_c1 );
+  scene2_script.insert_recruit_conversation( &lunius, lunius_s1_c1 );
   scene2_script.insert_conversation( &lunius, lunius_s2_c1 );
+  scene2_script.insert_recruit_conversation ( &al, lunius_s1_c1 );
   scene2_script.insert_conversation( &al, lunius_s2_c1 );
 
   uint scene_1_size = 1000;

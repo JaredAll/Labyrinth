@@ -1,11 +1,15 @@
 #include "background.h"
-Background::Background( vector< SpriteLayer > param_layers )
-: layers( param_layers )
+Background::Background( vector< SpriteLayer > param_layers,
+                        SDL_Renderer *ren )
+  : layers( param_layers ), blank_screen(
+    SpriteLayer( "sprites/blank_screen.png", ren, 0, 0, 0 ) )
 {
 
 }
 
-Background::Background()
+Background::Background( SDL_Renderer *ren ) :
+blank_screen( SpriteLayer( "sprites/blank_screen.png", ren,
+                           0, 0, 0 ) )
 {
   vector< SpriteLayer > new_layers;
   layers = new_layers;
@@ -38,6 +42,11 @@ void Background::draw()
   {
     layer.draw();
   }
+}
+
+void Background::blank()
+{
+  blank_screen.draw();
 }
 
 void Background::reset()

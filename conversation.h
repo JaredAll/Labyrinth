@@ -25,6 +25,11 @@ class Conversation
   Conversation( string filepath, SDL_Renderer* renderer );
 
   /**
+   * default constructor
+   */
+  Conversation();
+  
+  /**
    * get dialogue at the index provided
    */
   string get_dialogue( uint index );
