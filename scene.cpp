@@ -288,7 +288,7 @@ void Scene::right()
   int stage_center_width = stage_size - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
   if( main_char_pos < ( -1 * stage_center_width ) ||
-      main_char_pos > stage_center_width )
+      main_char_pos >= stage_center_width )
   {
     background.draw();
     main_character.update_pos( true, speed );
@@ -319,7 +319,7 @@ void Scene::left()
   int stage_center_width = stage_size - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
   if( main_char_pos < ( -1 * stage_center_width ) ||
-      main_char_pos > stage_center_width )
+      main_char_pos >= stage_center_width )
   {
     background.draw();
     main_character.update_pos( false, speed );

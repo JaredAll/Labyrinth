@@ -65,7 +65,7 @@ int main( int argc, char* argv[] )
   uint dirk_x = 500;
   uint dirk_y = character_plane_x;
 
-  uint al_x = 700;
+  uint al_x = 200;
   uint al_y = character_plane_x - 50;
   
   Sprite doug_s =
