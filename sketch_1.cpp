@@ -172,14 +172,18 @@ int main( int argc, char* argv[] )
                                       330, 225, 2 );
   SpriteLayer b_bush_3 = SpriteLayer( "sprites/berrybush.png", ren,
                                       530, 225, 1 );
-
+  SpriteLayer inn_background_s = SpriteLayer(
+    "sprites/bar_inside.png", ren, 0, 0, 0 );
+  
   Background background = Background( ren );
   Background trees = Background( ren );
   Background berry_inn = Background( ren );
-
+  Background bar_inside = Background( ren );
+  
   berry_inn.add_layer( backdrop_sprite );
   trees.add_layer( backdrop_sprite );
   background.add_layer( backdrop_sprite );
+  bar_inside.add_layer( inn_background_s );
   
   int num_grounds_2 = 4;
   for( int i = num_grounds_2 * ( -1 ); i < num_grounds_2; i++ )
@@ -221,6 +225,7 @@ int main( int argc, char* argv[] )
   berry_inn.add_layer( b_bush_3 );
   berry_inn.add_layer( b_bush_1 );
 
+  bar_inside.add_layer( inn_background_s );
   /* End Backgrounds */
 
   
@@ -278,7 +283,7 @@ int main( int argc, char* argv[] )
       scene_3_size );
 
     Scene bush_inn_2 =
-    Scene( ren, berry_inn, bi_chars, dirk, scene2_script, speed,
+    Scene( ren, bar_inside, bi_chars, dirk, scene2_script, speed,
       scene_3_size );
 
   /* End Scenes */
