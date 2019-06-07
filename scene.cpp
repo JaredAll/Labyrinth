@@ -431,8 +431,8 @@ Scene::Scene(SDL_Renderer *param_renderer,
   renderer( param_renderer),
   scene_dialogue( param_scene_dialogue ),
   stage_size( param_stage_size ),
-  dialogue_display( 0, 0, 100 ),
-  prompt_display( 0, 400, 100 )
+  dialogue_display( 25, 25, 100, 300 ),
+  prompt_display( 25, 400, 100, 300 )
 {
   
   window_size = 1000;
