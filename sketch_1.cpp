@@ -306,10 +306,17 @@ int main( int argc, char* argv[] )
       
   /* End Scenes */
 
+  /* Create Panels */
+
+  Panel introduction = Panel( cave_entrance, ren );
+  
+  /* End Panels */
+
   
   /* Create Game and Play */
 
   Game fatty_rolls = Game();
+  fatty_rolls.set_introduction( introduction );
   fatty_rolls.add_scene( cave_throne_room_scene );
   fatty_rolls.add_scene( cave_entrance_scene );
   fatty_rolls.add_scene( sketch_1 );

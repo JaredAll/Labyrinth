@@ -13,7 +13,7 @@ Text_box::Text_box( uint param_x, uint param_y, uint param_h,
 
 void Text_box::display( string message, SDL_Renderer *renderer,
                         TTF_Font *font, uint letters )
-{  
+{
   string to_be_rendered = message.substr( 0, letters );
   uint line_padding = 5;
   uint lines_per_box = 3;
@@ -38,7 +38,6 @@ void Text_box::display( string message, SDL_Renderer *renderer,
       letter_width = height / letter_divisor;
     }
 
-    
     if( x_pos + next_x > width &&
         to_be_rendered.at( letter - 1 ) == ' ' )
     {

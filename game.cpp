@@ -8,6 +8,11 @@ Game::Game()
   current_scene = 0;
 }
 
+void Game::set_introduction( Panel panel )
+{
+  panels.push_back( panel );
+}
+
 void Game::add_scene( Scene scene )
 {
   scenes.push_back( scene );
@@ -32,85 +37,97 @@ void Game::join_scenes( uint scene1_pos, uint scene2_pos,
 
 void Game::play()
 {
-  SDL_Event e;
-  bool quit = false;
-  bool main_track = true;
-  int status = 0;
+  bool begin;
+  
+  Panel introduction = panels.at( 0 );
+  begin = introduction.display();
 
-  while( !quit )
-  {     
-    if( main_track )
-    {
-      status = scenes.at( current_scene ).play();
-    }
-    else
-    {
-      status = joined_scenes.at( current_scene ).play();
-    }
+  if( begin )
+  {
+    SDL_Event e;
+    bool quit = false;
+    bool main_track = true;
+    int status = 0;
+
+    while( !quit )
+    {     
+      if( main_track )
+      {
+        status = scenes.at( current_scene ).play();
+      }
+      else
+      {
+        status = joined_scenes.at( current_scene ).play();
+      }
     
-    if( status == 3 )
-    {
-      uint next_scene_pos;
-      for( uint i = 0; i < scene_links.size(); i++ )
+      if( status == 3 )
       {
-        if( scene_links.at( i ).contains( current_scene ) )
+        uint next_scene_pos;
+        for( uint i = 0; i < scene_links.size(); i++ )
         {
-          next_scene_pos =
-            scene_links.at( i ).get_next_scene( main_track );
+          if( scene_links.at( i ).contains( current_scene ) )
+          {
+            next_scene_pos =
+              scene_links.at( i ).get_next_scene( main_track );
+          }
         }
-      }
 
-      if( main_track )
-      {
-        main_track = false;
-      }
-      else
-      {
-        main_track = true;
-      }
-      current_scene = next_scene_pos;
-    }
-    else if( status == 1 )
-    {
-      if( main_track )
-      {
-        if( current_scene > 0 )
+        if( main_track )
         {
-          current_scene--;
-          scenes.at( current_scene ).stage_right();
+          main_track = false;
         }
         else
         {
-          scenes.at( current_scene ).stage_left();
+          main_track = true;
         }
+        current_scene = next_scene_pos;
       }
-      else
+      else if( status == 1 )
       {
-        joined_scenes.at( current_scene ).stage_left();
-      }
-    }
-    else if( status == 0 )
-    {
-      if( main_track )
-      {
-        if( current_scene < scenes.size() - 1 )
+        if( main_track )
         {
-          current_scene++;
-          scenes.at( current_scene ).stage_left();
+          if( current_scene > 0 )
+          {
+            current_scene--;
+            scenes.at( current_scene ).stage_right();
+          }
+          else
+          {
+            scenes.at( current_scene ).stage_left();
+          }
         }
         else
         {
-          scenes.at( current_scene ).stage_right();
+          joined_scenes.at( current_scene ).stage_left();
+        }
+      }
+      else if( status == 0 )
+      {
+        if( main_track )
+        {
+          if( current_scene < scenes.size() - 1 )
+          {
+            current_scene++;
+            scenes.at( current_scene ).stage_left();
+          }
+          else
+          {
+            scenes.at( current_scene ).stage_right();
+          }
+        }
+        else
+        {
+          joined_scenes.at( current_scene ).stage_right();
         }
       }
       else
       {
-        joined_scenes.at( current_scene ).stage_right();
-      }
+        quit = true;
+      }    
     }
-    else
-    {
-      quit = true;
-    }    
+  }
+  else
+  {
+    return;
   }
 }
