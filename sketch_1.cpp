@@ -174,16 +174,24 @@ int main( int argc, char* argv[] )
                                       530, 225, 1 );
   SpriteLayer inn_background_s = SpriteLayer(
     "sprites/bar_inside.png", ren, 0, 0, 0 );
+  SpriteLayer cave_entrance_s = SpriteLayer(
+    "sprites/cave_entrance.png", ren, 0, 0, 0 );
+    SpriteLayer cave_throne_room_s = SpriteLayer(
+    "sprites/cavethroneroom.png", ren, 0, 0, 0 );
   
   Background background = Background( ren );
   Background trees = Background( ren );
   Background berry_inn = Background( ren );
   Background bar_inside = Background( ren );
+  Background cave_entrance = Background( ren );
+  Background cave_throne_room = Background( ren );
   
   berry_inn.add_layer( backdrop_sprite );
   trees.add_layer( backdrop_sprite );
   background.add_layer( backdrop_sprite );
   bar_inside.add_layer( inn_background_s );
+  cave_entrance.add_layer( cave_entrance_s );
+  cave_throne_room.add_layer( cave_throne_room_s );
   
   int num_grounds_2 = 4;
   for( int i = num_grounds_2 * ( -1 ); i < num_grounds_2; i++ )
@@ -273,6 +281,8 @@ int main( int argc, char* argv[] )
   
   vector< Character > bi_chars;
   bi_chars.push_back( al );
+
+  vector< Character > no_characters;
   
   Scene tree_scene =
     Scene( ren, trees, ts_chars, dirk, scene2_script, speed,
@@ -280,25 +290,35 @@ int main( int argc, char* argv[] )
 
   Scene bush_inn =
     Scene( ren, berry_inn, bi_chars, dirk, scene2_script, speed,
-      scene_3_size );
+           scene_3_size );
 
-    Scene bush_inn_2 =
+  Scene bush_inn_2 =
     Scene( ren, bar_inside, bi_chars, dirk, scene2_script, speed,
-      scene_3_size );
+           scene_3_size );
+  
+  Scene cave_entrance_scene =
+    Scene( ren, cave_entrance, no_characters, dirk, scene2_script,
+           speed, scene_3_size );
 
+  Scene cave_throne_room_scene =
+    Scene( ren, cave_throne_room, no_characters, dirk,
+           scene2_script, speed, scene_3_size );
+      
   /* End Scenes */
 
   
   /* Create Game and Play */
 
   Game fatty_rolls = Game();
+  fatty_rolls.add_scene( cave_throne_room_scene );
+  fatty_rolls.add_scene( cave_entrance_scene );
   fatty_rolls.add_scene( sketch_1 );
   fatty_rolls.add_joined_scene( bush_inn );
   fatty_rolls.add_joined_scene( bush_inn_2 );
   fatty_rolls.add_scene( tree_scene );
 
-  fatty_rolls.join_scenes( 1, 0, 600, 0 );
-  fatty_rolls.join_scenes( 1, 1, 60, 0 );
+  fatty_rolls.join_scenes( 3, 0, 600, 0 );
+  fatty_rolls.join_scenes( 3, 1, 60, 0 );
 
   fatty_rolls.play();
 
