@@ -82,7 +82,7 @@ public:
   /**
    * make NPCs follow the character
    */
-  void follow( Character leader, uint speed );
+  void follow( Character leader, uint speed, uint count );
 
   
   /**

@@ -109,7 +109,7 @@ private:
   /**
    * update the scene center
    */
-  void center();
+  void center( uint count );
 
   /**
    * convert npc to follower
@@ -151,24 +151,24 @@ private:
    * draw the following characters
    * @param left the direction
    */
-  void ducklings( bool left );
+  void ducklings( bool left, uint count );
 
   /**
    * draw the standing characters
    */
-  void ducklings();
+  void ducklings( uint count );
+
+  /** 
+   * update the characters
+   * @param left the direction
+   */
+  void update_characters( bool left, uint count );
 
   /**
    * update the characters
    * @param left the direction
    */
-  void update_characters( bool left );
-
-  /**
-   * update the characters
-   * @param left the direction
-   */
-  void update_characters();
+  void update_characters( uint count );
 
   /**
    * scroll dialogue

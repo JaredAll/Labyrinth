@@ -69,7 +69,6 @@ void Character::walk_right( uint speed, uint count )
   set_position( x_pos + speed,
                 y_pos );
 
-  // cout << x_pos << " " << endl;
   facing_left = false;
 }
 
@@ -129,7 +128,7 @@ vector< int > Character::get_position()
   return position;
 }
 
-void Character::follow( Character leader, uint speed )
+void Character::follow( Character leader, uint speed, uint count )
 {
   uint follow_distance = 130;
   int leader_x = leader.get_screen_position().at( 0 );
@@ -143,12 +142,12 @@ void Character::follow( Character leader, uint speed )
     if( position_from_leader > 0 )
     {
       update_pos( true, speed );
-      // walk_right( speed );
+      walk_right( speed, count );
     }
     else if( position_from_leader < 0 )
     {
       update_pos( false, speed );
-      // walk_left( speed );
+      walk_left( speed, count );
     }
   }
   else

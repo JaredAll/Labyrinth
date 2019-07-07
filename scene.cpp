@@ -264,13 +264,13 @@ void Scene::convo( uint character_index, Conversation conversation,
   }
 }
 
-void Scene::center()
+void Scene::center( uint count )
 {
   SDL_RenderClear( renderer );
   background.draw();
   draw_npcs();
   
-  ducklings();
+  ducklings( count );
   prompt_speak();
 
   main_character.stand();
@@ -292,10 +292,7 @@ void Scene::right( uint count )
   {
     background.draw();
     draw_npcs();
-    ducklings();
-
-    cout << "count: " << count << endl;
-    main_character.stand();
+    ducklings( count );
     main_character.walk_right( speed, count );
     main_character.update_pos( true, speed );
   } 
@@ -304,7 +301,7 @@ void Scene::right( uint count )
     background.left( speed );
     background.draw();
     draw_npcs( false );
-    ducklings( false );
+    ducklings( false, count );
     main_character.walk_right( speed, count );
   }
   prompt_speak();
@@ -325,8 +322,7 @@ void Scene::left( uint count )
   {
     background.draw();
     draw_npcs();
-    ducklings();
-    main_character.stand();
+    ducklings( count );
     main_character.walk_left( speed, count );
     main_character.update_pos( false, speed );
   } 
@@ -335,7 +331,7 @@ void Scene::left( uint count )
     background.right( speed );
     background.draw();
     draw_npcs( true );
-    ducklings( true ); 
+    ducklings( true, count ); 
     main_character.walk_left( speed, count );
   }
   prompt_speak();
@@ -345,19 +341,19 @@ void Scene::left( uint count )
   SDL_Delay( 50 );
 }
 
-void Scene::update_characters( bool left )
+void Scene::update_characters( bool left, uint count )
 {
   draw_npcs( left );
-  ducklings( left );
+  ducklings( left, count );
 }
 
-void Scene::update_characters()
+void Scene::update_characters( uint count )
 {
   draw_npcs();
-  ducklings();
+  ducklings( count );
 }
 
-void Scene::ducklings( bool left )
+void Scene::ducklings( bool left, uint count )
 {
   for( uint i = 0; i < following_characters.size(); i++ )
   {
@@ -365,31 +361,31 @@ void Scene::ducklings( bool left )
     if( i == 0 )
     {
       following_characters.at( i ).follow(
-        main_character, speed );
+        main_character, speed, count );
     }
     else
     {
       following_characters.at(
         i ).follow( following_characters.at( i - 1 ),
-                    speed );
+                    speed, count );
     }
   }
 }
 
-void Scene::ducklings()
+void Scene::ducklings( uint count )
 {
   for( uint i = 0; i < following_characters.size(); i++ )
   {
     if( i == 0 )
     {
       following_characters.at( i ).follow(
-        main_character, speed );
+        main_character, speed, count );
     }
     else
     {
       following_characters.at( i ).follow(
         following_characters.at( i - 1 ),
-        speed );
+        speed, count );
     }
   }
 }
@@ -534,7 +530,7 @@ int Scene::play()
       }
       else
       {
-        center();
+        center( count );
       }
     }
     if( linked_scene_entry )
