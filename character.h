@@ -43,14 +43,16 @@ public:
   /**
    * make the character walk left
    * @param speed the speed that the character walks
+   * @param count the characters cycle count
    */
-  void walk_left( uint speed );
+  void walk_left( uint speed, uint count );
 
   /**
    * make the character walk right
    * @param speed the speed that the character walks
+   * @param count the characters walking cycle count
    */
-  void walk_right( uint speed );
+  void walk_right( uint speed, uint count );
 
   /**
    * make the character stand

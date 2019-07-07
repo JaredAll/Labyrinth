@@ -96,13 +96,15 @@ private:
 
   /**
    * update the scene right
+   * @param count the character walking cycle count
    */
-  void right();
+  void right( uint count );
 
   /**
    * update the scene left
+   * @param count the character walking cycle count
    */
-  void left();
+  void left( uint count );
 
   /**
    * update the scene center

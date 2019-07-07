@@ -240,7 +240,7 @@ int main( int argc, char* argv[] )
 
   /* Initialize Scenes */
 
-  uint speed = 20;
+  uint speed = 10;
 
   vector< Character > characters;
   characters.push_back( doug );

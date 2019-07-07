@@ -56,12 +56,15 @@ void Character::gasp()
 }
   
 
-void Character::walk_right( uint speed )
+void Character::walk_right( uint speed, uint count )
 {
-  stride = ( stride + 1 ) % walking_clips.size();
+  if( count == 4 )
+  {
+    stride = ( stride + 1 ) % walking_clips.size();
+  }
+
   full_body.set_source( &walking_clips.at( stride ) );
   full_body.draw();
-
   
   set_position( x_pos + speed,
                 y_pos );
@@ -70,13 +73,15 @@ void Character::walk_right( uint speed )
   facing_left = false;
 }
 
-void Character::walk_left( uint speed )
+void Character::walk_left( uint speed, uint count )
 {
-  stride = ( stride + 1 ) % walking_clips.size();
+  if( count == 4 )
+  {
+    stride = ( stride + 1 ) % walking_clips.size();
+  }
+
   full_body.set_source( &walking_clips.at( stride ) );
   full_body.flip_draw();
-
-  
   set_position( x_pos - speed,
                 y_pos );
   facing_left = true;
@@ -138,12 +143,12 @@ void Character::follow( Character leader, uint speed )
     if( position_from_leader > 0 )
     {
       update_pos( true, speed );
-      walk_right( speed );
+      // walk_right( speed );
     }
     else if( position_from_leader < 0 )
     {
       update_pos( false, speed );
-      walk_left( speed );
+      // walk_left( speed );
     }
   }
   else

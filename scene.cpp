@@ -280,7 +280,7 @@ void Scene::center()
   ++counted_frames;
 }
 
-void Scene::right()
+void Scene::right( uint count )
 {
    
   SDL_RenderClear( renderer );
@@ -291,28 +291,30 @@ void Scene::right()
       main_char_pos >= stage_center_width )
   {
     background.draw();
-    main_character.update_pos( true, speed );
     draw_npcs();
     ducklings();
-    main_character.walk_right( speed );
+
+    cout << "count: " << count << endl;
+    main_character.stand();
+    main_character.walk_right( speed, count );
+    main_character.update_pos( true, speed );
   } 
   else
   {
     background.left( speed );
     background.draw();
     draw_npcs( false );
-    
-    ducklings( false );  
-    main_character.walk_right( speed );
+    ducklings( false );
+    main_character.walk_right( speed, count );
   }
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
-  SDL_Delay( 200 );
+  SDL_Delay( 50 );
 }
 
-void Scene::left()
+void Scene::left( uint count )
 {
   SDL_RenderClear( renderer );
 
@@ -322,26 +324,25 @@ void Scene::left()
       main_char_pos >= stage_center_width )
   {
     background.draw();
-    main_character.update_pos( false, speed );
     draw_npcs();
-    
     ducklings();
-    main_character.walk_left( speed );
+    main_character.stand();
+    main_character.walk_left( speed, count );
+    main_character.update_pos( false, speed );
   } 
   else
   {
     background.right( speed );
     background.draw();
     draw_npcs( true );
-    
-    ducklings( true );  
-    main_character.walk_left( speed );
+    ducklings( true ); 
+    main_character.walk_left( speed, count );
   }
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
-  SDL_Delay( 200 );
+  SDL_Delay( 50 );
 }
 
 void Scene::update_characters( bool left )
@@ -460,6 +461,7 @@ int Scene::play()
   bool in_bounds = true;
   bool play = true;
   bool linked_scene_entry = false;
+  uint count = 0;
 
   float avg_frames_per_second = 0;
   
@@ -521,11 +523,13 @@ int Scene::play()
         }
         if( e.key.keysym.sym == SDLK_RIGHT )
         {
-          right();
+          count = ( count + 1 ) % 5;
+          right( count );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {
-          left();
+          count = ( count + 1 ) % 5;
+          left( count );
         }
       }
       else
