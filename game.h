@@ -11,6 +11,7 @@
 #include "sceneJunction.h"
 #include "text_box.h"
 #include "panel.h"
+#include "scene_states.h"
 #include <map>
 
 using namespace std;
@@ -43,28 +44,26 @@ public:
   /**
    * add scene to game
    */
-  void add_scene( Scene scene );
-
-  /**
-   * add joined scene to game
-   */
-  void add_joined_scene( Scene scene );
+  void add_scene( Scene scene, uint scene_track );
 
   /**
    * join two scenes
    * @param scene1 the first scene
    * @param scene2 the second scene
    */
-  void join_scenes( uint scene1_pos, uint scene2_pos,
-                    int scene1_junction_pos, int scene2_junction_pos );
+  void join_scenes( uint track1_index,
+                    uint track2_index,
+                    uint scene1_pos,
+                    uint scene2_pos,
+                    int scene1_junction_pos,
+                    int scene2_junction_pos );
 
 
 private:
 
   vector< Panel > panels;
-  vector< Scene > scenes;
+  vector< vector< Scene > > scenes;
   vector< SceneJunction > scene_links;
-  vector< Scene > joined_scenes;
   uint current_scene;
 
 };

@@ -315,17 +315,31 @@ int main( int argc, char* argv[] )
   
   /* Create Game and Play */
 
+  uint above_ground = 0;
+  uint below_ground = 1;
+  uint indoors = 2;
+
   Game fatty_rolls = Game();
   fatty_rolls.set_introduction( introduction );
-  fatty_rolls.add_scene( cave_throne_room_scene );
-  fatty_rolls.add_scene( cave_entrance_scene );
-  fatty_rolls.add_scene( sketch_1 );
-  fatty_rolls.add_joined_scene( bush_inn );
-  fatty_rolls.add_joined_scene( bush_inn_2 );
-  fatty_rolls.add_scene( tree_scene );
+  fatty_rolls.add_scene( cave_throne_room_scene, below_ground );
+  fatty_rolls.add_scene( cave_entrance_scene, below_ground );
+  fatty_rolls.add_scene( sketch_1, above_ground );
+//  fatty_rolls.add_scene( bush_inn, 0 );
+  fatty_rolls.add_scene( bush_inn_2, indoors );
+  fatty_rolls.add_scene( tree_scene, above_ground );
 
-  fatty_rolls.join_scenes( 3, 0, 600, 0 );
-  fatty_rolls.join_scenes( 3, 1, 60, 0 );
+  fatty_rolls.join_scenes( above_ground,
+                           indoors,
+                           1, 0, 600, 0 );
+  
+  fatty_rolls.join_scenes( above_ground,
+                           indoors, 1, 0, 60, 0 );
+
+  fatty_rolls.join_scenes( above_ground,
+                           below_ground,
+                           0, 1, -scene_1_size, scene_3_size );
+  
+  // fatty_rolls.join_scenes( 0, 0, 0, 2, -1000, 0 );
 
   fatty_rolls.play();
 
