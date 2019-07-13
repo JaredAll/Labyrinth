@@ -161,6 +161,8 @@ int main( int argc, char* argv[] )
 
   SpriteLayer backdrop_sprite = SpriteLayer( "sprites/bg1.2.png",
                                              ren, 0, 0, 0 );
+  SpriteLayer conversation_backdrop =
+    SpriteLayer( "sprites/convobg.png", ren, 0, 0, 0 );
   
   SpriteLayer far_town = SpriteLayer( "sprites/town1.png", ren,
                                       400, 150, 2 );
@@ -185,7 +187,9 @@ int main( int argc, char* argv[] )
   Background bar_inside = Background( ren );
   Background cave_entrance = Background( ren );
   Background cave_throne_room = Background( ren );
-  
+  Background convo_background = Background( ren );
+
+  convo_background.add_layer( conversation_backdrop );
   berry_inn.add_layer( backdrop_sprite );
   trees.add_layer( backdrop_sprite );
   background.add_layer( backdrop_sprite );
@@ -273,7 +277,7 @@ int main( int argc, char* argv[] )
   uint scene_3_size = 500;
 
   Scene sketch_1 =
-    Scene( ren, background, characters, dirk,
+    Scene( ren, background, convo_background, characters, dirk,
 	   sketch_script, speed, scene_1_size );
 
   vector< Character > ts_chars;
@@ -285,24 +289,24 @@ int main( int argc, char* argv[] )
   vector< Character > no_characters;
   
   Scene tree_scene =
-    Scene( ren, trees, ts_chars, dirk, scene2_script, speed,
-      scene_2_size );
+    Scene( ren, trees, convo_background, ts_chars,
+           dirk, scene2_script, speed, scene_2_size );
 
   Scene bush_inn =
-    Scene( ren, berry_inn, bi_chars, dirk, scene2_script, speed,
-           scene_3_size );
+    Scene( ren, berry_inn, convo_background, bi_chars, dirk,
+           scene2_script, speed, scene_3_size );
 
   Scene bush_inn_2 =
-    Scene( ren, bar_inside, bi_chars, dirk, scene2_script, speed,
-           scene_3_size );
+    Scene( ren, bar_inside, convo_background, bi_chars, dirk,
+           scene2_script, speed, scene_3_size );
   
   Scene cave_entrance_scene =
-    Scene( ren, cave_entrance, no_characters, dirk, scene2_script,
-           speed, scene_3_size );
+    Scene( ren, cave_entrance, convo_background, no_characters,
+           dirk, scene2_script, speed, scene_3_size );
 
   Scene cave_throne_room_scene =
-    Scene( ren, cave_throne_room, no_characters, dirk,
-           scene2_script, speed, scene_3_size );
+    Scene( ren, cave_throne_room, convo_background, no_characters,
+           dirk, scene2_script, speed, scene_3_size );
       
   /* End Scenes */
 

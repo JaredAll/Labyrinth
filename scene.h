@@ -66,7 +66,9 @@ public:
    * @param main_character the main character
    * @param speed the speed
    */
-  Scene( SDL_Renderer *renderer, Background background,
+  Scene( SDL_Renderer *renderer,
+         Background background,
+         Background conversation_background,
          vector< Character > characters,
          Character main_character,
 	 Script scene_dialogue,
@@ -189,6 +191,7 @@ private:
   
   SDL_Renderer *renderer;
   Background background;
+  Background conversation_background;
   static vector< Character > following_characters;
   vector< Character > characters;
   Script scene_dialogue;

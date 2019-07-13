@@ -215,7 +215,7 @@ void Scene::convo( uint character_index, Conversation conversation,
         {
                 
           SDL_RenderClear( renderer );
-          background.draw();
+          conversation_background.draw();
           
           is_happy = true;
           
@@ -241,7 +241,7 @@ void Scene::convo( uint character_index, Conversation conversation,
         {
           
           SDL_RenderClear( renderer );
-          background.draw();
+          conversation_background.draw();
           
           is_happy = false;
 
@@ -415,6 +415,7 @@ vector< Character > Scene::following_characters;
 
 Scene::Scene(SDL_Renderer *param_renderer,
              Background param_background,
+             Background param_convo_background,
              vector< Character > param_characters,
              Character param_main_character,
 	     Script param_scene_dialogue,
@@ -422,6 +423,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
              uint param_stage_size )
   :
   background( param_background ),
+  conversation_background( param_convo_background ),
   characters( param_characters ),
   main_character( param_main_character ),
   speed( param_speed ),
@@ -607,7 +609,7 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   {
     uint milliseconds = 250;
     SDL_RenderClear( renderer );
-    background.draw();
+    conversation_background.draw();
     happy ? (*speaker).gasp() : (*speaker).happy();
     dialogue_display.display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
