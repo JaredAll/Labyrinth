@@ -449,11 +449,11 @@ Scene::Scene(SDL_Renderer *param_renderer,
 
 
 
-int Scene::play()
+Scene_States Scene::play()
 {
   SDL_Event e;
   bool push = false;
-  int status = 0;
+  Scene_States status = Scene_States::exit_right;
   bool in_bounds = true;
   bool play = true;
   bool linked_scene_entry = false;
@@ -471,20 +471,20 @@ int Scene::play()
     if( main_character.get_position().at( 0 ) > stage_right_pos )
     {
       in_bounds = false;
-      status = 0;
+      status = Scene_States::exit_right;
     }
 
     if( main_character.get_position().at( 0 ) < stage_left_pos )
     {
       in_bounds = false;
-      status = 1;
+      status = Scene_States::exit_left;
     }
     
     while( SDL_PollEvent( &e ) )
     {
       if( e.type == SDL_QUIT )
       {
-        status = 2;
+        status = Scene_States::quit;
         play = false;
       }
       if( e.type == SDL_KEYDOWN )
@@ -535,7 +535,7 @@ int Scene::play()
     }
     if( linked_scene_entry )
     {
-      status = 3;
+      status = Scene_States::switch_tracks;
     }
   }
   

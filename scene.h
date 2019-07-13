@@ -14,6 +14,7 @@
 #include "conversation.h"
 #include "script.h"
 #include "text_box.h"
+#include "scene_states.h"
 #include <unistd.h>
 
 using namespace std;
@@ -31,7 +32,7 @@ public:
   /**
    * plays the scene
    */
-  int play();
+  Scene_States play();
 
   /**
    * resets the scene

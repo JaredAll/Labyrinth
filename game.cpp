@@ -1,4 +1,5 @@
 #include "game.h"
+#include "scene_states.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ void Game::play()
     SDL_Event e;
     bool quit = false;
     bool main_track = true;
-    int status = 0;
+    Scene_States status = Scene_States::exit_right;
 
     while( !quit )
     {     
@@ -60,7 +61,7 @@ void Game::play()
         status = joined_scenes.at( current_scene ).play();
       }
     
-      if( status == 3 )
+      if( status == Scene_States::switch_tracks )
       {
         uint next_scene_pos;
         for( uint i = 0; i < scene_links.size(); i++ )
@@ -82,7 +83,7 @@ void Game::play()
         }
         current_scene = next_scene_pos;
       }
-      else if( status == 1 )
+      else if( status == Scene_States::exit_left )
       {
         if( main_track )
         {
@@ -101,7 +102,7 @@ void Game::play()
           joined_scenes.at( current_scene ).stage_left();
         }
       }
-      else if( status == 0 )
+      else if( status == Scene_States::exit_right )
       {
         if( main_track )
         {
