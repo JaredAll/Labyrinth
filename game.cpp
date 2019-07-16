@@ -34,7 +34,8 @@ void Game::join_scenes( uint track1_index,
 {
   scene_links.push_back(
     SceneJunction(
-      track1_index, track2_index, scene1_pos,  scene2_pos  ) );
+      track1_index, track2_index, scene1_pos,  scene2_pos,
+      scene1_junction_pos, scene2_junction_pos ) );
   
   scenes.at( track1_index )
     .at( scene1_pos )
@@ -58,20 +59,21 @@ void Game::play()
     SDL_Event e;
     bool quit = false;
     uint current_track = 0;
-    Scene_States status = Scene_States::exit_right;
+    Report report = { Scene_States::exit_right, 0 };
 
     while( !quit )
     {
-      status = scenes.at( current_track ).at( current_scene ).play();
+      report = scenes.at( current_track ).at( current_scene ).play();
     
-      if( status == Scene_States::switch_tracks )
+      if( report.status == Scene_States::switch_tracks )
       {
         uint next_scene_pos;
         uint next_track;
         for( uint i = 0; i < scene_links.size(); i++ )
         {
           if( scene_links.at( i )
-              .contains( current_scene, current_track ) )
+              .contains( current_scene, current_track,
+                report.character_position ) )
           {
             next_scene_pos =
               scene_links.at( i ).get_next_scene( current_track );
@@ -84,7 +86,7 @@ void Game::play()
         current_track = next_track;
         current_scene = next_scene_pos;
       }
-      else if( status == Scene_States::exit_left )
+      else if( report.status == Scene_States::exit_left )
       {
         if( current_scene > 0 )
         {
@@ -100,7 +102,7 @@ void Game::play()
             .stage_left();
         }
       }
-      else if( status == Scene_States::exit_right )
+      else if( report.status == Scene_States::exit_right )
       {
         if( current_scene < scenes.at( current_track ).size() - 1 )
         {

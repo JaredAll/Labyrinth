@@ -19,6 +19,12 @@
 
 using namespace std;
 
+struct Report
+{
+  Scene_States status;
+  int character_position;
+};
+
 
 /**
  * A scene class
@@ -32,7 +38,7 @@ public:
   /**
    * plays the scene
    */
-  Scene_States play();
+  Report play();
 
   /**
    * resets the scene
@@ -206,6 +212,8 @@ private:
   TTF_Font *font;
   Text_box dialogue_display;
   Text_box prompt_display;
+
+  Report report;
 
 };
 

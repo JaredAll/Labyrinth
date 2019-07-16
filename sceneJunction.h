@@ -23,7 +23,9 @@ public:
   SceneJunction( uint track1_index,
                  uint track2_index,
                  uint scene1_index,
-                 uint scene2_index );
+                 uint scene2_index,
+                 int scene1_link_position,
+                 int scene2_link_position );
 
   /**
    * default constructor
@@ -36,7 +38,9 @@ public:
   void link_scenes( uint track1_index,
                     uint track2_index,
                     uint scene1_index,
-                    uint scene2_index );
+                    uint scene2_index,
+                    int scene1_link_position,
+                    int scene2_link_position );
 
   /**
    * get next scene
@@ -55,7 +59,7 @@ public:
   /**
    * determine whether sceneJunction contains a scene
    */
-  bool contains( uint scene_pos, uint track_pos );
+  bool contains( uint scene_pos, uint track_pos, int link_position );
   
 private:
 
@@ -63,6 +67,8 @@ private:
   uint track2_index;
   uint scene1_index;
   uint scene2_index;
+  int scene1_link_position;
+  int scene2_link_position;
 
 
 };
