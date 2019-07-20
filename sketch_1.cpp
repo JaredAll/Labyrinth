@@ -54,7 +54,7 @@ int main( int argc, char* argv[] )
 
   /* Set Character Sprites */
 
-  uint character_plane_x = 450;
+  uint character_plane_x = 415;
   
   uint doug_x = 500;
   uint doug_y = character_plane_x;
@@ -63,7 +63,7 @@ int main( int argc, char* argv[] )
   uint knut_y = character_plane_x - 50;
 
   uint dirk_x = 500;
-  uint dirk_y = character_plane_x;
+  uint dirk_y = character_plane_x + 10;
 
   uint al_x = 200;
   uint al_y = character_plane_x - 50;
@@ -90,7 +90,7 @@ int main( int argc, char* argv[] )
     knut_x, character_plane_x - lunius_s.get_height() );
 
   dirk_s.set_position(
-    dirk_x, character_plane_x - dirk_s.get_height() );
+    dirk_x, character_plane_x - dirk_s.get_height() - 8 );
 
   al_s.set_position(
     al_x, character_plane_x - al_s.get_height() );
@@ -163,9 +163,9 @@ int main( int argc, char* argv[] )
                                              ren, 0, 0, 0 );
   
   SpriteLayer far_town = SpriteLayer( "sprites/town1.png", ren,
-                                      400, 150, 2 );
+                                      400, 110, 2 );
   SpriteLayer near_town = SpriteLayer( "sprites/town1.png", ren,
-                                      330, 35, 1 );
+                                      330, 2, 1 );
   SpriteLayer b_bush_1 = SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 1 );
   SpriteLayer b_bush_2 = SpriteLayer( "sprites/berrybush.png", ren,

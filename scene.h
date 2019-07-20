@@ -84,7 +84,7 @@ public:
          Character main_character,
 	 Script scene_dialogue,
 	 uint speed,
-         uint stage_size );
+         uint maximum_stage_displacement );
 
   /**
    * set scene junction
@@ -210,7 +210,7 @@ private:
   
   int stage_left_pos;
   int stage_right_pos;
-  int stage_size;
+  int maximum_stage_displacement;
   int window_size;
 
   vector< int > scene_junction_positions;

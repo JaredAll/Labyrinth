@@ -62,22 +62,14 @@ void Game::play()
     Report report = { Scene_States::exit_right, 0 };
 
     while( !quit )
-    {
-
-      cout << "current_track: " << current_track << endl;
-      cout << "current_scene: " << current_scene << endl;
-      cout << endl;
-      
+    {      
       report = scenes
         .at( current_track )
         .at( current_scene )
         .play();
     
       if( report.status == Scene_States::switch_tracks )
-      {
-        cout << "character position: " <<
-        report.character_position << endl;
-        
+      {        
         uint next_scene_pos;
         uint next_track;
         uint next_character_position;
@@ -99,7 +91,6 @@ void Game::play()
               scene_links.at( i )
               .get_next_character_position( current_scene,
                                             current_track );
-            cout << "found link." << endl;
           }
         }
 

@@ -286,10 +286,10 @@ void Scene::right( uint count )
    
   SDL_RenderClear( renderer );
 
-  int stage_center_width = stage_size - ( window_size / 2 );
+  int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
-  if( main_char_pos < ( -1 * stage_center_width ) ||
-      main_char_pos >= stage_center_width )
+  if( main_char_pos < ( -1 * stage_center_edge ) ||
+      main_char_pos >= stage_center_edge )
   {
     background.draw();
     draw_npcs();
@@ -316,11 +316,11 @@ void Scene::left( uint count )
 {
   SDL_RenderClear( renderer );
 
-  int stage_center_width = stage_size - ( window_size / 2 );
+  int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
   
-  if( main_char_pos < ( -1 * stage_center_width ) ||
-      main_char_pos >= stage_center_width )
+  if( main_char_pos < ( -1 * stage_center_edge ) ||
+      main_char_pos >= stage_center_edge )
   {
     background.draw();
     draw_npcs();
@@ -421,7 +421,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
              Character param_main_character,
 	     Script param_scene_dialogue,
 	     uint param_speed,
-             uint param_stage_size )
+             uint param_maximum_stage_displacement )
   :
   background( param_background ),
   characters( param_characters ),
@@ -429,14 +429,14 @@ Scene::Scene(SDL_Renderer *param_renderer,
   speed( param_speed ),
   renderer( param_renderer),
   scene_dialogue( param_scene_dialogue ),
-  stage_size( param_stage_size ),
+  maximum_stage_displacement( param_maximum_stage_displacement ),
   dialogue_display( 25, 25, 100, 300 ),
   prompt_display( 25, 400, 100, 300 )
 {
   
   window_size = 1000;
-  stage_left_pos = stage_size * -1;
-  stage_right_pos = stage_size;
+  stage_left_pos = maximum_stage_displacement * -1;
+  stage_right_pos = maximum_stage_displacement;
   
   TTF_Init();
   font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
@@ -559,16 +559,16 @@ void Scene::stage_left()
   int main_char_width = 20;
   
   int stage_width =
-    stage_size - ( window_size / 2 ) - main_char_width;
+    maximum_stage_displacement - ( window_size / 2 ) - main_char_width;
   background.reset( stage_width );
   
   main_character.set_stage_pos(
-    main_char_width, (-1 * stage_size + main_char_width ) );
+    main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
     following_characters.at( i ).set_stage_pos(
-    main_char_width, (-1 * stage_size + main_char_width ) );
+    main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
   }
 }
 
@@ -576,29 +576,44 @@ void Scene::stage_right()
 {
   int main_char_width = 20;
   int stage_width =
-    stage_size - ( window_size / 2 ) + 2 * main_char_width;
+    maximum_stage_displacement - ( window_size / 2 ) + 2 * main_char_width;
   background.reset( stage_width * -1 );
   
   main_character.set_stage_pos( window_size - 2 * main_char_width,
-                                stage_size - main_char_width );
+                                maximum_stage_displacement - main_char_width );
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
     following_characters.at( i ).set_stage_pos(
       window_size - 2 * main_char_width,
-      stage_size - main_char_width );
+      maximum_stage_displacement - main_char_width );
   }
 }
 
 void Scene::stage_junction( int junction_position )
 {
   int main_char_width = 20;
-  int stage_width =
-    stage_size - ( window_size / 2 ) + 2 * main_char_width;
-  background.reset( -1 * (junction_position - main_char_width) );
+  int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
+
+  int center_screen = window_size / 2;
+
+  int stage_center_left_edge = -1 * stage_center_edge;
+  int stage_center_right_edge = stage_center_edge;
+
+  background.reset( -1 * (junction_position + main_char_width) );
+
+  int new_screen_position = center_screen;
+  if( junction_position < stage_center_left_edge )
+  {
+    new_screen_position = center_screen - abs( stage_center_left_edge - junction_position );
+  }
+  else if( junction_position > stage_center_right_edge )
+  {
+    new_screen_position = center_screen + abs( stage_center_right_edge - junction_position ) - 4 * main_char_width;
+  }
   
   main_character
-    .set_stage_pos( window_size / 2,
+    .set_stage_pos( new_screen_position,
                     junction_position);
   
   for( uint i = 0; i < following_characters.size(); i++ )
