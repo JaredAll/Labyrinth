@@ -5,7 +5,7 @@ CXX_FLAGS = -Werror -pedantic-errors -O0 -Wno-c++98-compat-pedantic -Wno-padded 
 LINKER_FLAGS = $(SDL_LIB)
 
 
-all: sketch_1 sketch_2
+all: sketch_1
 
 sketch_1.o: sketch_1.cpp
 	$(CXX) $(CXX_FLAGS) -c sketch_1.cpp
@@ -31,12 +31,6 @@ scene.o: scene.h scene.cpp
 game.o: game.h game.cpp
 	$(CXX) $(CXX_FLAGS) -c game.cpp
 
-sketch_2: sketch_2.o
-	$(CXX) $(LINKER_FLAGS) -o sketch_2 sketch_2.o
-
-sketch_2.o: sketch_2.cpp
-	$(CXX) $(CXX_FLAGS) -c sketch_2.cpp
-
 script.o: script.h script.cpp
 	$(CXX) $(CXX_FLAGS) -c script.cpp
 
@@ -56,6 +50,6 @@ sketch_1: sketch_1.o sprite.o sprite_layer.o background.o character.o conversati
 	$(CXX) $(LINKER_FLAGS) -o sketch_1 sketch_1.o background.o sprite_layer.o character.o conversation.o scene.o sprite.o game.o script.o sceneJunction.o text_box.o panel.o easy_sdl.o
 
 clean:
-	rm *.o && rm sketch_1 && rm sketch_2
+	rm *.o && rm sketch_1
 build_linux:
-	cp *.o builds/linux/ && cp sketch_1 builds/linux/ && cp sketch_2 builds/linux/
+	cp *.o builds/linux/ && cp sketch_1 builds/linux/
