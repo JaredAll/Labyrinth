@@ -136,7 +136,6 @@ int main( int argc, char* argv[] )
   
   /* End Conversations */
 
-
   
   /* Create Characters */
 
@@ -304,6 +303,9 @@ int main( int argc, char* argv[] )
   Scene cave_throne_room_scene =
     Scene( ren, cave_throne_room, no_characters, dirk,
            scene2_script, speed, scene_3_size );
+
+  cave_throne_room_scene.add_interaction(
+    "Hello there, young adventurer...", 200, ren );
       
   /* End Scenes */
 

@@ -275,7 +275,8 @@ void Scene::center( uint count )
   prompt_speak();
 
   main_character.stand();
-  
+
+  prompt_interact();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
@@ -305,6 +306,7 @@ void Scene::right( uint count )
     ducklings( false, count );
     main_character.walk_right( speed, count );
   }
+  prompt_interact();
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
@@ -336,6 +338,7 @@ void Scene::left( uint count )
     ducklings( true, count ); 
     main_character.walk_left( speed, count );
   }
+  prompt_interact();
   prompt_speak();
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
@@ -503,6 +506,11 @@ Report Scene::play()
     {
       if( push )
       {
+        if( e.key.keysym.sym == SDLK_LSHIFT )
+        {
+          interact();
+          push = false;
+        }
         if( e.key.keysym.sym == SDLK_RSHIFT )
         {
           cout << "e" << endl;
@@ -652,4 +660,57 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   }
 }
 
+void Scene::add_interaction( string message,
+                             int scene_position,
+                             SDL_Renderer* renderer )
+{
+  interactions.push_back(
+    Interaction( message, scene_position, renderer ) );
+}
 
+void Scene::prompt_interact()
+{
+  string prompt_interact = "left shift to interact";
+ 
+  uint interact_proximity = 60;
+
+  for( uint i = 0; i < interactions.size(); i++ )
+  {
+    int distance_from_interaction =
+      abs( interactions.at( i ).get_scene_position() -
+           main_character.get_position().at( 0 ) );
+  
+    if( distance_from_interaction < interact_proximity )
+    {
+      prompt_display.display( prompt_interact, renderer, font,
+                              prompt_interact.length() );
+    }
+  } 
+}
+
+void Scene::interact()
+{
+  uint interact_proximity = 60;
+
+  uint interaction_index = 0;
+  bool interact = false;
+  
+  for( uint i = 0; i < interactions.size(); i++ )
+  {
+    int distance_from_interaction =
+      abs( interactions.at( i ).get_scene_position() -
+           main_character.get_position().at( 0 ) );
+  
+    if( distance_from_interaction < interact_proximity )
+    {
+      interaction_index = i;
+      interact = true;
+    }
+  }
+
+  if( interact )
+  {
+    cout << "interacting..." << endl;
+    interactions.at( interaction_index ).interact();
+  }
+}

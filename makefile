@@ -43,11 +43,14 @@ text_box.o: text_box.h text_box.cpp
 panel.o: panel.h panel.cpp
 	$(CXX) $(CXX_FLAGS) -c panel.cpp
 
+interaction.o: interaction.h interaction.cpp
+	$(CXX) $(CXX_FLAGS) -c interaction.cpp
+
 easy_sdl.o: easy_sdl.h easy_sdl.cpp
 	$(CXX) $(CXX_FLAGS) -c easy_sdl.cpp
 
-sketch_1: sketch_1.o sprite.o sprite_layer.o background.o character.o conversation.o scene.o game.o script.o sceneJunction.o text_box.o panel.o easy_sdl.o
-	$(CXX) $(LINKER_FLAGS) -o sketch_1 sketch_1.o background.o sprite_layer.o character.o conversation.o scene.o sprite.o game.o script.o sceneJunction.o text_box.o panel.o easy_sdl.o
+sketch_1: sketch_1.o sprite.o sprite_layer.o background.o character.o conversation.o scene.o game.o script.o sceneJunction.o text_box.o panel.o interaction.o easy_sdl.o
+	$(CXX) $(LINKER_FLAGS) -o sketch_1 sketch_1.o background.o sprite_layer.o character.o conversation.o scene.o sprite.o game.o script.o sceneJunction.o text_box.o panel.o interaction.o easy_sdl.o
 
 clean:
 	rm *.o && rm sketch_1

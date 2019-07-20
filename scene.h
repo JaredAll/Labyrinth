@@ -15,6 +15,7 @@
 #include "script.h"
 #include "text_box.h"
 #include "scene_states.h"
+#include "interaction.h"
 #include <unistd.h>
 
 using namespace std;
@@ -34,6 +35,23 @@ struct Report
 class Scene
 {
 public:
+
+  /** 
+   * add an interaction
+   */
+  void add_interaction( string message,
+                        int scene_position,
+                        SDL_Renderer* renderer );
+
+  /**
+   * prompt interaction
+   */
+  void prompt_interact();
+
+  /**
+   * perform interaction if within proximity
+   */
+  void interact();
 
   /**
    * Set the stage to a position based on the junction position
@@ -214,6 +232,7 @@ private:
   int window_size;
 
   vector< int > scene_junction_positions;
+  vector< Interaction > interactions;
   
   TTF_Font *font;
   Text_box dialogue_display;
