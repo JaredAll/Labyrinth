@@ -58,7 +58,7 @@ void Character::gasp()
 
 void Character::walk_right( uint speed, uint count )
 {
-  if( count == 4 )
+  if( count == 3 )
   {
     stride = ( stride + 1 ) % walking_clips.size();
   }
@@ -74,7 +74,7 @@ void Character::walk_right( uint speed, uint count )
 
 void Character::walk_left( uint speed, uint count )
 {
-  if( count == 4 )
+  if( count == 3 )
   {
     stride = ( stride + 1 ) % walking_clips.size();
   }

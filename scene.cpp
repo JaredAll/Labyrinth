@@ -521,12 +521,12 @@ Report Scene::play()
         }
         if( e.key.keysym.sym == SDLK_RIGHT )
         {
-          count = ( count + 1 ) % 5;
+          count = ( count + 1 ) % 4;
           right( count );
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {
-          count = ( count + 1 ) % 5;
+          count = ( count + 1 ) % 4;
           left( count );
         }
       }
