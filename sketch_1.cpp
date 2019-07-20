@@ -289,7 +289,8 @@ int main( int argc, char* argv[] )
       scene_2_size );
 
   Scene bush_inn =
-    Scene( ren, berry_inn, bi_chars, dirk, scene2_script, speed,
+    Scene( ren, bar_inside, no_characters, dirk,
+           scene2_script, speed,
            scene_3_size );
 
   Scene bush_inn_2 =
@@ -324,16 +325,16 @@ int main( int argc, char* argv[] )
   fatty_rolls.add_scene( cave_throne_room_scene, below_ground );
   fatty_rolls.add_scene( cave_entrance_scene, below_ground );
   fatty_rolls.add_scene( sketch_1, above_ground );
-//  fatty_rolls.add_scene( bush_inn, 0 );
+  fatty_rolls.add_scene( bush_inn, indoors ); 
   fatty_rolls.add_scene( bush_inn_2, indoors );
   fatty_rolls.add_scene( tree_scene, above_ground );
 
   fatty_rolls.join_scenes( above_ground,
                            indoors,
-                           1, 0, 600, 0 );
+                           1, 1, 600, -50 );
   
   fatty_rolls.join_scenes( above_ground,
-                           indoors, 1, 0, 60, 0 );
+                           indoors, 1, 0, 60, 50 );
 
   fatty_rolls.join_scenes( above_ground,
                            below_ground,
@@ -345,5 +346,4 @@ int main( int argc, char* argv[] )
 
   cleanup( ren, win );
   return 1;
-
 }

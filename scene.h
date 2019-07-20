@@ -36,6 +36,12 @@ class Scene
 public:
 
   /**
+   * Set the stage to a position based on the junction position
+   * @param junction position the position to set the stage to
+   */
+  void stage_junction( int junction_position );
+
+  /**
    * plays the scene
    */
   Report play();

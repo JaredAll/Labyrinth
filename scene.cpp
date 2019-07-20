@@ -5,7 +5,7 @@ uint counted_frames = 0;
 void Scene::speak()
 {
 
-  uint speak_proximity = 60;
+  uint speak_proximity = 60; 
   uint speak_index = 0;
   
   for( uint i = 0; i < following_characters.size(); i++ )
@@ -318,6 +318,7 @@ void Scene::left( uint count )
 
   int stage_center_width = stage_size - ( window_size / 2 );
   int main_char_pos = main_character.get_position().at( 0 );
+  
   if( main_char_pos < ( -1 * stage_center_width ) ||
       main_char_pos >= stage_center_width )
   {
@@ -586,6 +587,25 @@ void Scene::stage_right()
     following_characters.at( i ).set_stage_pos(
       window_size - 2 * main_char_width,
       stage_size - main_char_width );
+  }
+}
+
+void Scene::stage_junction( int junction_position )
+{
+  int main_char_width = 20;
+  int stage_width =
+    stage_size - ( window_size / 2 ) + 2 * main_char_width;
+  background.reset( -1 * (junction_position - main_char_width) );
+  
+  main_character
+    .set_stage_pos( window_size / 2,
+                    junction_position);
+  
+  for( uint i = 0; i < following_characters.size(); i++ )
+  {
+    following_characters.at( i ).set_stage_pos(
+      window_size / 2,
+      junction_position);
   }
 }
 

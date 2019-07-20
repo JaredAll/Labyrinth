@@ -44,17 +44,25 @@ public:
 
   /**
    * get next scene
-   * @param track the track of the next scene
-   * or not
+   * @param scene the scene of the current track
+   * @param track the track of the current scene
    */
-  uint get_next_scene( uint track );
+  uint get_next_scene( uint scene, uint track );
 
   /**
    * get next track
    * @param scene the scene of the current track
-   * or not
+   * @param track the track of the current scene
    */
-  uint get_next_track( uint scene );
+  uint get_next_track( uint scene, uint track );
+
+  /**
+   * get next character position
+   * updates the character position for the next scene
+   * @param scene the scene of the current track
+   * @param track the track of the current scene
+   */
+  int get_next_character_position( uint scene, uint track );
 
   /**
    * determine whether sceneJunction contains a scene

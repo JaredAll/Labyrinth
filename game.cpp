@@ -63,12 +63,24 @@ void Game::play()
 
     while( !quit )
     {
-      report = scenes.at( current_track ).at( current_scene ).play();
+
+      cout << "current_track: " << current_track << endl;
+      cout << "current_scene: " << current_scene << endl;
+      cout << endl;
+      
+      report = scenes
+        .at( current_track )
+        .at( current_scene )
+        .play();
     
       if( report.status == Scene_States::switch_tracks )
       {
+        cout << "character position: " <<
+        report.character_position << endl;
+        
         uint next_scene_pos;
         uint next_track;
+        uint next_character_position;
         for( uint i = 0; i < scene_links.size(); i++ )
         {
           if( scene_links.at( i )
@@ -76,15 +88,28 @@ void Game::play()
                 report.character_position ) )
           {
             next_scene_pos =
-              scene_links.at( i ).get_next_scene( current_track );
+              scene_links.at( i ).get_next_scene( current_scene,
+                                                  current_track );
             
             next_track = scene_links.at( i )
-              .get_next_track( current_scene );
+              .get_next_track( current_scene,
+                               current_track );
+
+            next_character_position =
+              scene_links.at( i )
+              .get_next_character_position( current_scene,
+                                            current_track );
+            cout << "found link." << endl;
           }
         }
 
         current_track = next_track;
         current_scene = next_scene_pos;
+        
+        scenes
+          .at( current_track )
+          .at( current_scene )
+          .stage_junction( next_character_position );
       }
       else if( report.status == Scene_States::exit_left )
       {
