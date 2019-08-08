@@ -304,8 +304,14 @@ int main( int argc, char* argv[] )
     Scene( ren, cave_throne_room, no_characters, dirk,
            scene2_script, speed, scene_3_size );
 
+  vector< string > king_monologue;
+  king_monologue.push_back("Hello there, young adventurer. Welcome to my humble cave.");
+  king_monologue.push_back("Go and save my people.");
+
+  
   cave_throne_room_scene.add_interaction(
-    "Hello there, young adventurer...", 200, ren );
+    king_monologue,
+    200, ren, 12 );
       
   /* End Scenes */
 
@@ -349,3 +355,4 @@ int main( int argc, char* argv[] )
   cleanup( ren, win );
   return 1;
 }
+

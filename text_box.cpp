@@ -11,6 +11,11 @@ Text_box::Text_box( uint param_x, uint param_y, uint param_h,
   display_box.w = width;
 }
 
+void Text_box::clear()
+{
+  letter_slots.clear();
+}
+
 void Text_box::display( string message, SDL_Renderer *renderer,
                         TTF_Font *font, uint letters )
 {

@@ -39,9 +39,10 @@ public:
   /** 
    * add an interaction
    */
-  void add_interaction( string message,
+  void add_interaction( vector< string > messages,
                         int scene_position,
-                        SDL_Renderer* renderer );
+                        SDL_Renderer* renderer,
+                        uint font_size );
 
   /**
    * prompt interaction

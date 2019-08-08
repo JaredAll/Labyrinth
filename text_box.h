@@ -35,6 +35,12 @@ public:
    */
   void display( string message, SDL_Renderer *renderer,
                 TTF_Font *font, uint letters );
+
+  /**
+   * clear message on text box
+   */
+  void clear();
+
   
 private:
 

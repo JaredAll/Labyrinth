@@ -660,12 +660,13 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   }
 }
 
-void Scene::add_interaction( string message,
+void Scene::add_interaction( vector< string > messages,
                              int scene_position,
-                             SDL_Renderer* renderer )
+                             SDL_Renderer* renderer,
+                             uint font_size )
 {
   interactions.push_back(
-    Interaction( message, scene_position, renderer ) );
+    Interaction( messages, scene_position, renderer, font_size ) );
 }
 
 void Scene::prompt_interact()
@@ -711,6 +712,6 @@ void Scene::interact()
   if( interact )
   {
     cout << "interacting..." << endl;
-    interactions.at( interaction_index ).interact();
+    interactions.at( interaction_index ).interact( background );
   }
 }

@@ -31,14 +31,23 @@ public:
   /**
    * Constructor
    */
-  Interaction( string message,
+  Interaction( vector< string > messages,
                int param_scene_position,
                SDL_Renderer* renderer );
 
   /**
-   * executes the interaction
+   * Constructor with font size
    */
-  void interact();
+  Interaction( vector< string > messages,
+               int param_scene_position,
+               SDL_Renderer* renderer,
+               uint font_size );
+
+  /**
+   * executes the interaction
+   * @param background the background of the scene
+   */
+  void interact( Background background );
 
   /**
    * get the scene position
@@ -52,12 +61,12 @@ private:
    * scroll text in display
    */
   void scroll_text( string message, SDL_Renderer *renderer,
-                    TTF_Font *font );
+                    TTF_Font *font, Background background );
 
   Text_box main_display;
   TTF_Font* font;
   SDL_Renderer* renderer;
-  string message;
+  vector< string > messages;
   int scene_position;
 
 };
