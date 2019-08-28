@@ -39,7 +39,7 @@ public:
   /** 
    * add an interaction
    */
-  void add_interaction( string message,
+  void add_interaction( vector< string > messages,
                         int scene_position,
                         SDL_Renderer* renderer );
 
@@ -212,19 +212,37 @@ private:
                         TTF_Font *font, Character *speaker,
                         bool happy );
 
+
+  /**
+   * scroll dialogue
+   * @param message the message to display
+   * @param renderer the renderer
+   * @param font the font
+   */
+  void scroll_dialogue( string message, SDL_Renderer *renderer,
+                        TTF_Font *font );
+
+  
   /**
    * fade into and out of scenes
    * @param left the direction
    */
   void scene_fade( bool left );
+
+  /**
+   * perform an interaction with the scene
+   * @param interaction the interaction to perform
+   */
+  void perform_interaction( Interaction interaction );
   
   SDL_Renderer *renderer;
   Background background;
   static vector< Character > following_characters;
   vector< Character > characters;
   Script scene_dialogue;
+  
   Character main_character;
-  uint speed;
+  uint speed; 
   
   int stage_left_pos;
   int stage_right_pos;

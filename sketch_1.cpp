@@ -304,8 +304,13 @@ int main( int argc, char* argv[] )
     Scene( ren, cave_throne_room, no_characters, dirk,
            scene2_script, speed, scene_3_size );
 
+  vector< string > cave_throne_interaction_messages;
+  cave_throne_interaction_messages.push_back( "Hello there, young adventurer..." );
+    cave_throne_interaction_messages.push_back( "You must aid me in my hour of need." );
+    
   cave_throne_room_scene.add_interaction(
-    "Hello there, young adventurer...", 200, ren );
+    cave_throne_interaction_messages, 200, ren );
+
       
   /* End Scenes */
 

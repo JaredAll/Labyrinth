@@ -31,14 +31,9 @@ public:
   /**
    * Constructor
    */
-  Interaction( string message,
+  Interaction( vector< string > messages,
                int param_scene_position,
                SDL_Renderer* renderer );
-
-  /**
-   * executes the interaction
-   */
-  void interact();
 
   /**
    * get the scene position
@@ -46,18 +41,25 @@ public:
    */
   int get_scene_position();
 
-private:
+  /**
+   * get the length of the interaction
+   * @return the length of the interaction
+   */
+  uint get_interaction_length();
 
   /**
-   * scroll text in display
+   * get the message at the given position
+   * @param index the index of the message
+   * @return the message
    */
-  void scroll_text( string message, SDL_Renderer *renderer,
-                    TTF_Font *font );
+  string get_message( uint index );
+
+private:
 
   Text_box main_display;
   TTF_Font* font;
   SDL_Renderer* renderer;
-  string message;
+  vector< string > messages;
   int scene_position;
 
 };

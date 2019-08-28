@@ -660,12 +660,30 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   }
 }
 
-void Scene::add_interaction( string message,
+void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
+                             TTF_Font *font )
+{
+  for( uint letters = 0; letters <= message.length();
+       letters++ )
+  {
+    uint milliseconds = 250;
+    SDL_RenderClear( renderer );
+    background.draw();
+    main_character.stand();
+    dialogue_display.display( message, renderer, font, letters );
+    SDL_RenderPresent( renderer );
+    ++counted_frames;
+    usleep( milliseconds * milliseconds );
+  }
+}
+
+
+void Scene::add_interaction( vector< string > messages,
                              int scene_position,
                              SDL_Renderer* renderer )
 {
   interactions.push_back(
-    Interaction( message, scene_position, renderer ) );
+    Interaction( messages, scene_position, renderer ) );
 }
 
 void Scene::prompt_interact()
@@ -711,6 +729,55 @@ void Scene::interact()
   if( interact )
   {
     cout << "interacting..." << endl;
-    interactions.at( interaction_index ).interact();
+    perform_interaction( interactions.at( interaction_index ) );
+  }
+}
+
+void Scene::perform_interaction( Interaction interaction )
+{
+  SDL_RenderClear( renderer );
+  background.draw();
+
+  uint interaction_position = 0;
+  
+  string current_message
+    = interaction.get_message( interaction_position );
+  
+  uint interaction_length = interaction.get_interaction_length();
+
+  bool interacting = true;
+  bool next = true;
+  SDL_Event e;
+  while( interacting )
+  {
+    while( SDL_PollEvent( &e ) )
+    {
+      if( next && interaction_position < interaction_length )
+      {
+        scroll_dialogue(
+          interaction.get_message(
+            interaction_position ), renderer, font );
+        
+        next = false;
+      }
+
+      if( interaction_position == interaction_length )
+      {
+        interacting = false;
+      }
+      
+      if( e.type == SDL_KEYDOWN )
+      {
+        if( e.key.keysym.sym == SDLK_RIGHT )
+        {
+          next = true;
+          interaction_position++;
+        }
+        else
+        {
+          interacting = false;
+        }
+      }
+    }
   }
 }

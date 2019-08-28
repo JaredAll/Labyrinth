@@ -1,9 +1,9 @@
 #include "interaction.h"
 
-Interaction::Interaction( string param_message,
+Interaction::Interaction( vector< string > param_messages,
                           int param_scene_position,
                           SDL_Renderer* param_renderer ) :
-  message( param_message ),
+  messages( param_messages ),
   scene_position( param_scene_position ),
   main_display( 200, 200, 200, 400 ),
   renderer( param_renderer )
@@ -18,39 +18,14 @@ Interaction::Interaction( string param_message,
   }
 }
 
-void Interaction::interact()
+uint Interaction::get_interaction_length()
 {
-  bool end = false;
-  bool quit = false;
-  SDL_Event e;
-
-  scroll_text( message, renderer, font );
-  
-  while( !end && !quit )
-  {
-    SDL_PollEvent( &e );
-    if( e.type == SDL_QUIT )
-    {
-      quit = true;
-    }
-    if( e.type == SDL_KEYDOWN )
-    {
-      end = true;
-    }
-  }
+  return messages.size();
 }
 
-void Interaction::scroll_text( string message,
-                               SDL_Renderer* renderer,
-                               TTF_Font *font )
+string Interaction::get_message( uint index )
 {
-  for( uint letters = 0; letters < message.size(); letters++ )
-  {
-    uint milliseconds = 250;
-    main_display.display( message, renderer, font, letters );
-    usleep( milliseconds * milliseconds );
-    SDL_RenderPresent( renderer );
-  }
+  return messages.at( index );
 }
 
 int Interaction::get_scene_position()
