@@ -608,17 +608,20 @@ void Scene::stage_junction( int junction_position )
   int stage_center_left_edge = -1 * stage_center_edge;
   int stage_center_right_edge = stage_center_edge;
 
-  background.reset( -1 * (junction_position + main_char_width) );
-
   int new_screen_position = center_screen;
+  int new_background_position = ( -1 * junction_position + main_char_width );
   if( junction_position < stage_center_left_edge )
   {
     new_screen_position = center_screen - abs( stage_center_left_edge - junction_position );
+    new_background_position = stage_center_right_edge;
   }
   else if( junction_position > stage_center_right_edge )
   {
     new_screen_position = center_screen + abs( stage_center_right_edge - junction_position ) - 4 * main_char_width;
+    new_background_position = stage_center_left_edge;
   }
+
+  background.reset( new_background_position );
   
   main_character
     .set_stage_pos( new_screen_position,
@@ -627,7 +630,7 @@ void Scene::stage_junction( int junction_position )
   for( uint i = 0; i < following_characters.size(); i++ )
   {
     following_characters.at( i ).set_stage_pos(
-      window_size / 2,
+      new_screen_position,
       junction_position);
   }
 }
@@ -669,7 +672,13 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
     uint milliseconds = 250;
     SDL_RenderClear( renderer );
     background.draw();
+    
     main_character.stand();
+    for( Character follower : following_characters )
+    {
+      follower.stand();
+    }
+    
     dialogue_display.display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
     ++counted_frames;
