@@ -562,6 +562,18 @@ void Scene::reset()
   }
 }
 
+void Scene::stage_left_barrier()
+{
+  int main_char_width = 20;
+  
+  int stage_width =
+    maximum_stage_displacement - ( window_size / 2 ) - main_char_width;
+  
+  main_character.set_stage_pos(
+    main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
+}
+
+
 void Scene::stage_left()
 {
   int main_char_width = 20;
@@ -597,6 +609,18 @@ void Scene::stage_right()
       maximum_stage_displacement - main_char_width );
   }
 }
+
+
+void Scene::stage_right_barrier()
+{
+  int main_char_width = 20;
+  int stage_width =
+    maximum_stage_displacement - ( window_size / 2 ) + 2 * main_char_width;
+  
+  main_character.set_stage_pos( window_size - 2 * main_char_width,
+                                maximum_stage_displacement - main_char_width );  
+}
+
 
 void Scene::stage_junction( int junction_position )
 {
