@@ -115,7 +115,7 @@ void Game::play()
         {
           scenes.at( current_track )
             .at( current_scene )
-            .stage_left();
+            .stage_left_barrier();
         }
       }
       else if( report.status == Scene_States::exit_right )
@@ -131,7 +131,7 @@ void Game::play()
         {
           scenes.at( current_track )
             .at( current_scene )
-            .stage_right();
+            .stage_right_barrier();
         }
       }
       else

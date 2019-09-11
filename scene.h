@@ -80,9 +80,19 @@ public:
   void stage_left();
 
   /**
+   * sets the scene to the left barrier
+   */
+  void stage_left_barrier();
+
+  /**
    * sets the scene to the right
    */
   void stage_right();
+
+  /** 
+   * sets the scene to the right barrier
+   */
+  void stage_right_barrier();
 
   /**
    * adds conversation to scene
