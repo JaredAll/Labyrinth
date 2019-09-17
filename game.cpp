@@ -58,7 +58,7 @@ void Game::play()
   {
     SDL_Event e;
     bool quit = false;
-    uint current_track = 0;
+    uint current_track = 1;
     Report report = { Scene_States::exit_right, 0 };
 
     while( !quit )
