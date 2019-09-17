@@ -312,6 +312,8 @@ int main( int argc, char* argv[] )
   vector< string > cave_throne_interaction_messages;
   cave_throne_interaction_messages.push_back( "Hello there, young adventurer..." );
   cave_throne_interaction_messages.push_back( "You must aid me in my hour of need." );
+    cave_throne_interaction_messages.push_back( "Mankind has enslaved our people." );
+      cave_throne_interaction_messages.push_back( "Go, and return with heroes capable of setting them free." );
     
   cave_throne_room_scene.add_interaction(
     cave_throne_interaction_messages, 200, ren );
