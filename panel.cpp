@@ -3,7 +3,7 @@
 
 Panel::Panel( Background param_background,
               SDL_Renderer* param_ren ) :
-  main_display( 200, 200, 200, 200 ),
+  main_display( 200, 200, 200, 600 ),
   sub_display( 225, 275, 100, 400 ),
   background( param_background ),
   renderer( param_ren )
@@ -27,7 +27,7 @@ bool Panel::display()
   {
     background.draw();
       
-    string main_message = "LABYRINTH";
+    string main_message = "DENIZEN DIRK";
     main_display.display( main_message, renderer, font,
                           main_message.length() );
     
