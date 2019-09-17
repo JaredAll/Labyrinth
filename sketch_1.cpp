@@ -65,20 +65,21 @@ int main( int argc, char* argv[] )
   uint dirk_x = 500;
   uint dirk_y = character_plane_x + 10;
 
-  uint al_x = 200;
+  uint al_x = 1950;
   uint al_y = character_plane_x - 50;
   
   Sprite doug_s =
     Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
 
   Sprite lunius_s = 
-        Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
+    Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
 
   Sprite dirk_s = Sprite( "sprites/dirkwalk.png", ren, dirk_x,
-                               dirk_y );
+                          dirk_y );
 
   Sprite al_s = Sprite( "sprites/walkingAL.png", ren, al_x, al_y );
-  
+
+  Sprite al_faces = Sprite( "sprites/faces_AL2.png", ren, 400, 0 );
   Sprite knut_faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
   Sprite doug_faces = Sprite( "sprites/dougFsheet.png", ren, 400,
 			      0 );
@@ -108,6 +109,12 @@ int main( int argc, char* argv[] )
 
   Conversation lunius_s1_c2 =
     Conversation( "convos/lunius_s1_c2.txt", ren );
+
+  Conversation al_s1_c1 =
+    Conversation( "convos/al_s1_c1.txt", ren );
+
+  Conversation al_s2_c1 =
+    Conversation( "convos/al_s2_c1.txt", ren );
   
   char lunius_angry_response[ 100 ] = "I hate humans.";
   lunius_s1_c1.set_angry_response( lunius_angry_response, ren );
@@ -131,9 +138,6 @@ int main( int argc, char* argv[] )
     Conversation( "convos/lunius_s2_c1.txt", ren );
   lunius_s2_c1.set_angry_response( lunius_angry_response, ren );
 
-  Conversation al_s1_c1 =
-    Conversation( "convos/al_s1_c1.txt", ren );
-  
   /* End Conversations */
 
   
@@ -150,7 +154,7 @@ int main( int argc, char* argv[] )
                                 lunius_s, knut_faces, 0, 0, 0,
 				4, 2 );
 
-  Character al = Character( "al", al_s, knut_faces, 0, 0, 0, 4, 2 );
+  Character al = Character( "al", al_s, al_faces, 0, 0, 0, 4, 2 );
   
   /* End Create Characters */
 
@@ -164,7 +168,7 @@ int main( int argc, char* argv[] )
   SpriteLayer far_town = SpriteLayer( "sprites/town1.png", ren,
                                       400, 110, 2 );
   SpriteLayer near_town = SpriteLayer( "sprites/town1.png", ren,
-                                      330, 2, 1 );
+                                       330, 2, 1 );
   SpriteLayer b_bush_1 = SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 1 );
   SpriteLayer b_bush_2 = SpriteLayer( "sprites/berrybush.png", ren,
@@ -175,7 +179,7 @@ int main( int argc, char* argv[] )
     "sprites/bar_inside.png", ren, 0, 0, 0 );
   SpriteLayer cave_entrance_s = SpriteLayer(
     "sprites/cave_entrance.png", ren, 0, 0, 0 );
-    SpriteLayer cave_throne_room_s = SpriteLayer(
+  SpriteLayer cave_throne_room_s = SpriteLayer(
     "sprites/cavethroneroom.png", ren, 0, 0, 0 );
   
   Background background = Background( ren );
@@ -198,7 +202,7 @@ int main( int argc, char* argv[] )
     uint ground_y = 110;
     uint ground_x = 0 + 500 * i;
     SpriteLayer ground_2 = SpriteLayer( "sprites/grass1.png", ren,
-                                    ground_x, ground_y, 2 );
+                                        ground_x, ground_y, 2 );
     SpriteLayer ground_2_c = SpriteLayer ( "sprites/grass1.png", ren,
                                            ground_x, 160, 2 );
     trees.add_layer( ground_2 );
@@ -213,9 +217,9 @@ int main( int argc, char* argv[] )
     uint ground_y = 0;
     uint ground_x = 0 + 1000 * i;
     SpriteLayer ground = SpriteLayer( "sprites/grass1.png", ren,
-                                    ground_x, ground_y, 1 );
+                                      ground_x, ground_y, 1 );
     SpriteLayer ground_2 = SpriteLayer( "sprites/grass1.png", ren,
-                                    ground_x, ground_y, 2 );
+                                        ground_x, ground_y, 2 );
     background.add_layer( ground );
     trees.add_layer( ground );
     berry_inn.add_layer( ground );
@@ -264,8 +268,9 @@ int main( int argc, char* argv[] )
   scene2_script.insert_recruit_conversation( &doug, doug_s2_c1 );
   scene2_script.insert_recruit_conversation( &lunius, lunius_s1_c1 );
   scene2_script.insert_conversation( &lunius, lunius_s2_c1 );
-  scene2_script.insert_recruit_conversation ( &al, lunius_s1_c1 );
-  scene2_script.insert_conversation( &al, lunius_s2_c1 );
+  
+  scene2_script.insert_recruit_conversation( &al, al_s1_c1 );
+  scene2_script.insert_conversation( &al, al_s2_c1 );
 
   uint scene_1_size = 1000;
   uint scene_2_size = 1500;
@@ -277,15 +282,15 @@ int main( int argc, char* argv[] )
 
   vector< Character > ts_chars;
   ts_chars.push_back( lunius );
+  ts_chars.push_back( al );
   
   vector< Character > bi_chars;
-  bi_chars.push_back( al );
 
   vector< Character > no_characters;
   
   Scene tree_scene =
     Scene( ren, trees, ts_chars, dirk, scene2_script, speed,
-      scene_2_size );
+           scene_2_size );
 
   Scene bush_inn =
     Scene( ren, bar_inside, no_characters, dirk,
@@ -306,7 +311,7 @@ int main( int argc, char* argv[] )
 
   vector< string > cave_throne_interaction_messages;
   cave_throne_interaction_messages.push_back( "Hello there, young adventurer..." );
-    cave_throne_interaction_messages.push_back( "You must aid me in my hour of need." );
+  cave_throne_interaction_messages.push_back( "You must aid me in my hour of need." );
     
   cave_throne_room_scene.add_interaction(
     cave_throne_interaction_messages, 200, ren );

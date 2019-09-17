@@ -398,18 +398,18 @@ void Scene::ducklings( uint count )
 void Scene::draw_npcs( bool left )
 {
   for( uint i = 0; i < characters.size(); i++ )
-    {
-      characters.at( i ).update_pos( left, speed );
-      characters.at( i ).stand();
-    }
+  {
+    characters.at( i ).update_pos( left, speed );
+    characters.at( i ).stand();
+  }
 }
 
 void Scene::draw_npcs()
 {
   for( uint i = 0; i < characters.size(); i++ )
-    {
-      characters.at( i ).stand();
-    }
+  {
+    characters.at( i ).stand();
+  }
 }
 
 vector< Character > Scene::following_characters;
@@ -450,9 +450,6 @@ Scene::Scene(SDL_Renderer *param_renderer,
   }
   
 }
-
-
-
 
 Report Scene::play()
 {
@@ -588,7 +585,7 @@ void Scene::stage_left()
   for( uint i = 0; i < following_characters.size(); i++ )
   {
     following_characters.at( i ).set_stage_pos(
-    main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
+      main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
   }
 }
 
