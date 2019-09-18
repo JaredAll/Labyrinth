@@ -1,0 +1,6 @@
+add jumping and digging, other cool items
+build world out -- add prompts and quirky interactions
+more engaging dialogue
+match art with prompts, and prompts with art
+fix memory issues
+make controls more intuitive and safe guard against bad input
