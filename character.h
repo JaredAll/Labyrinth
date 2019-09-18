@@ -82,7 +82,7 @@ public:
   /**
    * make NPCs follow the character
    */
-  void follow( Character leader, uint speed, uint count );
+  void follow( Character* leader, uint speed, uint count );
 
   
   /**
@@ -103,7 +103,7 @@ public:
   /**
    * determine if two characters are equal
    */
-  bool equals( Character character );
+  bool equals( Character *character );
 
   /**
    * gets the name of the character

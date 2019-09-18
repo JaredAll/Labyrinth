@@ -1,6 +1,6 @@
 #include "script.h"
 
-Conversation Script::speak_to( Character* character )
+Conversation* Script::speak_to( Character* character )
 {
 
   cout << endl;
@@ -8,7 +8,7 @@ Conversation Script::speak_to( Character* character )
   uint speaker_index = UINT_MAX;
   for( uint i = 0; i < characters.size(); i++ )
   {
-    if( (*characters.at( i ) ).equals( *character ) )
+    if( characters.at( i ) -> equals( character ) )
     {
       speaker_index = i;
     }
@@ -23,7 +23,7 @@ Conversation Script::speak_to( Character* character )
       characters.at( speaker_index ) ) -> second;
   }
 
-  vector< Conversation > dialogue;  
+  vector< Conversation* > dialogue;  
   dialogue = conversations.find(
     characters.at( speaker_index ) ) -> second;
 
@@ -43,18 +43,18 @@ characters( param_characters )
 {
   for( uint i = 0; i < characters.size(); i++ )
   {
-    vector< Conversation > dialogue;
+    vector< Conversation* > dialogue;
     conversations.insert( { characters.at( i ), dialogue } );
     lines.insert( { characters.at( i ), 0 } );
 
-    Conversation this_recruit_conversation;
+    Conversation* this_recruit_conversation;
     recruit_conversations.insert( { characters.at( i ),
           this_recruit_conversation } );
   }
 }
 
 void Script::insert_conversation( Character* character,
-				  Conversation conversation )
+				  Conversation *conversation )
 {
   ( conversations.find( character ) -> second ).push_back( conversation );
   
@@ -62,7 +62,7 @@ void Script::insert_conversation( Character* character,
 
 void Script::insert_recruit_conversation(
   Character* character,
-  Conversation conversation )
+  Conversation *conversation )
 {
   ( recruit_conversations.find( character ) -> second ) =
     conversation;

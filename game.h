@@ -39,12 +39,12 @@ public:
    * sets the introduction panel of the game
    * @param panel the introduction panel
    */
-  void set_introduction( Panel panel );
+  void set_introduction( Panel* panel );
 
   /**
    * add scene to game
    */
-  void add_scene( Scene scene, uint scene_track );
+  void add_scene( Scene* scene, uint scene_track );
 
   /**
    * join two scenes
@@ -61,9 +61,9 @@ public:
 
 private:
 
-  vector< Panel > panels;
-  vector< vector< Scene > > scenes;
-  vector< SceneJunction > scene_links;
+  vector< Panel* > panels;
+  vector< vector< Scene* > > scenes;
+  vector< SceneJunction* > scene_links;
   uint current_scene;
 
 };

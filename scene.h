@@ -62,7 +62,7 @@ public:
   /**
    * plays the scene
    */
-  Report play();
+  Report* play();
 
   /**
    * resets the scene
@@ -72,7 +72,7 @@ public:
   /**
    * adds a following character
    */
-  void add_follower( Character character );
+  void add_follower( Character* character );
 
   /**
    * sets the scene to the left
@@ -97,7 +97,7 @@ public:
   /**
    * adds conversation to scene
    */
-  void add_conversation( Conversation conversation );
+  void add_conversation( Conversation* conversation );
 
   /**
    * Constructor
@@ -107,10 +107,10 @@ public:
    * @param main_character the main character
    * @param speed the speed
    */
-  Scene( SDL_Renderer *renderer, Background background,
-         vector< Character > characters,
-         Character main_character,
-	 Script scene_dialogue,
+  Scene( SDL_Renderer *renderer, Background* background,
+         vector< Character* > characters,
+         Character* main_character,
+	 Script* scene_dialogue,
 	 uint speed,
          uint maximum_stage_displacement );
 
@@ -132,8 +132,8 @@ private:
    * @param conversation the conversation
    * @param following if the character is currently following
    */
-  void convo( uint character_index, Conversation conversation,
-    bool following );
+  void convo( uint character_index, Conversation* conversation,
+              bool following );
 
   /**
    * update the scene right
@@ -243,15 +243,15 @@ private:
    * perform an interaction with the scene
    * @param interaction the interaction to perform
    */
-  void perform_interaction( Interaction interaction );
+  void perform_interaction( Interaction* interaction );
   
   SDL_Renderer *renderer;
-  Background background;
-  static vector< Character > following_characters;
-  vector< Character > characters;
-  Script scene_dialogue;
+  Background* background;
+  static vector< Character* > following_characters;
+  vector< Character* > characters;
+  Script* scene_dialogue;
   
-  Character main_character;
+  Character* main_character;
   uint speed; 
   
   int stage_left_pos;
@@ -260,13 +260,13 @@ private:
   int window_size;
 
   vector< int > scene_junction_positions;
-  vector< Interaction > interactions;
+  vector< Interaction* > interactions;
   
   TTF_Font *font;
-  Text_box dialogue_display;
-  Text_box prompt_display;
+  Text_box* dialogue_display;
+  Text_box* prompt_display;
 
-  Report report;
+  Report* report;
 
 };
 

@@ -34,7 +34,7 @@ class Script
    * @param character the character to speak to
    * @return the conversation to be had
    */
-  Conversation speak_to( Character* character );
+  Conversation* speak_to( Character* character );
 
   /**
    * insert new conversation into a character's dialogue
@@ -42,7 +42,7 @@ class Script
    * @param conversation the conversation pointer
    */
   void insert_conversation( Character* character, Conversation
-			    conversation );
+			    *conversation );
 
   /**
    * insert recruitment conversation into a character's dialogue
@@ -51,14 +51,14 @@ class Script
    */
   void insert_recruit_conversation(
     Character* character,
-    Conversation conversation );
+    Conversation *conversation );
 
   
  private:
 
   vector< Character* > characters;
-  map< Character*, vector< Conversation > > conversations;
-  map< Character*, Conversation > recruit_conversations;
+  map< Character*, vector< Conversation* > > conversations;
+  map< Character*, Conversation* > recruit_conversations;
   map< Character*, uint > lines;
 
 

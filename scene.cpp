@@ -12,14 +12,14 @@ void Scene::speak()
   {
     int distance_from_speaker =
       abs( following_characters.at( i )
-           .get_screen_position().at( 0 ) -
-           main_character.get_screen_position().at( 0 ) );
+           -> get_screen_position().at( 0 ) -
+           main_character -> get_screen_position().at( 0 ) );
     
     if( distance_from_speaker < speak_proximity )
     {
       speak_index = i;
       convo( speak_index,
-             scene_dialogue.speak_to( &following_characters.at(
+             scene_dialogue -> speak_to( following_characters.at(
                                         speak_index ) ), true );
     }
   }
@@ -36,17 +36,17 @@ bool Scene::recruit()
   for( uint i = 0; i < characters.size(); i++ )
   {
     int distance_from_recruit =
-      abs( characters.at( i ).get_screen_position().at( 0 ) -
-           main_character.get_screen_position().at( 0 ) );
+      abs( characters.at( i ) -> get_screen_position().at( 0 ) -
+           main_character -> get_screen_position().at( 0 ) );
     if( distance_from_recruit < recruit_proximity )
     {
       recruit_index = i;
       found_recruit = true;
       convo( recruit_index,
-             scene_dialogue.speak_to( &characters.at(
+             scene_dialogue -> speak_to( characters.at(
                                         recruit_index ) ), false );
       recruit_success = confirm_recruit(
-        &characters.at( recruit_index ) );
+        characters.at( recruit_index ) );
       
     }
   }
@@ -54,7 +54,7 @@ bool Scene::recruit()
   if( recruit_success )
   {
     following_characters.push_back( characters.at( recruit_index ) );
-    vector< Character > remaining_characters;
+    vector< Character* > remaining_characters;
     for( uint i = 0; i < characters.size(); i++ )
     {
       if( i != recruit_index )
@@ -73,11 +73,11 @@ bool Scene::confirm_recruit( Character* character )
   string prompt_recruitment = "Recruit? y/n";
   
   SDL_RenderClear( renderer );
-  background.draw();
+  background -> draw();
           
-  (*character).gasp();
+  character -> gasp();
   
-  prompt_display.display( prompt_recruitment, renderer, font,
+  prompt_display -> display( prompt_recruitment, renderer, font,
                           prompt_recruitment.length() );
   SDL_RenderPresent( renderer );
   ++counted_frames;
@@ -95,7 +95,7 @@ bool Scene::confirm_recruit( Character* character )
         if( e.key.keysym.sym == SDLK_y )
         {
           recruit = true;
-          (*character).set_recruited();
+          character -> set_recruited();
         }
         else if( e.key.keysym.sym == SDLK_n )
         {
@@ -118,20 +118,20 @@ bool Scene::enter()
   { 
     int distance_from_entry =
       abs( scene_junction_positions.at( i ) -
-           main_character.get_position().at( 0 ) );
+           main_character -> get_position().at( 0 ) );
   
     if( distance_from_entry < entry_proximity )
     {
       entry = true;
-      report.character_position = scene_junction_positions.at( i );
+      report -> character_position = scene_junction_positions.at( i );
 
       for( uint i = 0; i < following_characters.size(); i++ )
       {
-        following_characters.at( i ).
+        following_characters.at( i ) ->
           set_stage_pos( main_character
-                         .get_screen_position().at( 0 ),
+                         -> get_screen_position().at( 0 ),
                          main_character
-                         .get_position().at( 0 ) );
+                          -> get_position().at( 0 ) );
       }
       
     }
@@ -150,11 +150,11 @@ void Scene::prompt_enter_linked_scene()
   {
     int distance_from_entry =
       abs( scene_junction_positions.at( i ) -
-           main_character.get_position().at( 0 ) );
+           main_character -> get_position().at( 0 ) );
   
     if( distance_from_entry < entry_proximity )
     {
-      prompt_display.display( prompt_enter, renderer, font,
+      prompt_display -> display( prompt_enter, renderer, font,
                               prompt_enter.length() );
     }
   }
@@ -170,36 +170,36 @@ void Scene::prompt_speak()
   for( uint i = 0; i < characters.size(); i++ )
   {
     int distance_from_speaker =
-      abs( characters.at( i ).get_screen_position().at( 0 ) -
-           main_character.get_screen_position().at( 0 ) );
+      abs( characters.at( i ) -> get_screen_position().at( 0 ) -
+           main_character -> get_screen_position().at( 0 ) );
     if( distance_from_speaker < speaker_proximity )
     {
-      prompt_display.display( prompt_speak, renderer, font,
+      prompt_display -> display( prompt_speak, renderer, font,
                               prompt_speak.length() );
     }
   }
 }
 
-void Scene::convo( uint character_index, Conversation conversation,
+void Scene::convo( uint character_index, Conversation* conversation,
                    bool following )
 {
   
   SDL_RenderClear( renderer );
-  background.draw();
+  background -> draw();
 
   Character* speaker;
   if( following )
   {
-    speaker = &following_characters.at( character_index );
+    speaker = following_characters.at( character_index );
   }
   else
   {
-    speaker = &characters.at( character_index );
+    speaker = characters.at( character_index );
   }
     
   bool is_happy = true;
-  uint convo_length = conversation.get_length();
-  string message = conversation.get_dialogue( 0 );
+  uint convo_length = conversation -> get_length();
+  string message = conversation -> get_dialogue( 0 );
 
   scroll_dialogue( message, renderer, font, speaker, is_happy );
     
@@ -216,7 +216,7 @@ void Scene::convo( uint character_index, Conversation conversation,
         {
                 
           SDL_RenderClear( renderer );
-          background.draw();
+          background -> draw();
           
           is_happy = true;
           
@@ -230,7 +230,7 @@ void Scene::convo( uint character_index, Conversation conversation,
           if( conversation_position < convo_length )
           {
             message =
-              conversation.get_dialogue(
+              conversation -> get_dialogue(
                 conversation_position );
 
             scroll_dialogue( message, renderer, font,
@@ -242,11 +242,11 @@ void Scene::convo( uint character_index, Conversation conversation,
         {
           
           SDL_RenderClear( renderer );
-          background.draw();
+          background -> draw();
           
           is_happy = false;
 
-          message = conversation.get_angry_response();
+          message = conversation -> get_angry_response();
 
           scroll_dialogue( message, renderer, font, speaker,
                            is_happy );
@@ -268,13 +268,13 @@ void Scene::convo( uint character_index, Conversation conversation,
 void Scene::center( uint count )
 {
   SDL_RenderClear( renderer );
-  background.draw();
+  background -> draw();
   draw_npcs();
   
   ducklings( count );
   prompt_speak();
 
-  main_character.stand();
+  main_character -> stand();
 
   prompt_interact();
   prompt_enter_linked_scene();
@@ -288,23 +288,23 @@ void Scene::right( uint count )
   SDL_RenderClear( renderer );
 
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
-  int main_char_pos = main_character.get_position().at( 0 );
+  int main_char_pos = main_character -> get_position().at( 0 );
   if( main_char_pos < ( -1 * stage_center_edge ) ||
       main_char_pos >= stage_center_edge )
   {
-    background.draw();
+    background -> draw();
     draw_npcs();
     ducklings( count );
-    main_character.walk_right( speed, count );
-    main_character.update_pos( true, speed );
+    main_character -> walk_right( speed, count );
+    main_character -> update_pos( true, speed );
   } 
   else
   {
-    background.left( speed );
-    background.draw();
+    background -> left( speed );
+    background -> draw();
     draw_npcs( false );
     ducklings( false, count );
-    main_character.walk_right( speed, count );
+    main_character -> walk_right( speed, count );
   }
   prompt_interact();
   prompt_speak();
@@ -319,24 +319,24 @@ void Scene::left( uint count )
   SDL_RenderClear( renderer );
 
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
-  int main_char_pos = main_character.get_position().at( 0 );
+  int main_char_pos = main_character -> get_position().at( 0 );
   
   if( main_char_pos < ( -1 * stage_center_edge ) ||
       main_char_pos >= stage_center_edge )
   {
-    background.draw();
+    background -> draw();
     draw_npcs();
     ducklings( count );
-    main_character.walk_left( speed, count );
-    main_character.update_pos( false, speed );
+    main_character -> walk_left( speed, count );
+    main_character -> update_pos( false, speed );
   } 
   else
   {
-    background.right( speed );
-    background.draw();
+    background -> right( speed );
+    background -> draw();
     draw_npcs( true );
     ducklings( true, count ); 
-    main_character.walk_left( speed, count );
+    main_character -> walk_left( speed, count );
   }
   prompt_interact();
   prompt_speak();
@@ -362,16 +362,16 @@ void Scene::ducklings( bool left, uint count )
 {
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).update_pos( left, speed );
+    following_characters.at( i )->update_pos( left, speed );
     if( i == 0 )
     {
-      following_characters.at( i ).follow(
+      following_characters.at( i )->follow(
         main_character, speed, count );
     }
     else
     {
       following_characters.at(
-        i ).follow( following_characters.at( i - 1 ),
+        i ) -> follow( following_characters.at( i - 1 ),
                     speed, count );
     }
   }
@@ -383,12 +383,12 @@ void Scene::ducklings( uint count )
   {
     if( i == 0 )
     {
-      following_characters.at( i ).follow(
+      following_characters.at( i )->follow(
         main_character, speed, count );
     }
     else
     {
-      following_characters.at( i ).follow(
+      following_characters.at( i ) -> follow(
         following_characters.at( i - 1 ),
         speed, count );
     }
@@ -399,8 +399,8 @@ void Scene::draw_npcs( bool left )
 {
   for( uint i = 0; i < characters.size(); i++ )
   {
-    characters.at( i ).update_pos( left, speed );
-    characters.at( i ).stand();
+    characters.at( i ) -> update_pos( left, speed );
+    characters.at( i ) -> stand();
   }
 }
 
@@ -408,21 +408,21 @@ void Scene::draw_npcs()
 {
   for( uint i = 0; i < characters.size(); i++ )
   {
-    characters.at( i ).stand();
+    characters.at( i ) -> stand();
   }
 }
 
-vector< Character > Scene::following_characters;
+vector< Character* > Scene::following_characters;
 
 
 
 
 
 Scene::Scene(SDL_Renderer *param_renderer,
-             Background param_background,
-             vector< Character > param_characters,
-             Character param_main_character,
-	     Script param_scene_dialogue,
+             Background *param_background,
+             vector< Character* > param_characters,
+             Character *param_main_character,
+	     Script *param_scene_dialogue,
 	     uint param_speed,
              uint param_maximum_stage_displacement )
   :
@@ -433,8 +433,8 @@ Scene::Scene(SDL_Renderer *param_renderer,
   renderer( param_renderer),
   scene_dialogue( param_scene_dialogue ),
   maximum_stage_displacement( param_maximum_stage_displacement ),
-  dialogue_display( 25, 25, 100, 300 ),
-  prompt_display( 25, 400, 100, 300 )
+  dialogue_display( new Text_box( 25, 25, 100, 300 ) ),
+  prompt_display( new Text_box( 25, 400, 100, 300 ) )
 {
   
   window_size = 1000;
@@ -451,7 +451,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
   
 }
 
-Report Scene::play()
+Report* Scene::play()
 {
   SDL_Event e;
   bool push = false;
@@ -459,7 +459,7 @@ Report Scene::play()
   bool play = true;
   bool linked_scene_entry = false;
   uint count = 0;
-  report = { Scene_States::exit_right, 0 };
+  *report = { Scene_States::exit_right, 0 };
 
   float avg_frames_per_second = 0;
   
@@ -470,23 +470,23 @@ Report Scene::play()
       ( SDL_GetTicks() / 1000.f );
     cout << avg_frames_per_second << "\r";
     
-    if( main_character.get_position().at( 0 ) > stage_right_pos )
+    if( main_character -> get_position().at( 0 ) > stage_right_pos )
     {
       in_bounds = false;
-      report.status = Scene_States::exit_right;
+      report -> status = Scene_States::exit_right;
     }
 
-    if( main_character.get_position().at( 0 ) < stage_left_pos )
+    if( main_character -> get_position().at( 0 ) < stage_left_pos )
     {
       in_bounds = false;
-      report.status = Scene_States::exit_left;
+      report -> status = Scene_States::exit_left;
     }
     
     while( SDL_PollEvent( &e ) )
     {
       if( e.type == SDL_QUIT )
       {
-        report.status = Scene_States::quit;
+        report -> status = Scene_States::quit;
         play = false;
       }
       if( e.type == SDL_KEYDOWN )
@@ -542,7 +542,7 @@ Report Scene::play()
     }
     if( linked_scene_entry )
     {
-      report.status = Scene_States::switch_tracks;
+      report -> status = Scene_States::switch_tracks;
     }
   }
   
@@ -551,11 +551,11 @@ Report Scene::play()
 
 void Scene::reset()
 {
-  background.reset();
-  main_character.reset();
+  background -> reset();
+  main_character -> reset();
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).reset();
+    following_characters.at( i ) -> reset();
   }
 }
 
@@ -566,7 +566,7 @@ void Scene::stage_left_barrier()
   int stage_width =
     maximum_stage_displacement - ( window_size / 2 ) - main_char_width;
   
-  main_character.set_stage_pos(
+  main_character -> set_stage_pos(
     main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
 }
 
@@ -577,14 +577,14 @@ void Scene::stage_left()
   
   int stage_width =
     maximum_stage_displacement - ( window_size / 2 ) - main_char_width;
-  background.reset( stage_width );
+  background -> reset( stage_width );
   
-  main_character.set_stage_pos(
+  main_character -> set_stage_pos(
     main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).set_stage_pos(
+    following_characters.at( i ) -> set_stage_pos(
       main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
   }
 }
@@ -594,14 +594,14 @@ void Scene::stage_right()
   int main_char_width = 20;
   int stage_width =
     maximum_stage_displacement - ( window_size / 2 ) + 2 * main_char_width;
-  background.reset( stage_width * -1 );
+  background -> reset( stage_width * -1 );
   
-  main_character.set_stage_pos( window_size - 2 * main_char_width,
+  main_character -> set_stage_pos( window_size - 2 * main_char_width,
                                 maximum_stage_displacement - main_char_width );
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).set_stage_pos(
+    following_characters.at( i ) -> set_stage_pos(
       window_size - 2 * main_char_width,
       maximum_stage_displacement - main_char_width );
   }
@@ -614,7 +614,7 @@ void Scene::stage_right_barrier()
   int stage_width =
     maximum_stage_displacement - ( window_size / 2 ) + 2 * main_char_width;
   
-  main_character.set_stage_pos( window_size - 2 * main_char_width,
+  main_character -> set_stage_pos( window_size - 2 * main_char_width,
                                 maximum_stage_displacement - main_char_width );  
 }
 
@@ -642,15 +642,15 @@ void Scene::stage_junction( int junction_position )
     new_background_position = stage_center_left_edge;
   }
 
-  background.reset( new_background_position );
+  background -> reset( new_background_position );
   
   main_character
-    .set_stage_pos( new_screen_position,
+     -> set_stage_pos( new_screen_position,
                     junction_position);
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
-    following_characters.at( i ).set_stage_pos(
+    following_characters.at( i ) -> set_stage_pos(
       new_screen_position,
       junction_position);
   }
@@ -661,7 +661,7 @@ void Scene::set_junction( int position )
   scene_junction_positions.push_back( position );
 }
 
-void Scene::add_follower( Character character )
+void Scene::add_follower( Character *character )
 {
   following_characters.push_back( character );
 }
@@ -675,9 +675,9 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   {
     uint milliseconds = 250;
     SDL_RenderClear( renderer );
-    background.draw();
-    happy ? (*speaker).gasp() : (*speaker).happy();
-    dialogue_display.display( message, renderer, font, letters );
+    background -> draw();
+    happy ? speaker -> gasp() : speaker -> happy();
+    dialogue_display -> display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
     ++counted_frames;
     usleep( milliseconds * milliseconds );
@@ -692,15 +692,15 @@ void Scene::scroll_dialogue( string message, SDL_Renderer *renderer,
   {
     uint milliseconds = 250;
     SDL_RenderClear( renderer );
-    background.draw();
+    background -> draw();
     
-    main_character.stand();
-    for( Character follower : following_characters )
+    main_character -> stand();
+    for( Character *follower : following_characters )
     {
-      follower.stand();
+      follower -> stand();
     }
     
-    dialogue_display.display( message, renderer, font, letters );
+    dialogue_display -> display( message, renderer, font, letters );
     SDL_RenderPresent( renderer );
     ++counted_frames;
     usleep( milliseconds * milliseconds );
@@ -713,7 +713,7 @@ void Scene::add_interaction( vector< string > messages,
                              SDL_Renderer* renderer )
 {
   interactions.push_back(
-    Interaction( messages, scene_position, renderer ) );
+    new Interaction( messages, scene_position, renderer ) );
 }
 
 void Scene::prompt_interact()
@@ -725,12 +725,12 @@ void Scene::prompt_interact()
   for( uint i = 0; i < interactions.size(); i++ )
   {
     int distance_from_interaction =
-      abs( interactions.at( i ).get_scene_position() -
-           main_character.get_position().at( 0 ) );
+      abs( interactions.at( i ) -> get_scene_position() -
+           main_character -> get_position().at( 0 ) );
   
     if( distance_from_interaction < interact_proximity )
     {
-      prompt_display.display( prompt_interact, renderer, font,
+      prompt_display -> display( prompt_interact, renderer, font,
                               prompt_interact.length() );
     }
   } 
@@ -746,8 +746,8 @@ void Scene::interact()
   for( uint i = 0; i < interactions.size(); i++ )
   {
     int distance_from_interaction =
-      abs( interactions.at( i ).get_scene_position() -
-           main_character.get_position().at( 0 ) );
+      abs( interactions.at( i ) -> get_scene_position() -
+           main_character -> get_position().at( 0 ) );
   
     if( distance_from_interaction < interact_proximity )
     {
@@ -763,17 +763,17 @@ void Scene::interact()
   }
 }
 
-void Scene::perform_interaction( Interaction interaction )
+void Scene::perform_interaction( Interaction *interaction )
 {
   SDL_RenderClear( renderer );
-  background.draw();
+  background -> draw();
 
   uint interaction_position = 0;
   
   string current_message
-    = interaction.get_message( interaction_position );
+    = interaction -> get_message( interaction_position );
   
-  uint interaction_length = interaction.get_interaction_length();
+  uint interaction_length = interaction -> get_interaction_length();
 
   bool interacting = true;
   bool next = true;
@@ -785,7 +785,7 @@ void Scene::perform_interaction( Interaction interaction )
       if( next && interaction_position < interaction_length )
       {
         scroll_dialogue(
-          interaction.get_message(
+          interaction -> get_message(
             interaction_position ), renderer, font );
         
         next = false;

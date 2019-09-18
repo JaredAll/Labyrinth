@@ -1,7 +1,7 @@
 #include "panel.h"
 
 
-Panel::Panel( Background param_background,
+Panel::Panel( Background *param_background,
               SDL_Renderer* param_ren ) :
   main_display( 200, 200, 200, 600 ),
   sub_display( 225, 275, 100, 400 ),
@@ -25,7 +25,7 @@ bool Panel::display()
 
   while( !begin && !quit )
   {
-    background.draw();
+    background -> draw();
       
     string main_message = "DENIZEN DIRK";
     main_display.display( main_message, renderer, font,

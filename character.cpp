@@ -128,10 +128,10 @@ vector< int > Character::get_position()
   return position;
 }
 
-void Character::follow( Character leader, uint speed, uint count )
+void Character::follow( Character* leader, uint speed, uint count )
 {
   uint follow_distance = 130;
-  int leader_x = leader.get_screen_position().at( 0 );
+  int leader_x = leader -> get_screen_position().at( 0 );
   int position_from_leader = leader_x -
     get_screen_position().at( 0 );
 
@@ -192,9 +192,9 @@ string Character::get_name()
   return name;
 }
 
-bool Character::equals( Character character )
+bool Character::equals( Character* character )
 {
-  return ( name == character.get_name() );
+  return ( name == character -> get_name() );
 }
 
 void Character::set_stage_pos( int screen_pos, int pos )

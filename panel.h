@@ -31,7 +31,7 @@ public:
   /**
    * Constructor
    */
-  Panel( Background background,
+  Panel( Background *background,
          SDL_Renderer* renderer);
 
   /**
@@ -45,7 +45,7 @@ private:
   Text_box sub_display;
   TTF_Font* font;
   SDL_Renderer* renderer;
-  Background background;
+  Background* background;
 
 };
 
