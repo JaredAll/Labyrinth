@@ -5,7 +5,6 @@ using namespace std;
 
 Game::Game()
 {
-  vector< vector< Scene > > scenes;
   current_scene = 0;
 }
 
@@ -41,7 +40,7 @@ void Game::join_scenes( uint track1_index,
     .at( scene1_pos )
     -> set_junction( scene1_junction_pos );
 
-    scenes.at( track2_index )
+  scenes.at( track2_index )
     .at( scene2_pos )
     -> set_junction( scene2_junction_pos );
   
@@ -59,8 +58,11 @@ void Game::play()
     SDL_Event e;
     bool quit = false;
     uint current_track = 1;
-    Report *report;
-    *report = { Scene_States::exit_right, 0 };
+    Report report;
+    report = { Scene_States::exit_right, 0 };
+
+    cout << scenes.size() << endl;
+    cout << scenes.at( 1 ).size() << endl;
 
     while( !quit )
     {      
@@ -69,7 +71,7 @@ void Game::play()
         .at( current_scene )
         -> play();
     
-      if( report -> status == Scene_States::switch_tracks )
+      if( report.status == Scene_States::switch_tracks )
       {        
         uint next_scene_pos;
         uint next_track;
@@ -78,20 +80,20 @@ void Game::play()
         {
           if( scene_links.at( i )
               -> contains( current_scene, current_track,
-                report -> character_position ) )
+                           report.character_position ) )
           {
             next_scene_pos =
               scene_links.at( i ) -> get_next_scene( current_scene,
-                                                  current_track );
+                                                     current_track );
             
             next_track = scene_links.at( i )
               -> get_next_track( current_scene,
-                               current_track );
+                                 current_track );
 
             next_character_position =
               scene_links.at( i )
               -> get_next_character_position( current_scene,
-                                            current_track );
+                                              current_track );
           }
         }
 
@@ -103,7 +105,7 @@ void Game::play()
           .at( current_scene )
           -> stage_junction( next_character_position );
       }
-      else if( report -> status == Scene_States::exit_left )
+      else if( report.status == Scene_States::exit_left )
       {
         if( current_scene > 0 )
         {
@@ -119,7 +121,7 @@ void Game::play()
             -> stage_left_barrier();
         }
       }
-      else if( report -> status == Scene_States::exit_right )
+      else if( report.status == Scene_States::exit_right )
       {
         if( current_scene < scenes.at( current_track ).size() - 1 )
         {

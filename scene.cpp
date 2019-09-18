@@ -123,7 +123,7 @@ bool Scene::enter()
     if( distance_from_entry < entry_proximity )
     {
       entry = true;
-      report -> character_position = scene_junction_positions.at( i );
+      report.character_position = scene_junction_positions.at( i );
 
       for( uint i = 0; i < following_characters.size(); i++ )
       {
@@ -451,7 +451,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
   
 }
 
-Report* Scene::play()
+Report Scene::play()
 {
   SDL_Event e;
   bool push = false;
@@ -459,7 +459,7 @@ Report* Scene::play()
   bool play = true;
   bool linked_scene_entry = false;
   uint count = 0;
-  *report = { Scene_States::exit_right, 0 };
+  report = { Scene_States::exit_right, 0 };
 
   float avg_frames_per_second = 0;
   
@@ -473,20 +473,20 @@ Report* Scene::play()
     if( main_character -> get_position().at( 0 ) > stage_right_pos )
     {
       in_bounds = false;
-      report -> status = Scene_States::exit_right;
+      report.status = Scene_States::exit_right;
     }
 
     if( main_character -> get_position().at( 0 ) < stage_left_pos )
     {
       in_bounds = false;
-      report -> status = Scene_States::exit_left;
+      report.status = Scene_States::exit_left;
     }
     
     while( SDL_PollEvent( &e ) )
     {
       if( e.type == SDL_QUIT )
       {
-        report -> status = Scene_States::quit;
+        report.status = Scene_States::quit;
         play = false;
       }
       if( e.type == SDL_KEYDOWN )
@@ -542,7 +542,7 @@ Report* Scene::play()
     }
     if( linked_scene_entry )
     {
-      report -> status = Scene_States::switch_tracks;
+      report.status = Scene_States::switch_tracks;
     }
   }
   

@@ -62,7 +62,7 @@ public:
   /**
    * plays the scene
    */
-  Report* play();
+  Report play();
 
   /**
    * resets the scene
@@ -266,7 +266,7 @@ private:
   Text_box* dialogue_display;
   Text_box* prompt_display;
 
-  Report* report;
+  Report report;
 
 };
 
