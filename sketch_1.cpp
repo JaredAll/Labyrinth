@@ -68,33 +68,33 @@ int main( int argc, char* argv[] )
   uint al_x = 1950;
   uint al_y = character_plane_x - 50;
   
-  Sprite doug_s =
-    Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
+  Sprite* doug_s =
+    new Sprite( "sprites/dougsheet.png", ren, doug_x, doug_y );
 
-  Sprite lunius_s = 
-    Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
+  Sprite* lunius_s = 
+    new Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
 
-  Sprite dirk_s = Sprite( "sprites/dirkwalk.png", ren, dirk_x,
+  Sprite* dirk_s = new Sprite( "sprites/dirkwalk.png", ren, dirk_x,
                           dirk_y );
 
-  Sprite al_s = Sprite( "sprites/walkingAL.png", ren, al_x, al_y );
+  Sprite* al_s = new Sprite( "sprites/walkingAL.png", ren, al_x, al_y );
 
-  Sprite al_faces = Sprite( "sprites/faces_AL2.png", ren, 400, 0 );
-  Sprite knut_faces = Sprite( "sprites/kfaces.png", ren, 400, 0 );
-  Sprite doug_faces = Sprite( "sprites/dougFsheet.png", ren, 400,
+  Sprite* al_faces = new Sprite( "sprites/faces_AL2.png", ren, 400, 0 );
+  Sprite* knut_faces = new Sprite( "sprites/kfaces.png", ren, 400, 0 );
+  Sprite* doug_faces = new Sprite( "sprites/dougFsheet.png", ren, 400,
 			      0 );
 
-  doug_s.set_position(
-    doug_x, character_plane_x - doug_s.get_height() );
+  doug_s -> set_position(
+    doug_x, character_plane_x - doug_s -> get_height() );
 
-  lunius_s.set_position(
-    knut_x, character_plane_x - lunius_s.get_height() );
+  lunius_s -> set_position(
+    knut_x, character_plane_x - lunius_s -> get_height() );
 
-  dirk_s.set_position(
-    dirk_x, character_plane_x - dirk_s.get_height() - 8 );
+  dirk_s -> set_position(
+    dirk_x, character_plane_x - dirk_s -> get_height() - 8 );
 
-  al_s.set_position(
-    al_x, character_plane_x - al_s.get_height() );
+  al_s -> set_position(
+    al_x, character_plane_x - al_s -> get_height() );
 
   
   /* End Character Sprites */
@@ -162,24 +162,26 @@ int main( int argc, char* argv[] )
   
   /* Initialize Backgrounds */
 
-  SpriteLayer backdrop_sprite = SpriteLayer( "sprites/bg1.2.png",
+  SpriteLayer *backdrop_sprite = new SpriteLayer( "sprites/bg1.2.png",
                                              ren, 0, 0, 0 );
   
-  SpriteLayer far_town = SpriteLayer( "sprites/town1.png", ren,
+  SpriteLayer *far_town = new SpriteLayer( "sprites/town1.png", ren,
                                       400, 110, 2 );
-  SpriteLayer near_town = SpriteLayer( "sprites/town1.png", ren,
+  SpriteLayer *near_town = new SpriteLayer( "sprites/town1.png", ren,
                                        330, 2, 1 );
-  SpriteLayer b_bush_1 = SpriteLayer( "sprites/berrybush.png", ren,
+  SpriteLayer *b_bush_1 = new SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 1 );
-  SpriteLayer b_bush_2 = SpriteLayer( "sprites/berrybush.png", ren,
+  SpriteLayer *b_bush_2 = new SpriteLayer( "sprites/berrybush.png", ren,
                                       330, 225, 2 );
-  SpriteLayer b_bush_3 = SpriteLayer( "sprites/berrybush.png", ren,
+  SpriteLayer *b_bush_3 = new SpriteLayer( "sprites/berrybush.png", ren,
                                       530, 225, 1 );
-  SpriteLayer inn_background_s = SpriteLayer(
+  SpriteLayer *inn_background_s = new SpriteLayer(
     "sprites/bar_inside.png", ren, 0, 0, 0 );
-  SpriteLayer cave_entrance_s = SpriteLayer(
+  
+  SpriteLayer *cave_entrance_s = new SpriteLayer(
     "sprites/cave_entrance.png", ren, 0, 0, 0 );
-  SpriteLayer cave_throne_room_s = SpriteLayer(
+  
+  SpriteLayer *cave_throne_room_s = new SpriteLayer(
     "sprites/cavethroneroom.png", ren, 0, 0, 0 );
   
   Background *background = new Background( ren );
@@ -201,9 +203,9 @@ int main( int argc, char* argv[] )
   {
     uint ground_y = 110;
     uint ground_x = 0 + 500 * i;
-    SpriteLayer ground_2 = SpriteLayer( "sprites/grass1.png", ren,
+    SpriteLayer *ground_2 = new SpriteLayer( "sprites/grass1.png", ren,
                                         ground_x, ground_y, 2 );
-    SpriteLayer ground_2_c = SpriteLayer ( "sprites/grass1.png", ren,
+    SpriteLayer *ground_2_c = new SpriteLayer ( "sprites/grass1.png", ren,
                                            ground_x, 160, 2 );
     trees -> add_layer( ground_2 );
     trees -> add_layer( ground_2_c );
@@ -216,9 +218,9 @@ int main( int argc, char* argv[] )
   {
     uint ground_y = 0;
     uint ground_x = 0 + 1000 * i;
-    SpriteLayer ground = SpriteLayer( "sprites/grass1.png", ren,
+    SpriteLayer *ground = new SpriteLayer( "sprites/grass1.png", ren,
                                       ground_x, ground_y, 1 );
-    SpriteLayer ground_2 = SpriteLayer( "sprites/grass1.png", ren,
+    SpriteLayer *ground_2 = new SpriteLayer( "sprites/grass1.png", ren,
                                         ground_x, ground_y, 2 );
     background -> add_layer( ground );
     trees -> add_layer( ground );

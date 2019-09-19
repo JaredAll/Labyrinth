@@ -24,7 +24,7 @@ public:
    * Constructor
    * @param layers the sprites that layer the background
    */
-  Background( vector < SpriteLayer > layers, SDL_Renderer *ren );
+  Background( vector < SpriteLayer* > layers, SDL_Renderer *ren );
 
   /**
    * Constructor
@@ -35,7 +35,7 @@ public:
    * add a layer to background
    * @param layer
    */
-  void add_layer( SpriteLayer layer );
+  void add_layer( SpriteLayer *layer );
 
   /**
    * move background left
@@ -71,8 +71,8 @@ public:
 
 private:
 
-  vector< SpriteLayer > layers;
-  SpriteLayer blank_screen;
+  vector< SpriteLayer* > layers;
+  SpriteLayer *blank_screen;
 
 };
 

@@ -26,7 +26,7 @@ public:
    * @param torso the torso sprite
    */
   Character( string name,
-             Sprite full_body, Sprite torso, uint force,
+             Sprite *full_body, Sprite *torso, uint force,
              uint diversion, uint stealth, uint num_walking_sprites,
              uint num_talking_sprites );
 
@@ -138,11 +138,11 @@ private:
   uint num_walking_sprites;
   uint num_talking_sprites;
 
-  Sprite full_body;
+  Sprite *full_body;
   vector< SDL_Rect > walking_clips;
   uint stride;
   
-  Sprite torso;
+  Sprite *torso;
   vector< SDL_Rect > talking_clips;
 
   

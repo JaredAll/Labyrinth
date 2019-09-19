@@ -1,7 +1,7 @@
 #include "character.h"
 Character::Character( string param_name,
-                      Sprite param_full_body,
-                      Sprite param_torso, uint param_force,
+                      Sprite *param_full_body,
+                      Sprite *param_torso, uint param_force,
                       uint param_diversion, uint param_stealth,
                       uint param_num_walking,
                       uint param_num_talking )
@@ -15,11 +15,11 @@ Character::Character( string param_name,
   {
     SDL_Rect clip;
     walking_clips.push_back( clip );
-    walking_clips.at( i ).x = i * ( full_body.get_width() /
+    walking_clips.at( i ).x = i * ( full_body -> get_width() /
       num_walking_sprites );
     walking_clips.at( i ).y = 0;
-    walking_clips.at( i ).h = full_body.get_height();
-    walking_clips.at( i ).w = full_body.get_width() /
+    walking_clips.at( i ).h = full_body -> get_height();
+    walking_clips.at( i ).w = full_body -> get_width() /
       num_walking_sprites;
   }
 
@@ -27,10 +27,10 @@ Character::Character( string param_name,
   {
     SDL_Rect clip;
     talking_clips.push_back( clip );
-    talking_clips.at( i ).x = i * ( torso.get_width() / 2 );
+    talking_clips.at( i ).x = i * ( torso -> get_width() / 2 );
     talking_clips.at( i ).y = 0;
-    talking_clips.at( i ).h = torso.get_height();
-    talking_clips.at( i ).w = torso.get_width() / 2;
+    talking_clips.at( i ).h = torso -> get_height();
+    talking_clips.at( i ).w = torso -> get_width() / 2;
   }
 
   x_pos = 0;
@@ -44,15 +44,15 @@ Character::Character( string param_name,
 void Character::happy()
 {
   uint face = 0;
-  torso.set_source( &talking_clips.at( face ) );
-  torso.draw();
+  torso -> set_source( &talking_clips.at( face ) );
+  torso -> draw();
 }
 
 void Character::gasp()
 {
   uint face = 1;
-  torso.set_source( &talking_clips.at( face ) );
-  torso.draw();
+  torso -> set_source( &talking_clips.at( face ) );
+  torso -> draw();
 }
   
 
@@ -63,8 +63,8 @@ void Character::walk_right( uint speed, uint count )
     stride = ( stride + 1 ) % walking_clips.size();
   }
 
-  full_body.set_source( &walking_clips.at( stride ) );
-  full_body.draw();
+  full_body -> set_source( &walking_clips.at( stride ) );
+  full_body -> draw();
   
   set_position( x_pos + speed,
                 y_pos );
@@ -79,8 +79,8 @@ void Character::walk_left( uint speed, uint count )
     stride = ( stride + 1 ) % walking_clips.size();
   }
 
-  full_body.set_source( &walking_clips.at( stride ) );
-  full_body.flip_draw();
+  full_body -> set_source( &walking_clips.at( stride ) );
+  full_body -> flip_draw();
   set_position( x_pos - speed,
                 y_pos );
   facing_left = true;
@@ -89,14 +89,14 @@ void Character::walk_left( uint speed, uint count )
 void Character::stand()
 {
   stride = 1;
-  full_body.set_source( &walking_clips.at( stride ) );
+  full_body -> set_source( &walking_clips.at( stride ) );
   if( facing_left )
   {
-    full_body.flip_draw();
+    full_body -> flip_draw();
   }
   else
   {
-    full_body.draw();
+    full_body -> draw();
   }
 
 }
@@ -109,14 +109,14 @@ void Character::set_position( int new_x, int new_y )
 
 void Character::set_screen_position( int new_x, int new_y )
 {
-  full_body.set_position( new_x, new_y );
+  full_body -> set_position( new_x, new_y );
 }
 
 vector< int >Character::get_screen_position()
 {
   vector< int > position;
-  position.push_back( full_body.get_x() );
-  position.push_back( full_body.get_y() );
+  position.push_back( full_body -> get_x() );
+  position.push_back( full_body -> get_y() );
   return position;
 }
 
@@ -177,14 +177,14 @@ void Character::reset()
 {
   x_pos = 0;
   y_pos = 0;
-  full_body.reset_position();
+  full_body -> reset_position();
 }
 
 void Character::reset( uint new_x )
 {
   x_pos = new_x;
   y_pos = 0;
-  full_body.reset_position();
+  full_body -> reset_position();
 }
 
 string Character::get_name()
@@ -200,7 +200,7 @@ bool Character::equals( Character* character )
 void Character::set_stage_pos( int screen_pos, int pos )
 {
   x_pos = pos;
-  full_body.set_position( screen_pos );
+  full_body -> set_position( screen_pos );
 }
 
 void Character::set_recruited()
