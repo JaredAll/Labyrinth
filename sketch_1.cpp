@@ -278,6 +278,7 @@ int main( int argc, char* argv[] )
   uint scene_2_size = 1500;
   uint scene_3_size = 500;
 
+  
   Scene* sketch_1 =
     new Scene( ren, background, characters, dirk,
 	   sketch_script, speed, scene_1_size );
@@ -289,7 +290,7 @@ int main( int argc, char* argv[] )
   vector< Character* > bi_chars;
 
   vector< Character* > no_characters;
-  
+
   Scene* tree_scene =
     new Scene( ren, trees, ts_chars, dirk, scene2_script, speed,
            scene_2_size );

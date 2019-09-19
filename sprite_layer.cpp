@@ -33,11 +33,11 @@ void SpriteLayer::draw()
 {
   if( distance > 1 )
   {
-    SDL_Rect destination;
-    destination.x = get_x();
-    destination.y = get_y();
-    destination.w = get_width() / distance;
-    destination.h = get_height() / distance;
+    SDL_Rect *destination;
+    destination -> x = get_x();
+    destination -> y = get_y();
+    destination -> w = get_width() / distance;
+    destination -> h = get_height() / distance;
     Sprite::draw( destination );
   }
   else

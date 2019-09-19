@@ -47,7 +47,7 @@ void Sprite::set_position( int new_x )
   x = new_x;
 }
 
-void Sprite::draw( SDL_Rect destination )
+void Sprite::draw( SDL_Rect *destination )
 {
   renderTexture( sprite_texture, renderer, destination, source );
 }
@@ -62,7 +62,7 @@ void Sprite::flip_draw()
   renderTextureFlip( sprite_texture, renderer, x, y, source );
 }
 
-void Sprite::flip_draw( SDL_Rect destination )
+void Sprite::flip_draw( SDL_Rect *destination )
 {
   renderTextureFlip( sprite_texture, renderer, destination, source );
 }

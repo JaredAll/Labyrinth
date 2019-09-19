@@ -41,8 +41,8 @@ public:
   
 private:
 
-  Text_box main_display;
-  Text_box sub_display;
+  Text_box *main_display;
+  Text_box *sub_display;
   TTF_Font* font;
   SDL_Renderer* renderer;
   Background* background;

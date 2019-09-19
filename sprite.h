@@ -39,7 +39,7 @@ public:
    * method to change destination rectangle
    * @param destination the new destination
    */
-  void set_destination( SDL_Rect destination );
+  void set_destination( SDL_Rect *destination );
 
   /**
    * method to draw sprite
@@ -52,7 +52,7 @@ public:
    * @param renderer the pointer to renderer
    * @param destination the destination to be drawn to
    */
-  void draw( SDL_Rect destination );
+  void draw( SDL_Rect *destination );
 
   /**
    * method to draw mirror sprite
@@ -65,8 +65,7 @@ public:
    * @param renderer the pointer to the renderer
    * @param destination the destination for sprite
    */
-  void flip_draw( SDL_Rect destination );
-
+  void flip_draw( SDL_Rect *destination );
   /** 
    * method to change sprite position
    * @param new_x the new x coordinate

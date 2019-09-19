@@ -42,8 +42,8 @@ private:
   uint y_pos;
   uint height;
   uint width;
-  vector< SDL_Rect > letter_slots;
-  SDL_Rect display_box;
+  vector< SDL_Rect* > letter_slots;
+  SDL_Rect *display_box;
 
 };
 

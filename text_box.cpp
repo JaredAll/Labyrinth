@@ -5,10 +5,11 @@ Text_box::Text_box( uint param_x, uint param_y, uint param_h,
   : x_pos( param_x ), y_pos( param_y ), height( param_h ),
     width( param_w )
 {
-  display_box.x = x_pos;
-  display_box.y = y_pos;
-  display_box.h = height;
-  display_box.w = width;
+  display_box = new SDL_Rect();
+  display_box -> x = x_pos;
+  display_box -> y = y_pos;
+  display_box -> h = height;
+  display_box -> w = width;
 }
 
 void Text_box::display( string message, SDL_Renderer *renderer,
@@ -24,7 +25,7 @@ void Text_box::display( string message, SDL_Renderer *renderer,
   uint next_y = y_pos;
   for( uint letter = 0; letter < to_be_rendered.length(); letter++ )
   {
-    SDL_Rect letter_slot;
+    SDL_Rect *letter_slot = new SDL_Rect();
     uint letter_width;
     if( to_be_rendered.at( letter ) == 'i' ||
         to_be_rendered.at( letter ) == 'l' ||
@@ -45,10 +46,10 @@ void Text_box::display( string message, SDL_Renderer *renderer,
       next_x = 0; 
     }
 
-    letter_slot.x = x_pos + next_x;
-    letter_slot.y = next_y;
-    letter_slot.h = height / lines_per_box;
-    letter_slot.w = letter_width;
+    letter_slot -> x = x_pos + next_x;
+    letter_slot -> y = next_y;
+    letter_slot -> h = height / lines_per_box;
+    letter_slot -> w = letter_width;
     
     letter_slots.push_back( letter_slot );
 
@@ -68,7 +69,7 @@ void Text_box::display( string message, SDL_Renderer *renderer,
     SDL_Texture *letter_texture =
       SDL_CreateTextureFromSurface( renderer, letter_surface );
     SDL_RenderCopy( renderer, letter_texture, NULL,
-                    &letter_slots.at( i ) );
+                    letter_slots.at( i ) );
   }
 
   letter_slots.clear();

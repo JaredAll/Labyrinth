@@ -48,11 +48,12 @@ void Game::join_scenes( uint track1_index,
 
 void Game::play()
 {
+  
   bool begin;
   
   Panel* introduction = panels.at( 0 );
   begin = introduction -> display();
-
+  
   if( begin )
   {
     SDL_Event e;

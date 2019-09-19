@@ -43,7 +43,7 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren);
 *		default of nullptr draws the entire texture
 */
 void renderTexture( SDL_Texture *tex, SDL_Renderer *ren,
-                    SDL_Rect dst, SDL_Rect *clip = nullptr );
+                    SDL_Rect *dst, SDL_Rect *clip = nullptr );
 
 /**
 * Draw an SDL_Texture to an SDL_Renderer at some destination rect
@@ -55,7 +55,7 @@ void renderTexture( SDL_Texture *tex, SDL_Renderer *ren,
 *		default of nullptr draws the entire texture
 */
 void renderTextureFlip( SDL_Texture *tex, SDL_Renderer *ren,
-                        SDL_Rect dst, SDL_Rect *clip );
+                        SDL_Rect *dst, SDL_Rect *clip );
 
 /**
 * Draw an SDL_Texture to an SDL_Renderer at position x, y, preserving
