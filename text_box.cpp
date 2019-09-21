@@ -24,7 +24,7 @@ void Text_box::display( string message, SDL_Renderer *renderer,
   uint next_x = 0;
   uint next_y = y_pos;
 
-  if( message.compare( previous_message ) == 0 )
+  if( message.substr( 0, letters - 1 ).compare( previous_message ) == 0 )
   {
     for( uint i = 0; i < letter_textures.size(); i++ )
     {
@@ -34,6 +34,12 @@ void Text_box::display( string message, SDL_Renderer *renderer,
   }
   else
   {
+
+    for( uint i = 0; i < letter_textures.size(); i++ )
+    {
+      cleanup( letter_textures.at( i ) );
+    }
+
     letter_textures.clear();
     letter_slots.clear();
 
@@ -85,6 +91,7 @@ void Text_box::display( string message, SDL_Renderer *renderer,
       SDL_RenderCopy( renderer, letter_texture, NULL,
                       letter_slots.at( i ) );
       letter_textures.push_back( letter_texture );
+      cleanup( letter_surface );
     }
   }
   previous_message = message;

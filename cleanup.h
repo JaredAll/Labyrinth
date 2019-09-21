@@ -3,7 +3,6 @@
 
 #include <utility>
 #include <SDL.h>
-#include "game.h"
 
 /*
  * Recurse through the list of arguments to clean up, cleaning up
@@ -60,14 +59,5 @@ inline void cleanup<SDL_Surface>(SDL_Surface *surf)
     return;
   }
   SDL_FreeSurface(surf);
-}
-template<>
-inline void cleanup<Character>(Character *character)
-{
-  if(!character)
-  {
-    return;
-  }
-  character -> ~Character();
 }
 #endif
