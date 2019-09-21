@@ -13,24 +13,24 @@ Character::Character( string param_name,
 
   for( uint i = 0; i < num_walking_sprites; i++ )
   {
-    SDL_Rect clip;
+    SDL_Rect *clip = new SDL_Rect();
     walking_clips.push_back( clip );
-    walking_clips.at( i ).x = i * ( full_body -> get_width() /
+    walking_clips.at( i ) -> x = i * ( full_body -> get_width() /
       num_walking_sprites );
-    walking_clips.at( i ).y = 0;
-    walking_clips.at( i ).h = full_body -> get_height();
-    walking_clips.at( i ).w = full_body -> get_width() /
+    walking_clips.at( i ) -> y = 0;
+    walking_clips.at( i ) -> h = full_body -> get_height();
+    walking_clips.at( i ) -> w = full_body -> get_width() /
       num_walking_sprites;
   }
 
   for( uint i = 0; i < num_talking_sprites; i++ )
   {
-    SDL_Rect clip;
+    SDL_Rect *clip = new SDL_Rect();
     talking_clips.push_back( clip );
-    talking_clips.at( i ).x = i * ( torso -> get_width() / 2 );
-    talking_clips.at( i ).y = 0;
-    talking_clips.at( i ).h = torso -> get_height();
-    talking_clips.at( i ).w = torso -> get_width() / 2;
+    talking_clips.at( i ) -> x = i * ( torso -> get_width() / 2 );
+    talking_clips.at( i ) -> y = 0;
+    talking_clips.at( i ) -> h = torso -> get_height();
+    talking_clips.at( i ) -> w = torso -> get_width() / 2;
   }
 
   x_pos = 0;
@@ -41,17 +41,30 @@ Character::Character( string param_name,
 
 }
 
+Character::~Character()
+{
+  if( full_body )
+  {
+    full_body -> ~Sprite();
+  }
+
+  if( torso )
+  {    
+    torso -> ~Sprite();
+  }
+}
+
 void Character::happy()
 {
   uint face = 0;
-  torso -> set_source( &talking_clips.at( face ) );
+  torso -> set_source( talking_clips.at( face ) );
   torso -> draw();
 }
 
 void Character::gasp()
 {
   uint face = 1;
-  torso -> set_source( &talking_clips.at( face ) );
+  torso -> set_source( talking_clips.at( face ) );
   torso -> draw();
 }
   
@@ -63,7 +76,7 @@ void Character::walk_right( uint speed, uint count )
     stride = ( stride + 1 ) % walking_clips.size();
   }
 
-  full_body -> set_source( &walking_clips.at( stride ) );
+  full_body -> set_source( walking_clips.at( stride ) );
   full_body -> draw();
   
   set_position( x_pos + speed,
@@ -79,7 +92,7 @@ void Character::walk_left( uint speed, uint count )
     stride = ( stride + 1 ) % walking_clips.size();
   }
 
-  full_body -> set_source( &walking_clips.at( stride ) );
+  full_body -> set_source( walking_clips.at( stride ) );
   full_body -> flip_draw();
   set_position( x_pos - speed,
                 y_pos );
@@ -89,7 +102,7 @@ void Character::walk_left( uint speed, uint count )
 void Character::stand()
 {
   stride = 1;
-  full_body -> set_source( &walking_clips.at( stride ) );
+  full_body -> set_source( walking_clips.at( stride ) );
   if( facing_left )
   {
     full_body -> flip_draw();

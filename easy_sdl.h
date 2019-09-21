@@ -1,7 +1,6 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 
@@ -21,7 +20,8 @@ void logSDLError( std::ostream &os, const std::string &msg );
 * @return the loaded texture, or nullptr if something went wrong.
 */
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren,
-                   int x, int y, SDL_Rect *clip = nullptr );
+                   int x, int y, SDL_Rect *clip = nullptr,
+                   SDL_Rect *dst = nullptr );
 
 /**
 * Draw an SDL_Texture to an SDL_Renderer at position x, y, preserving

@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 #include "sprite_layer.h"
@@ -30,6 +29,11 @@ public:
    * Constructor
    */
   Background( SDL_Renderer *ren );
+
+  /**
+   * Destructor
+   */
+  ~Background();
 
   /**
    * add a layer to background

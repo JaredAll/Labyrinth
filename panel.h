@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 #include <climits>

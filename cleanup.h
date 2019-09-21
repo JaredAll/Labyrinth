@@ -3,18 +3,19 @@
 
 #include <utility>
 #include <SDL.h>
+#include "game.h"
 
 /*
  * Recurse through the list of arguments to clean up, cleaning up
  * the first one in the list each iteration.
  */
 template<typename T, typename... Args>
-void cleanup(T *t, Args&&... args)
+  void cleanup(T *t, Args&&... args)
 {
-	//Cleanup the first item in the list
-	cleanup(t);
-	//Recurse to clean up the remaining arguments
-	cleanup(std::forward<Args>(args)...);
+  //Cleanup the first item in the list
+  cleanup(t);
+  //Recurse to clean up the remaining arguments
+  cleanup(std::forward<Args>(args)...);
 }
 /*
  * These specializations serve to free the passed argument and also provide the
@@ -45,20 +46,28 @@ inline void cleanup<SDL_Renderer>(SDL_Renderer *ren)
 }
 template<>
 inline void cleanup<SDL_Texture>(SDL_Texture *tex){
-	if (!tex)
+  if (!tex)
   {
     return;
   }
-	SDL_DestroyTexture(tex);
+  SDL_DestroyTexture(tex);
 }
 template<>
 inline void cleanup<SDL_Surface>(SDL_Surface *surf)
 {
-	if (!surf)
+  if (!surf)
   {
     return;
   }
-	SDL_FreeSurface(surf);
+  SDL_FreeSurface(surf);
 }
-
+template<>
+inline void cleanup<Character>(Character *character)
+{
+  if(!character)
+  {
+    return;
+  }
+  character -> ~Character();
+}
 #endif

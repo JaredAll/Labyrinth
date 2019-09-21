@@ -7,9 +7,14 @@ Sprite::Sprite( std::string image_path,
 : renderer( param_renderer ), x( param_x ), y( param_y )
 {
   source = NULL;
+  destination = new SDL_Rect();
   sprite_texture = loadTexture( image_path, renderer );
   initial_x = x;
   initial_y = y;
+}
+
+Sprite::~Sprite()
+{
 }
 
 int Sprite::get_height()
@@ -53,8 +58,8 @@ void Sprite::draw( SDL_Rect *destination )
 }
 
 void Sprite::draw()
-{
-  renderTexture( sprite_texture, renderer, x, y, source );
+{  
+  renderTexture( sprite_texture, renderer, x, y, source, destination );
 }
 
 void Sprite::flip_draw()

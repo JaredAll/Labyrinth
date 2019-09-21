@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 #include <climits>
@@ -113,6 +112,11 @@ public:
 	 Script* scene_dialogue,
 	 uint speed,
          uint maximum_stage_displacement );
+
+  /**
+   * Destructor
+   */
+  ~Scene();
 
   /**
    * set scene junction

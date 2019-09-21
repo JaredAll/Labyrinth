@@ -15,10 +15,10 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren)
 }
 
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren,
-                   int x, int y, SDL_Rect *clip )
+                   int x, int y, SDL_Rect *clip,
+                   SDL_Rect* dst )
 {
   //Setup the destination rectangle to be at the position we want
-  SDL_Rect *dst = new SDL_Rect();
   dst -> x = x;
   dst -> y = y;
   if( clip != nullptr )

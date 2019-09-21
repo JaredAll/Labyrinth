@@ -3,19 +3,28 @@
 SpriteLayer::SpriteLayer( std::string image_path,
                           SDL_Renderer *renderer, int x, int y,
                           uint param_distance )
-: Sprite::Sprite( image_path, renderer, x, y ),
-  distance( param_distance )
+  : distance( param_distance )
 {
-  
+  sprite = new Sprite( image_path, renderer, x, y );
+  destination = new SDL_Rect();
+}
+
+SpriteLayer::~SpriteLayer()
+{
+  if( sprite )
+  {
+    sprite -> ~Sprite();
+    sprite = NULL;
+  }
 }
 
 void SpriteLayer::left( uint speed )
 {
   if( distance > 0 )
   {
-    set_position(
-      get_x() - ( speed  / distance ),
-      get_y() );
+    sprite -> set_position(
+      sprite -> get_x() - ( speed  / distance ),
+      sprite -> get_y() );
   }
 }
 
@@ -23,38 +32,41 @@ void SpriteLayer::right( uint speed )
 {
   if( distance > 0 )
   { 
-    set_position(
-      get_x() + ( speed  / distance ),
-      get_y() );
+    sprite -> set_position(
+      sprite -> get_x() + ( speed  / distance ),
+      sprite -> get_y() );
   }
 }
 
 void SpriteLayer::draw()
 {
-  if( distance > 1 )
+  if( distance >= 1 )
   {
-    SDL_Rect *destination = new SDL_Rect();
-    destination -> x = get_x();
-    destination -> y = get_y();
-    destination -> w = get_width() / distance;
-    destination -> h = get_height() / distance;
-    Sprite::draw( destination );
+    destination -> x = sprite -> get_x();
+    destination -> y = sprite -> get_y();
+    destination -> w = sprite -> get_width() / distance;
+    destination -> h = sprite -> get_height() / distance;
+    sprite -> draw( destination );
   }
   else
   {
-    Sprite::draw();
+    destination -> x = sprite -> get_x();
+    destination -> y = sprite -> get_y();
+    destination -> w = sprite -> get_width();
+    destination -> h = sprite -> get_height();
+    sprite -> draw( destination );
   }
 }
 
 void SpriteLayer::reset()
 {
-  reset_position();
+  sprite -> reset_position();
 }
 
 void SpriteLayer::reset( int offset )
 {
   if( distance > 0 )
   {
-    reset_position( offset / distance ); 
+    sprite -> reset_position( offset / distance ); 
   }
 }

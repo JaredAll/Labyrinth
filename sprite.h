@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 
@@ -28,6 +27,11 @@ public:
    */
   Sprite( std::string image_path, SDL_Renderer *renderer,
           int x, int y );
+
+  /**
+   * Destructor
+   */
+  ~Sprite();
 
   /**
    * method to change source rectangle
@@ -116,6 +120,7 @@ private:
   SDL_Texture *sprite_texture;
   SDL_Rect *source;
   SDL_Renderer *renderer;
+  SDL_Rect *destination;
   int initial_x;
   int initial_y;
   int x;

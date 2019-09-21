@@ -44,6 +44,8 @@ private:
   uint width;
   vector< SDL_Rect* > letter_slots;
   SDL_Rect *display_box;
+  vector< SDL_Texture *> letter_textures;
+  string previous_message;
 
 };
 

@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 #include "sprite.h"
@@ -17,7 +16,7 @@ using namespace std;
  * @version 8 February 2019
  */
 
-class SpriteLayer : public Sprite
+class SpriteLayer
 {
 public:
 
@@ -29,6 +28,11 @@ public:
   SpriteLayer( std::string image_path,
                SDL_Renderer *renderer, int x, int y,
                uint distance );
+
+  /**
+   * Destructor
+   */
+  ~SpriteLayer();
 
   /**
    * move layer to the left
@@ -62,6 +66,8 @@ public:
 private:
 
   int distance;
+  Sprite *sprite;
+  SDL_Rect *destination;
 
 };
 

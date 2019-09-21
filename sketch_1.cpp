@@ -75,14 +75,14 @@ int main( int argc, char* argv[] )
     new Sprite( "sprites/4knut.png", ren, knut_x, knut_y );
 
   Sprite* dirk_s = new Sprite( "sprites/dirkwalk.png", ren, dirk_x,
-                          dirk_y );
+                               dirk_y );
 
   Sprite* al_s = new Sprite( "sprites/walkingAL.png", ren, al_x, al_y );
 
   Sprite* al_faces = new Sprite( "sprites/faces_AL2.png", ren, 400, 0 );
   Sprite* knut_faces = new Sprite( "sprites/kfaces.png", ren, 400, 0 );
   Sprite* doug_faces = new Sprite( "sprites/dougFsheet.png", ren, 400,
-			      0 );
+                                   0 );
 
   doug_s -> set_position(
     doug_x, character_plane_x - doug_s -> get_height() );
@@ -105,7 +105,7 @@ int main( int argc, char* argv[] )
   /* Create Conversations */
 
   Conversation *lunius_s1_c1 =
-   new Conversation( "convos/lunius_s1_c1.txt", ren );
+    new Conversation( "convos/lunius_s1_c1.txt", ren );
 
   Conversation *lunius_s1_c2 =
     new Conversation( "convos/lunius_s1_c2.txt", ren );
@@ -144,15 +144,15 @@ int main( int argc, char* argv[] )
   /* Create Characters */
 
   Character *doug = new Character( "doug",
-                              doug_s, doug_faces, 0, 0, 0, 3, 2 );
+                                   doug_s, doug_faces, 0, 0, 0, 3, 2 );
   
   Character *dirk = new Character( "dirk",
-                              dirk_s, doug_faces, 0, 0, 0,
-			      4, 2 );
+                                   dirk_s, doug_faces, 0, 0, 0,
+                                   4, 2 );
 
   Character *lunius = new Character( "lunius",
-                                lunius_s, knut_faces, 0, 0, 0,
-				4, 2 );
+                                     lunius_s, knut_faces, 0, 0, 0,
+                                     4, 2 );
 
   Character *al = new Character( "al", al_s, al_faces, 0, 0, 0, 4, 2 );
   
@@ -163,18 +163,18 @@ int main( int argc, char* argv[] )
   /* Initialize Backgrounds */
 
   SpriteLayer *backdrop_sprite = new SpriteLayer( "sprites/bg1.2.png",
-                                             ren, 0, 0, 0 );
+                                                  ren, 0, 0, 0 );
   
   SpriteLayer *far_town = new SpriteLayer( "sprites/town1.png", ren,
-                                      400, 110, 2 );
+                                           400, 110, 2 );
   SpriteLayer *near_town = new SpriteLayer( "sprites/town1.png", ren,
-                                       330, 2, 1 );
+                                            330, 2, 1 );
   SpriteLayer *b_bush_1 = new SpriteLayer( "sprites/berrybush.png", ren,
-                                      330, 225, 1 );
+                                           330, 225, 1 );
   SpriteLayer *b_bush_2 = new SpriteLayer( "sprites/berrybush.png", ren,
-                                      330, 225, 2 );
+                                           330, 225, 2 );
   SpriteLayer *b_bush_3 = new SpriteLayer( "sprites/berrybush.png", ren,
-                                      530, 225, 1 );
+                                           530, 225, 1 );
   SpriteLayer *inn_background_s = new SpriteLayer(
     "sprites/bar_inside.png", ren, 0, 0, 0 );
   
@@ -204,9 +204,9 @@ int main( int argc, char* argv[] )
     uint ground_y = 110;
     uint ground_x = 0 + 500 * i;
     SpriteLayer *ground_2 = new SpriteLayer( "sprites/grass1.png", ren,
-                                        ground_x, ground_y, 2 );
+                                             ground_x, ground_y, 2 );
     SpriteLayer *ground_2_c = new SpriteLayer ( "sprites/grass1.png", ren,
-                                           ground_x, 160, 2 );
+                                                ground_x, 160, 2 );
     trees -> add_layer( ground_2 );
     trees -> add_layer( ground_2_c );
     berry_inn -> add_layer( ground_2 );
@@ -219,9 +219,9 @@ int main( int argc, char* argv[] )
     uint ground_y = 0;
     uint ground_x = 0 + 1000 * i;
     SpriteLayer *ground = new SpriteLayer( "sprites/grass1.png", ren,
-                                      ground_x, ground_y, 1 );
+                                           ground_x, ground_y, 1 );
     SpriteLayer *ground_2 = new SpriteLayer( "sprites/grass1.png", ren,
-                                        ground_x, ground_y, 2 );
+                                             ground_x, ground_y, 2 );
     background -> add_layer( ground );
     trees -> add_layer( ground );
     berry_inn -> add_layer( ground );
@@ -281,7 +281,7 @@ int main( int argc, char* argv[] )
   
   Scene* sketch_1 =
     new Scene( ren, background, characters, dirk,
-	   sketch_script, speed, scene_1_size );
+               sketch_script, speed, scene_1_size );
 
   vector< Character* > ts_chars;
   ts_chars.push_back( lunius );
@@ -293,30 +293,30 @@ int main( int argc, char* argv[] )
 
   Scene* tree_scene =
     new Scene( ren, trees, ts_chars, dirk, scene2_script, speed,
-           scene_2_size );
+               scene_2_size );
 
   Scene* bush_inn =
     new Scene( ren, bar_inside, no_characters, dirk,
-           scene2_script, speed,
-           scene_3_size );
+               scene2_script, speed,
+               scene_3_size );
 
   Scene* bush_inn_2 =
     new Scene( ren, bar_inside, bi_chars, dirk, scene2_script, speed,
-           scene_3_size );
+               scene_3_size );
   
   Scene* cave_entrance_scene =
     new Scene( ren, cave_entrance, no_characters, dirk, scene2_script,
-           speed, scene_3_size );
+               speed, scene_3_size );
 
   Scene* cave_throne_room_scene =
     new Scene( ren, cave_throne_room, no_characters, dirk,
-           scene2_script, speed, scene_3_size );
+               scene2_script, speed, scene_3_size );
 
   vector< string > cave_throne_interaction_messages;
   cave_throne_interaction_messages.push_back( "Hello there, young adventurer..." );
   cave_throne_interaction_messages.push_back( "You must aid me in my hour of need." );
-    cave_throne_interaction_messages.push_back( "Mankind has enslaved our people." );
-      cave_throne_interaction_messages.push_back( "Go, and return with heroes capable of setting them free." );
+  cave_throne_interaction_messages.push_back( "Mankind has enslaved our people." );
+  cave_throne_interaction_messages.push_back( "Go, and return with heroes capable of setting them free." );
     
   cave_throne_room_scene -> add_interaction(
     cave_throne_interaction_messages, 200, ren );
@@ -347,15 +347,15 @@ int main( int argc, char* argv[] )
   fatty_rolls -> add_scene( tree_scene, above_ground );
 
   fatty_rolls -> join_scenes( above_ground,
-                           indoors,
-                           1, 1, 600, -50 );
+                              indoors,
+                              1, 1, 600, -50 );
   
   fatty_rolls -> join_scenes( above_ground,
-                           indoors, 1, 0, 60, 50 );
+                              indoors, 1, 0, 60, 50 );
 
   fatty_rolls -> join_scenes( above_ground,
-                           below_ground,
-                           0, 1, -scene_1_size, scene_3_size );
+                              below_ground,
+                              0, 1, -scene_1_size, scene_3_size );
   
   // fatty_rolls.join_scenes( 0, 0, 0, 2, -1000, 0 );
 

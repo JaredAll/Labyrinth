@@ -7,6 +7,18 @@ Background::Background( vector< SpriteLayer* > param_layers,
 
 }
 
+Background::~Background()
+{
+  for( uint i = 0; i < layers.size(); i++ )
+  {
+    if( layers.at( i ) )
+    {
+      layers.at( i ) -> ~SpriteLayer();
+      layers.at( i ) = NULL;
+    }
+  }
+}
+
 Background::Background( SDL_Renderer *ren ) :
 blank_screen( new SpriteLayer( "sprites/blank_screen.png", ren,
                            0, 0, 0 ) )
@@ -51,7 +63,7 @@ void Background::blank()
 
 void Background::reset()
 {
-  for( uint sprite = 0; sprite < layers.size(); sprite++  )
+  for( uint sprite = 0; sprite < layers.size(); sprite++ )
   {
     layers.at( sprite ) -> reset();
   }

@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 #include "sprite.h"
@@ -29,6 +28,11 @@ public:
              Sprite *full_body, Sprite *torso, uint force,
              uint diversion, uint stealth, uint num_walking_sprites,
              uint num_talking_sprites );
+
+  /**
+   * Destructor
+   */
+  ~Character();
 
   /**
    * set character happy expression 
@@ -139,12 +143,11 @@ private:
   uint num_talking_sprites;
 
   Sprite *full_body;
-  vector< SDL_Rect > walking_clips;
+  vector< SDL_Rect* > walking_clips;
   uint stride;
   
   Sprite *torso;
-  vector< SDL_Rect > talking_clips;
-
+  vector< SDL_Rect* > talking_clips;
   
   uint force;
   uint diversion;

@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
-#include "cleanup.h"
 #include <iostream>
 #include <vector>
 #include "scene.h"
@@ -29,6 +28,11 @@ public:
    * Constructer
    */
   Game();
+
+  /**
+   * Destructor
+   */
+  ~Game();
 
   /**
    * plays the game

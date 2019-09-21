@@ -447,7 +447,31 @@ Scene::Scene(SDL_Renderer *param_renderer,
   {
     printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
   }
+}
+
+Scene::~Scene()
+{
+  cout << "scene destroyed" << endl;
+  if( main_character )
+  {
+    main_character -> ~Character();
+    main_character = NULL;
+  }
+
+  if( background )
+  {
+    background -> ~Background();
+    background = NULL;
+  }
   
+  for( uint i = 0; i < characters.size(); i++ )
+  {
+    if( characters.at( i ) )
+    {
+      characters.at( i ) -> ~Character();
+      characters.at( i ) = NULL;
+    }
+  }
 }
 
 Report Scene::play()

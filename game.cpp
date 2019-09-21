@@ -8,6 +8,21 @@ Game::Game()
   current_scene = 0;
 }
 
+Game::~Game()
+{
+  for(uint i = 0; i < scenes.size(); i++ )
+  {
+    for( uint j = 0; j < scenes.at( i ).size(); j++ )
+    {
+      if( scenes.at( i ).at( j ) )
+      {
+        scenes.at( i ).at ( j ) -> ~Scene();
+        scenes.at( i ).at( j ) = NULL;
+      }
+    }
+  }
+}
+
 void Game::set_introduction( Panel* panel )
 {
   panels.push_back( panel );
