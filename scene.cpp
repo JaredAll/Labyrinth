@@ -284,7 +284,6 @@ void Scene::center( uint count )
 
 void Scene::right( uint count )
 {
-   
   SDL_RenderClear( renderer );
 
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );

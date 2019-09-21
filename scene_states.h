@@ -9,4 +9,17 @@ enum class Scene_States
   switch_tracks = 3
 };
 
+/* string states[] = */
+/* { */
+/*   "exit_right", */
+/*   "exit_left", */
+/*   "quit", */
+/*   "switch_tracks" */
+/* }; */
+
+/* ostream& operator<<(ostream& out, const Scene_States state ) */
+/* { */
+/*   return out << states[ static_cast<int>(state) ]; */
+/* } */
+
 #endif

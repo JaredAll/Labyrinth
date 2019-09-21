@@ -62,18 +62,16 @@ void Game::play()
     Report report;
     report = { Scene_States::exit_right, 0 };
 
-    cout << scenes.size() << endl;
-    cout << scenes.at( 1 ).size() << endl;
-
     while( !quit )
-    {      
+    {
+      
       report = scenes
         .at( current_track )
         .at( current_scene )
         -> play();
-    
+      
       if( report.status == Scene_States::switch_tracks )
-      {        
+      {
         uint next_scene_pos;
         uint next_track;
         uint next_character_position;
