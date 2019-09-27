@@ -20,7 +20,7 @@ void Scene::speak()
       speak_index = i;
       convo( speak_index,
              scene_dialogue -> speak_to( following_characters.at(
-                                        speak_index ) ), true );
+                                           speak_index ) ), true );
     }
   }
   return;
@@ -44,7 +44,7 @@ bool Scene::recruit()
       found_recruit = true;
       convo( recruit_index,
              scene_dialogue -> speak_to( characters.at(
-                                        recruit_index ) ), false );
+                                           recruit_index ) ), false );
       recruit_success = confirm_recruit(
         characters.at( recruit_index ) );
       
@@ -78,7 +78,7 @@ bool Scene::confirm_recruit( Character* character )
   character -> gasp();
   
   prompt_display -> display( prompt_recruitment, renderer, font,
-                          prompt_recruitment.length() );
+                             prompt_recruitment.length() );
   SDL_RenderPresent( renderer );
   ++counted_frames;
 
@@ -131,7 +131,7 @@ bool Scene::enter()
           set_stage_pos( main_character
                          -> get_screen_position().at( 0 ),
                          main_character
-                          -> get_position().at( 0 ) );
+                         -> get_position().at( 0 ) );
       }
       
     }
@@ -155,7 +155,7 @@ void Scene::prompt_enter_linked_scene()
     if( distance_from_entry < entry_proximity )
     {
       prompt_display -> display( prompt_enter, renderer, font,
-                              prompt_enter.length() );
+                                 prompt_enter.length() );
     }
   }
 }
@@ -175,7 +175,7 @@ void Scene::prompt_speak()
     if( distance_from_speaker < speaker_proximity )
     {
       prompt_display -> display( prompt_speak, renderer, font,
-                              prompt_speak.length() );
+                                 prompt_speak.length() );
     }
   }
 }
@@ -282,6 +282,36 @@ void Scene::center( uint count )
   ++counted_frames;
 }
 
+void Scene::jump()
+{
+
+  int initial_y_velocity = 40;
+  int gravity = -4;
+
+  int velocity = initial_y_velocity;
+  while( velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  {
+    SDL_RenderClear( renderer );
+    background -> draw();
+    draw_npcs();
+  
+    main_character -> jump( velocity );
+
+    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+
+    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - velocity );
+
+    velocity += gravity;
+
+    SDL_RenderPresent( renderer );
+    ++counted_frames;
+    usleep( 1000 );
+  }
+  prompt_interact();
+  SDL_Delay( 50 );
+}
+
 void Scene::right( uint count )
 {
   SDL_RenderClear( renderer );
@@ -371,7 +401,7 @@ void Scene::ducklings( bool left, uint count )
     {
       following_characters.at(
         i ) -> follow( following_characters.at( i - 1 ),
-                    speed, count );
+                       speed, count );
     }
   }
 }
@@ -480,6 +510,7 @@ Report Scene::play()
   bool push = false;
   bool in_bounds = true;
   bool play = true;
+  bool jumped = false;
   bool linked_scene_entry = false;
   uint count = 0;
   report = { Scene_States::exit_right, 0 };
@@ -537,11 +568,6 @@ Report Scene::play()
           linked_scene_entry = enter();
           push = false;
         }
-        if( e.key.keysym.sym == SDLK_UP )
-        {
-          speak();
-          push = false;
-        }
         if( e.key.keysym.sym == SDLK_DOWN )
         {
           recruit();
@@ -551,6 +577,10 @@ Report Scene::play()
         {
           count = ( count + 1 ) % 4;
           right( count );
+        }
+        if( e.key.keysym.sym == SDLK_UP )
+        {
+          jump();
         }
         else if( e.key.keysym.sym == SDLK_LEFT )
         {
@@ -620,7 +650,7 @@ void Scene::stage_right()
   background -> reset( stage_width * -1 );
   
   main_character -> set_stage_pos( window_size - 2 * main_char_width,
-                                maximum_stage_displacement - main_char_width );
+                                   maximum_stage_displacement - main_char_width );
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
@@ -638,7 +668,7 @@ void Scene::stage_right_barrier()
     maximum_stage_displacement - ( window_size / 2 ) + 2 * main_char_width;
   
   main_character -> set_stage_pos( window_size - 2 * main_char_width,
-                                maximum_stage_displacement - main_char_width );  
+                                   maximum_stage_displacement - main_char_width );  
 }
 
 
@@ -668,8 +698,8 @@ void Scene::stage_junction( int junction_position )
   background -> reset( new_background_position );
   
   main_character
-     -> set_stage_pos( new_screen_position,
-                    junction_position);
+    -> set_stage_pos( new_screen_position,
+                      junction_position);
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
@@ -754,7 +784,7 @@ void Scene::prompt_interact()
     if( distance_from_interaction < interact_proximity )
     {
       prompt_display -> display( prompt_interact, renderer, font,
-                              prompt_interact.length() );
+                                 prompt_interact.length() );
     }
   } 
 }

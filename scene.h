@@ -157,6 +157,11 @@ private:
   void center( uint count );
 
   /**
+   * update the scene jump
+   */
+  void jump();
+
+  /**
    * convert npc to follower
    */
   bool recruit();

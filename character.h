@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include "sprite.h"
+#include <unistd.h>
 
 using namespace std;
 
@@ -57,6 +58,11 @@ public:
    * @param count the characters walking cycle count
    */
   void walk_right( uint speed, uint count );
+
+  /**
+   * make the character jump
+   */
+  void jump( int velocity );
 
   /**
    * make the character stand

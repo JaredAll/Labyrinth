@@ -6,9 +6,9 @@ Character::Character( string param_name,
                       uint param_num_walking,
                       uint param_num_talking )
   : name( param_name ), full_body( param_full_body ), torso( param_torso ),
-  force( param_force ), diversion( param_diversion ),
-  stealth( param_stealth ), num_walking_sprites( param_num_walking ),
-  num_talking_sprites( param_num_talking )
+    force( param_force ), diversion( param_diversion ),
+    stealth( param_stealth ), num_walking_sprites( param_num_walking ),
+    num_talking_sprites( param_num_talking )
 {
 
   for( uint i = 0; i < num_walking_sprites; i++ )
@@ -16,7 +16,7 @@ Character::Character( string param_name,
     SDL_Rect *clip = new SDL_Rect();
     walking_clips.push_back( clip );
     walking_clips.at( i ) -> x = i * ( full_body -> get_width() /
-      num_walking_sprites );
+                                       num_walking_sprites );
     walking_clips.at( i ) -> y = 0;
     walking_clips.at( i ) -> h = full_body -> get_height();
     walking_clips.at( i ) -> w = full_body -> get_width() /
@@ -97,6 +97,20 @@ void Character::walk_left( uint speed, uint count )
   set_position( x_pos - speed,
                 y_pos );
   facing_left = true;
+}
+
+void Character::jump( int velocity )
+{
+  if( !facing_left )
+  {
+    full_body -> draw();
+  }
+  else
+  {
+    full_body -> flip_draw();
+  }
+  y_pos = y_pos + velocity;
+  set_position( x_pos, y_pos );
 }
 
 void Character::stand()
