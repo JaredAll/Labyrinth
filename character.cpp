@@ -101,6 +101,9 @@ void Character::walk_left( uint speed, uint count )
 
 void Character::jump( int velocity )
 {
+  stride = 2;
+  full_body -> set_source( walking_clips.at( stride ) );
+
   if( !facing_left )
   {
     full_body -> draw();
