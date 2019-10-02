@@ -64,6 +64,16 @@ public:
   Report play();
 
   /**
+   * determines whether a movement key is being held down
+   */
+  bool movement_key_pressed( const Uint8* state );
+
+  /**
+   * moves the main character
+   */
+  void marionette( int x_velocity, int y_velocity, uint cadence );
+
+  /**
    * resets the scene
    */
   void reset();

@@ -507,10 +507,10 @@ Scene::~Scene()
 Report Scene::play()
 {
   SDL_Event e;
+  const Uint8 *state = SDL_GetKeyboardState( NULL );
   bool push = false;
   bool in_bounds = true;
   bool play = true;
-  bool jumped = false;
   bool linked_scene_entry = false;
   uint count = 0;
   report = { Scene_States::exit_right, 0 };
@@ -519,7 +519,11 @@ Report Scene::play()
   
   while( in_bounds && play && !linked_scene_entry )
   {
+    SDL_PumpEvents();
     
+    int x_velocity = 0;
+    int y_velocity = 0;
+
     avg_frames_per_second = ( counted_frames ) /
       ( SDL_GetTicks() / 1000.f );
     cout << avg_frames_per_second << "\r";
@@ -555,7 +559,7 @@ Report Scene::play()
     
     if( play )
     {
-      if( push )
+      if( push || movement_key_pressed( state ) )
       {
         if( e.key.keysym.sym == SDLK_LSHIFT )
         {
@@ -573,33 +577,67 @@ Report Scene::play()
           recruit();
           push = false;
         }
-        if( e.key.keysym.sym == SDLK_RIGHT )
-        {
-          count = ( count + 1 ) % 4;
-          right( count );
-        }
         if( e.key.keysym.sym == SDLK_UP )
         {
-          jump();
+          y_velocity = 1;
         }
-        else if( e.key.keysym.sym == SDLK_LEFT )
+        if( !state[ SDL_SCANCODE_UP ] )
+        {
+          y_velocity = 0;
+        }
+        if( e.key.keysym.sym == SDLK_RIGHT || state[ SDL_SCANCODE_RIGHT ] )
         {
           count = ( count + 1 ) % 4;
-          left( count );
+          x_velocity = 1;
+        }
+        else if( e.key.keysym.sym == SDLK_LEFT || state[ SDL_SCANCODE_LEFT ] )
+        {
+          count = ( count + 1 ) % 4;
+          x_velocity = -1;
         }
       }
       else
       {
-        center( count );
+        x_velocity = 0;
+        y_velocity = 0;
       }
     }
     if( linked_scene_entry )
     {
       report.status = Scene_States::switch_tracks;
     }
+    marionette( x_velocity, y_velocity, count );
   }
   
   return report;
+}
+
+bool Scene::movement_key_pressed( const Uint8* state )
+{
+  return state[ SDL_SCANCODE_LEFT ] || state[ SDL_SCANCODE_RIGHT ];
+}
+
+void Scene::marionette( int x_velocity, int y_velocity, uint cadence )
+{
+  if( x_velocity > 0 )
+  {
+    right( cadence );
+  }
+
+  if( x_velocity < 0 )
+  {
+    left( cadence );
+  }
+
+  if( x_velocity == 0 )
+  {
+    center( cadence );
+  }
+
+  if( y_velocity > 0 )
+  {
+    jump();
+  }
 }
 
 void Scene::reset()
