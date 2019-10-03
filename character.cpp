@@ -99,7 +99,7 @@ void Character::walk_left( uint speed, uint count )
   facing_left = true;
 }
 
-void Character::jump( int velocity )
+void Character::jump( int x_velocity, int y_velocity )
 {
   stride = 2;
   full_body -> set_source( walking_clips.at( stride ) );
@@ -112,7 +112,27 @@ void Character::jump( int velocity )
   {
     full_body -> flip_draw();
   }
-  y_pos = y_pos + velocity;
+
+  y_pos = y_pos + y_velocity;
+  x_pos = x_pos + x_velocity;
+
+  set_position( x_pos, y_pos );  
+}
+
+void Character::jump( int y_velocity )
+{
+  stride = 2;
+  full_body -> set_source( walking_clips.at( stride ) );
+
+  if( !facing_left )
+  {
+    full_body -> draw();
+  }
+  else
+  {
+    full_body -> flip_draw();
+  }
+  y_pos = y_pos + y_velocity;
   set_position( x_pos, y_pos );
 }
 

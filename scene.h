@@ -148,12 +148,23 @@ private:
    */
   void convo( uint character_index, Conversation* conversation,
               bool following );
+  /**
+   * update the scene jumping right
+   * @param count the character walking cycle count
+   */
+  void air_right( uint count );
 
   /**
    * update the scene right
    * @param count the character walking cycle count
    */
   void right( uint count );
+
+  /**
+   * update the scene left while jumping
+   * @param count the character walking cycle count
+   */
+  void air_left( uint count );
 
   /**
    * update the scene left
@@ -170,6 +181,20 @@ private:
    * update the scene jump
    */
   void jump();
+
+  /**
+   * update the scene lateral jump
+   * @param x_unit_vector the x directional vector
+   * @param count the character walking cycle count
+   */
+  void lateral_jump( int x_unit_vector, uint count );
+
+  /**
+   * update the scene lateral screen jump
+   * @param x_unit_vector the x directional vector
+   * @param count the character walking cycle count
+   */
+  void lateral_screen_jump( int x_unit_vector, uint count );
 
   /**
    * convert npc to follower

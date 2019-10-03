@@ -285,30 +285,123 @@ void Scene::center( uint count )
 void Scene::jump()
 {
 
-  int initial_y_velocity = 40;
+  int initial_y_velocity = 30;
   int gravity = -4;
 
-  int velocity = initial_y_velocity;
-  while( velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  int y_velocity = initial_y_velocity;
+  while( y_velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
   {
     SDL_RenderClear( renderer );
     background -> draw();
     draw_npcs();
   
-    main_character -> jump( velocity );
+    main_character -> jump( y_velocity );
 
     int main_char_pos_x = main_character -> get_screen_position().at( 0 );
     int main_char_pos_y = main_character -> get_screen_position().at( 1 );
 
-    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - velocity );
+    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
 
-    velocity += gravity;
+    y_velocity += gravity;
 
     SDL_RenderPresent( renderer );
     ++counted_frames;
     usleep( 1000 );
   }
-  prompt_interact();
+  SDL_Delay( 50 );
+}
+
+void Scene::lateral_jump( int x_unit_vector, uint count )
+{
+  int x_velocity = 5 * x_unit_vector;
+  int initial_y_velocity = 30;
+
+  int gravity = -4;
+
+  int y_velocity = initial_y_velocity;
+  while( y_velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  {
+    SDL_RenderClear( renderer );
+
+    if( x_unit_vector == 1 )
+    {      
+      background -> left( speed );
+    }
+    else
+    {
+      background -> right( speed );
+    }
+
+    background -> draw();
+
+    if( x_unit_vector == 1 )
+    {
+      draw_npcs( false );
+    }
+    else
+    {
+      draw_npcs( true );
+    }
+    main_character -> jump( x_velocity, y_velocity );
+
+    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+
+    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+
+    y_velocity += gravity;
+
+    ++counted_frames;
+    SDL_RenderPresent( renderer );
+  } 
+}
+
+void Scene::lateral_screen_jump( int x_unit_vector, uint count )
+{
+  int x_velocity = 5 * x_unit_vector;
+  int initial_y_velocity = 30;
+
+  int gravity = -4;
+
+  int y_velocity = initial_y_velocity;
+  while( y_velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  {
+    SDL_RenderClear( renderer );
+    background -> draw();
+    draw_npcs();
+    main_character -> jump( x_velocity, y_velocity );
+    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+
+    main_character -> set_screen_position( main_char_pos_x + x_velocity, main_char_pos_y - y_velocity );
+
+    y_velocity += gravity;
+
+    ++counted_frames;
+    SDL_RenderPresent( renderer );
+  } 
+}
+
+void Scene::air_right( uint count )
+{
+
+  int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
+  int main_char_pos = main_character -> get_position().at( 0 );
+  if( main_char_pos < ( -1 * stage_center_edge ) ||
+      main_char_pos >= stage_center_edge )
+  {
+    background -> draw();
+    draw_npcs();
+    ducklings( count );
+    lateral_screen_jump( 1, count );
+  } 
+  else
+  {
+    background -> draw();
+    draw_npcs( false );
+    ducklings( false, count );
+    lateral_jump( 1, count );
+  }
   SDL_Delay( 50 );
 }
 
@@ -340,6 +433,30 @@ void Scene::right( uint count )
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
+  SDL_Delay( 50 );
+}
+
+void Scene::air_left( uint count )
+{
+  int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
+  int main_char_pos = main_character -> get_position().at( 0 );
+  
+  if( main_char_pos < ( -1 * stage_center_edge ) ||
+      main_char_pos >= stage_center_edge )
+  {
+    background -> draw();
+    draw_npcs();
+    ducklings( count );
+    lateral_screen_jump( -1, count );
+  } 
+  else
+  {
+    background -> right( speed );
+    background -> draw();
+    draw_npcs( true );
+    ducklings( true, count );
+    lateral_jump( -1, count );
+  }
   SDL_Delay( 50 );
 }
 
@@ -521,8 +638,8 @@ Report Scene::play()
   {
     SDL_PumpEvents();
     
-    int x_velocity = 0;
-    int y_velocity = 0;
+    int x_direction = 0;
+    int y_direction = 0;
 
     avg_frames_per_second = ( counted_frames ) /
       ( SDL_GetTicks() / 1000.f );
@@ -579,34 +696,34 @@ Report Scene::play()
         }
         if( e.key.keysym.sym == SDLK_UP )
         {
-          y_velocity = 1;
+          y_direction = 1;
         }
         if( !state[ SDL_SCANCODE_UP ] )
         {
-          y_velocity = 0;
+          y_direction = 0;
         }
         if( e.key.keysym.sym == SDLK_RIGHT || state[ SDL_SCANCODE_RIGHT ] )
         {
           count = ( count + 1 ) % 4;
-          x_velocity = 1;
+          x_direction = 1;
         }
         else if( e.key.keysym.sym == SDLK_LEFT || state[ SDL_SCANCODE_LEFT ] )
         {
           count = ( count + 1 ) % 4;
-          x_velocity = -1;
+          x_direction = -1;
         }
       }
       else
       {
-        x_velocity = 0;
-        y_velocity = 0;
+        x_direction = 0;
+        y_direction = 0;
       }
     }
     if( linked_scene_entry )
     {
       report.status = Scene_States::switch_tracks;
     }
-    marionette( x_velocity, y_velocity, count );
+    marionette( x_direction, y_direction, count );
   }
   
   return report;
@@ -617,26 +734,36 @@ bool Scene::movement_key_pressed( const Uint8* state )
   return state[ SDL_SCANCODE_LEFT ] || state[ SDL_SCANCODE_RIGHT ];
 }
 
-void Scene::marionette( int x_velocity, int y_velocity, uint cadence )
+void Scene::marionette( int x_direction, int y_direction, uint cadence )
 {
-  if( x_velocity > 0 )
+  if( x_direction > 0 )
   {
     right( cadence );
   }
 
-  if( x_velocity < 0 )
+  if( x_direction < 0 )
   {
     left( cadence );
   }
 
-  if( x_velocity == 0 )
+  if( x_direction == 0 )
   {
     center( cadence );
   }
 
-  if( y_velocity > 0 )
+  if( y_direction > 0 && x_direction == 0 )
   {
     jump();
+  }
+
+  if( y_direction != 0 && x_direction < 0 )
+  {
+    air_left( cadence );
+  }
+
+  if( y_direction != 0 && x_direction > 0 )
+  {
+    air_right( cadence );
   }
 }
 
@@ -660,7 +787,6 @@ void Scene::stage_left_barrier()
   main_character -> set_stage_pos(
     main_char_width, (-1 * maximum_stage_displacement + main_char_width ) );
 }
-
 
 void Scene::stage_left()
 {

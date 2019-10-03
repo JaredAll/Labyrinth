@@ -62,7 +62,12 @@ public:
   /**
    * make the character jump
    */
-  void jump( int velocity );
+  void jump( int y_velocity );
+
+  /**
+   * make the character jump laterally
+   */
+  void jump( int x_velocity, int y_velocity );
 
   /**
    * make the character stand
