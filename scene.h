@@ -74,6 +74,16 @@ public:
   void marionette( int x_velocity, int y_velocity, uint cadence );
 
   /**
+   * sets previous scene junction position
+   */
+  void set_previous_junction_position( int position );
+
+  /**
+   * gets the previous scene junction position
+   */
+  int get_previous_junction_position();
+
+  /**
    * resets the scene
    */
   void reset();
@@ -302,6 +312,8 @@ private:
   int stage_right_pos;
   int maximum_stage_displacement;
   int window_size;
+
+  int previous_junction_position;
 
   vector< int > scene_junction_positions;
   vector< Interaction* > interactions;

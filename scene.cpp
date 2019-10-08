@@ -586,6 +586,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
   window_size = 1000;
   stage_left_pos = maximum_stage_displacement * -1;
   stage_right_pos = maximum_stage_displacement;
+  previous_junction_position = INT_MAX;
   
   TTF_Init();
   font = TTF_OpenFont( "OpenSans-Bold.ttf", 16 );
@@ -630,7 +631,7 @@ Report Scene::play()
   bool play = true;
   bool linked_scene_entry = false;
   uint count = 0;
-  report = { Scene_States::exit_right, 0 };
+  report = { Scene_States::exit_right, 0};
 
   float avg_frames_per_second = 0;
   
@@ -767,6 +768,16 @@ void Scene::marionette( int x_direction, int y_direction, uint cadence )
   }
 }
 
+void Scene::set_previous_junction_position( int position )
+{
+  previous_junction_position = position;
+}
+
+int Scene::get_previous_junction_position()
+{
+  return previous_junction_position;
+}
+
 void Scene::reset()
 {
   background -> reset();
@@ -838,6 +849,8 @@ void Scene::stage_right_barrier()
 
 void Scene::stage_junction( int junction_position )
 {
+  cout << "prev: " << previous_junction_position << endl;
+  cout << "curr: " << junction_position << endl;
   int main_char_width = 20;
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
 
@@ -858,12 +871,58 @@ void Scene::stage_junction( int junction_position )
     new_screen_position = center_screen + abs( stage_center_right_edge - junction_position ) - 4 * main_char_width;
     new_background_position = stage_center_left_edge;
   }
-
+  
   background -> reset( new_background_position );
   
   main_character
     -> set_stage_pos( new_screen_position,
                       junction_position);
+
+  for( uint i = 0; i < characters.size(); i++ )
+  {
+    int old_character_position = characters.at( i ) ->
+      get_position().at( 0 );
+
+    int old_character_screen_position = characters.at( i ) ->
+      get_screen_position().at( 0 );
+    
+    int new_character_position;
+    int new_character_screen_position;
+
+    if( previous_junction_position != INT_MAX )
+    {
+      if( previous_junction_position > junction_position )
+      {
+        new_character_position = old_character_position +
+          abs( previous_junction_position -
+               junction_position );
+
+        new_character_screen_position = old_character_screen_position
+          + abs( previous_junction_position -
+                 junction_position );
+      }
+      else
+      {
+        new_character_position = old_character_position -
+          abs( previous_junction_position -
+               junction_position );
+
+        new_character_screen_position = old_character_screen_position
+          - abs( previous_junction_position -
+                 junction_position );
+      }
+
+      cout << "difference: " << abs( previous_junction_position -
+                                     junction_position ) << endl;
+      cout << endl;
+    
+      characters.at( i ) -> set_stage_pos(
+        new_character_screen_position,
+        new_character_position );
+
+    }
+
+  }
   
   for( uint i = 0; i < following_characters.size(); i++ )
   {
@@ -871,6 +930,10 @@ void Scene::stage_junction( int junction_position )
       new_screen_position,
       junction_position);
   }
+
+  cout << "background position: " << new_background_position << endl;
+  previous_junction_position = junction_position;
+  cout << "new previous junction position: " << previous_junction_position << endl;
 }
 
 void Scene::set_junction( int position )
