@@ -1,6 +1,0 @@
-#include "sceneJunction.h"
-
-int SceneJunction::get_position()
-{
-  return junction_pos;
-}

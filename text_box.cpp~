@@ -1,9 +1,0 @@
-#include "text_box.h"
-
-
-Text_box::Text_box( uint param_x, param_y, param_h, param_w )
-  : x_pos( param_x ), y_pos( param_y ), box_height( param_h ),
-    box_width( param_w )
-{
-  
-}
