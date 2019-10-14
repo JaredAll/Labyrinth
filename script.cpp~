@@ -1,8 +1,0 @@
-#include "script.h"
-
-void Script::speak_to( Character character )
-{
-
-
-
-}
