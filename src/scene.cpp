@@ -123,7 +123,8 @@ bool Scene::enter()
     if( distance_from_entry < entry_proximity )
     {
       entry = true;
-      report.character_position = scene_junction_positions.at( i );
+      report.character_position =
+        main_character -> get_position().at( 0 );
 
       for( uint i = 0; i < following_characters.size(); i++ )
       {
@@ -313,7 +314,7 @@ void Scene::jump()
 
 void Scene::lateral_jump( int x_unit_vector, uint count )
 {
-  int x_velocity = 5 * x_unit_vector;
+  int x_velocity = speed * x_unit_vector;
   int initial_y_velocity = 30;
 
   int gravity = -4;
@@ -384,7 +385,6 @@ void Scene::lateral_screen_jump( int x_unit_vector, uint count )
 
 void Scene::air_right( uint count )
 {
-
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character -> get_position().at( 0 );
   if( main_char_pos < ( -1 * stage_center_edge ) ||
@@ -848,13 +848,7 @@ void Scene::stage_right_barrier()
 
 
 void Scene::stage_junction( int junction_position )
-{
-  cout << "prev: " << previous_junction_position << endl;
-  cout << "curr: " << junction_position << endl;
-  cout << "difference: " << abs( previous_junction_position -
-                                 junction_position ) << endl;
-  cout << endl;
-  
+{  
   int main_char_width = 20;
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
 
@@ -919,9 +913,7 @@ void Scene::stage_junction( int junction_position )
       characters.at( i ) -> set_stage_pos(
         new_character_screen_position,
         new_character_position );
-
     }
-
   }
   
   for( uint i = 0; i < following_characters.size(); i++ )
@@ -932,8 +924,6 @@ void Scene::stage_junction( int junction_position )
   }
 
   previous_junction_position = junction_position;
-  
-  cout << "new previous junction position: " << previous_junction_position << endl;
 }
 
 void Scene::set_junction( int position )

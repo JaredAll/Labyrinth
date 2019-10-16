@@ -77,11 +77,14 @@ uint SceneJunction::get_next_track( uint scene, uint track )
 bool SceneJunction::contains( uint scene_pos,
                               uint track_pos,
                               int link_position )
-{ 
-  return ( link_position == scene1_link_position &&
+{
+  int junction_proximity = 60;
+  return ( abs( link_position - scene1_link_position ) <
+           junction_proximity &&
            scene_pos == scene1_index &&
            track_pos == track1_index ) ||
-    ( link_position == scene2_link_position
+    ( abs( link_position - scene2_link_position ) <
+      junction_proximity
       && scene_pos == scene2_index &&
       track_pos == track2_index );
 }

@@ -141,7 +141,6 @@ void Game::play()
                 .at( i )
                 -> set_previous_junction_position(
                   report.character_position );
-              cout << "test" << endl;
             }
           }
         }
