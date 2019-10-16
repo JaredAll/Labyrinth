@@ -851,6 +851,10 @@ void Scene::stage_junction( int junction_position )
 {
   cout << "prev: " << previous_junction_position << endl;
   cout << "curr: " << junction_position << endl;
+  cout << "difference: " << abs( previous_junction_position -
+                                 junction_position ) << endl;
+  cout << endl;
+  
   int main_char_width = 20;
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
 
@@ -912,10 +916,6 @@ void Scene::stage_junction( int junction_position )
                  junction_position );
       }
 
-      cout << "difference: " << abs( previous_junction_position -
-                                     junction_position ) << endl;
-      cout << endl;
-    
       characters.at( i ) -> set_stage_pos(
         new_character_screen_position,
         new_character_position );
@@ -931,8 +931,8 @@ void Scene::stage_junction( int junction_position )
       junction_position);
   }
 
-  cout << "background position: " << new_background_position << endl;
   previous_junction_position = junction_position;
+  
   cout << "new previous junction position: " << previous_junction_position << endl;
 }
 

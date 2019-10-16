@@ -112,7 +112,13 @@ void Game::play()
           }
         }
 
+        int previous_scene_junction_position = scenes
+          .at( current_track )
+          .at( current_scene )
+          -> get_previous_junction_position();
+
         uint previous_track = current_track;
+        uint previous_scene = current_scene;
         current_track = next_track;
         current_scene = next_scene_pos;
         
@@ -121,19 +127,23 @@ void Game::play()
           .at( current_scene )
           -> stage_junction( next_character_position );
 
-        int previous_scene_junction_position = scenes
-          .at( current_track )
-          .at( current_scene )
-          -> get_previous_junction_position();
-
-        for( uint i = 0; i < scenes.at( current_track ).size();
+        for( uint i = 0; i < scenes.at( previous_track ).size();
              i++ )
         {
-          scenes
-            .at( previous_track )
-            .at( i )
-            -> set_previous_junction_position(
-              previous_scene_junction_position );
+          for( uint j = 0; j < scene_links.size(); j++ )
+          {
+            if( scene_links.at( j )
+                -> contains( i, previous_track,
+                             report.character_position ) )
+            {
+              scenes
+                .at( previous_track )
+                .at( i )
+                -> set_previous_junction_position(
+                  report.character_position );
+              cout << "test" << endl;
+            }
+          }
         }
         //TODO: check which scenes connect to a given scene and
         //set their previous scene junction positions accordingly.
