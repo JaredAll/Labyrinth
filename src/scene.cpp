@@ -295,6 +295,7 @@ void Scene::jump()
     SDL_RenderClear( renderer );
     background -> draw();
     draw_npcs();
+    ducklings( 1 );
   
     main_character -> jump( y_velocity );
 
@@ -312,95 +313,108 @@ void Scene::jump()
   SDL_Delay( 50 );
 }
 
-void Scene::lateral_jump( int x_unit_vector, uint count )
+int Scene::lateral_jump( int x_unit_vector, int y_velocity, uint count )
 {
   int x_velocity = speed * x_unit_vector;
-  int initial_y_velocity = 30;
 
   int gravity = -4;
+  
+  SDL_RenderClear( renderer );
 
-  int y_velocity = initial_y_velocity;
-  while( y_velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  if( x_unit_vector == 1 )
+  {      
+    background -> left( speed );
+  }
+  else
   {
-    SDL_RenderClear( renderer );
+    background -> right( speed );
+  }
 
-    if( x_unit_vector == 1 )
-    {      
-      background -> left( speed );
-    }
-    else
-    {
-      background -> right( speed );
-    }
+  background -> draw();
 
-    background -> draw();
+  if( x_unit_vector == 1 )
+  {
+    draw_npcs( false );
+    ducklings( count );
+  }
+  else
+  {
+    draw_npcs( true );
+    ducklings( count );
+  }
+  main_character -> jump( x_velocity, y_velocity );
 
-    if( x_unit_vector == 1 )
-    {
-      draw_npcs( false );
-    }
-    else
-    {
-      draw_npcs( true );
-    }
-    main_character -> jump( x_velocity, y_velocity );
+  int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+  int main_char_pos_y = main_character -> get_screen_position().at( 1 );
 
-    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
-    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+  main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
 
-    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+  y_velocity += gravity;
 
-    y_velocity += gravity;
-
-    ++counted_frames;
-    SDL_RenderPresent( renderer );
-  } 
+  ++counted_frames;
+  SDL_RenderPresent( renderer );
+  return y_velocity;
 }
 
-void Scene::lateral_screen_jump( int x_unit_vector, uint count )
+int Scene::lateral_screen_jump( int x_unit_vector, int y_velocity, uint count )
 {
   int x_velocity = 5 * x_unit_vector;
-  int initial_y_velocity = 30;
 
   int gravity = -4;
 
-  int y_velocity = initial_y_velocity;
-  while( y_velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  SDL_RenderClear( renderer );
+  background -> draw();
+  draw_npcs();
+  main_character -> jump( x_velocity, y_velocity );
+  int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+  int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+
+  main_character -> set_screen_position( main_char_pos_x + x_velocity, main_char_pos_y - y_velocity );
+
+  if( x_unit_vector == 1 )
   {
-    SDL_RenderClear( renderer );
-    background -> draw();
-    draw_npcs();
-    main_character -> jump( x_velocity, y_velocity );
-    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
-    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+    ducklings( count );
+  }
+  else
+  {
+    ducklings( count );
+  }
 
-    main_character -> set_screen_position( main_char_pos_x + x_velocity, main_char_pos_y - y_velocity );
+  y_velocity += gravity;
 
-    y_velocity += gravity;
-
-    ++counted_frames;
-    SDL_RenderPresent( renderer );
-  } 
+  ++counted_frames;
+  SDL_RenderPresent( renderer );
+  return y_velocity;
 }
 
 void Scene::air_right( uint count )
 {
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character -> get_position().at( 0 );
-  if( main_char_pos < ( -1 * stage_center_edge ) ||
-      main_char_pos >= stage_center_edge )
+
+  int initial_y_velocity = 30;
+  int y_velocity = initial_y_velocity;
+  double increment = 0.1;
+
+  while( y_velocity >= -1 * (initial_y_velocity) )
   {
-    background -> draw();
-    draw_npcs();
-    ducklings( count );
-    lateral_screen_jump( 1, count );
-  } 
-  else
-  {
-    background -> draw();
-    draw_npcs( false );
-    ducklings( false, count );
-    lateral_jump( 1, count );
+    main_char_pos = main_character -> get_position().at( 0 );
+    if( main_char_pos < ( -1 * stage_center_edge ) ||
+        main_char_pos >= stage_center_edge )
+    {
+      background -> draw();
+      draw_npcs();
+      ducklings( count );
+      y_velocity = lateral_screen_jump( 1, y_velocity, count );
+    } 
+    else
+    {
+      background -> draw();
+      ducklings( false, count );
+      y_velocity = lateral_jump( 1, y_velocity, count );
+    }
+    increment += increment;
+    count = ( count + ( int ) increment ) % 4;
   }
   SDL_Delay( 50 );
 }
@@ -433,29 +447,37 @@ void Scene::right( uint count )
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
-  SDL_Delay( 50 );
+  SDL_Delay( 40 );
 }
 
 void Scene::air_left( uint count )
 {
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character -> get_position().at( 0 );
+
+  int initial_y_velocity = 30;
+  int y_velocity = initial_y_velocity;
+  double increment = 0.1;
   
-  if( main_char_pos < ( -1 * stage_center_edge ) ||
-      main_char_pos >= stage_center_edge )
+  while( y_velocity >= -1 * ( initial_y_velocity ) )
   {
-    background -> draw();
-    draw_npcs();
-    ducklings( count );
-    lateral_screen_jump( -1, count );
-  } 
-  else
-  {
-    background -> right( speed );
-    background -> draw();
-    draw_npcs( true );
-    ducklings( true, count );
-    lateral_jump( -1, count );
+    main_char_pos = main_character -> get_position().at( 0 );
+    if( main_char_pos < ( -1 * stage_center_edge ) ||
+        main_char_pos >= stage_center_edge )
+    {
+      background -> draw();
+      draw_npcs();
+      ducklings( count );
+      y_velocity = lateral_screen_jump( -1, y_velocity, count );
+    } 
+    else
+    {
+      background -> draw();
+      ducklings( true, count );
+      y_velocity = lateral_jump( -1, y_velocity, count );
+    }
+    increment += increment;
+    count = ( count + ( int ) increment ) % 4;
   }
   SDL_Delay( 50 );
 }
@@ -489,7 +511,7 @@ void Scene::left( uint count )
   prompt_enter_linked_scene();
   SDL_RenderPresent( renderer );
   ++counted_frames;
-  SDL_Delay( 50 );
+  SDL_Delay( 40 );
 }
 
 void Scene::update_characters( bool left, uint count )
