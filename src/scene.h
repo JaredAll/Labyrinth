@@ -197,14 +197,14 @@ private:
    * @param x_unit_vector the x directional vector
    * @param count the character walking cycle count
    */
-  void lateral_jump( int x_unit_vector, uint count );
+  int lateral_jump( int x_unit_vector, int y_velocity, uint count );
 
   /**
    * update the scene lateral screen jump
    * @param x_unit_vector the x directional vector
    * @param count the character walking cycle count
    */
-  void lateral_screen_jump( int x_unit_vector, uint count );
+  int lateral_screen_jump( int x_unit_vector, int y_velocity, uint count );
 
   /**
    * convert npc to follower
