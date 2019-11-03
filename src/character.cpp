@@ -67,7 +67,6 @@ void Character::gasp()
   torso -> set_source( talking_clips.at( face ) );
   torso -> draw();
 }
-  
 
 void Character::walk_right( uint speed, uint count )
 {
@@ -210,7 +209,6 @@ void Character::update_pos( bool left, uint speed )
 {
   if( !left )
   {
-    
     set_screen_position(
       get_screen_position().at( 0 ) - speed,
       get_screen_position().at( 1 ) );

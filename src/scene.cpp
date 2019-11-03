@@ -332,22 +332,22 @@ int Scene::lateral_jump( int x_unit_vector, int y_velocity, uint count )
 
   background -> draw();
 
-  if( x_unit_vector == 1 )
-  {
-    draw_npcs( false );
-    ducklings( count );
-  }
-  else
-  {
-    draw_npcs( true );
-    ducklings( count );
-  }
   main_character -> jump( x_velocity, y_velocity );
-
   int main_char_pos_x = main_character -> get_screen_position().at( 0 );
   int main_char_pos_y = main_character -> get_screen_position().at( 1 );
 
   main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+
+  if( x_unit_vector == 1 )
+  {
+    draw_npcs( false );
+    ducklings( false, count );
+  }
+  else
+  {
+    draw_npcs( true );
+    ducklings( true, count );
+  }
 
   y_velocity += gravity;
 
@@ -371,14 +371,7 @@ int Scene::lateral_screen_jump( int x_unit_vector, int y_velocity, uint count )
 
   main_character -> set_screen_position( main_char_pos_x + x_velocity, main_char_pos_y - y_velocity );
 
-  if( x_unit_vector == 1 )
-  {
-    ducklings( count );
-  }
-  else
-  {
-    ducklings( count );
-  }
+  ducklings( count );
 
   y_velocity += gravity;
 
@@ -856,7 +849,6 @@ void Scene::stage_right()
       maximum_stage_displacement - main_char_width );
   }
 }
-
 
 void Scene::stage_right_barrier()
 {
