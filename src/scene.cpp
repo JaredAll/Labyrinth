@@ -318,6 +318,7 @@ int Scene::lateral_jump( int x_unit_vector, int y_velocity, uint count )
   int x_velocity = speed * x_unit_vector;
 
   int gravity = -4;
+  int initial_y_velocity = 30;
   
   SDL_RenderClear( renderer );
 
@@ -332,21 +333,51 @@ int Scene::lateral_jump( int x_unit_vector, int y_velocity, uint count )
 
   background -> draw();
 
-  main_character -> jump( x_velocity, y_velocity );
-  int main_char_pos_x = main_character -> get_screen_position().at( 0 );
-  int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+  if( y_velocity >= -1 * initial_y_velocity )
+  {
+    main_character -> jump( x_velocity, y_velocity );
+    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
 
-  main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+  }
+  else
+  {
+    main_character -> jump( x_velocity, 0 );
+  }
+
+  int jump_offset = 3;
+
+  if( y_velocity <= initial_y_velocity + jump_offset * gravity &&
+      y_velocity >= -1 * initial_y_velocity + jump_offset * gravity )
+  {
+    for( uint i = 0; i < following_characters.size(); i++ )
+    {
+      following_characters.at( i ) -> jump( x_velocity, y_velocity + -1 * jump_offset * gravity );
+      int char_pos_x = following_characters.at( i ) -> get_screen_position().at( 0 );
+      int char_pos_y = following_characters.at( i ) -> get_screen_position().at( 1 );
+
+      following_characters.at( i ) -> set_screen_position( char_pos_x, char_pos_y -
+                                                           ( y_velocity + -1 * jump_offset * gravity ) ); 
+    }
+  }
+  else
+  {
+    for( uint i = 0; i < following_characters.size(); i++ )
+    {
+      following_characters.at( i ) -> jump( x_velocity, 0 );
+    }
+  }
 
   if( x_unit_vector == 1 )
   {
     draw_npcs( false );
-    ducklings( false, count );
+    // ducklings( false, count );
   }
   else
   {
     draw_npcs( true );
-    ducklings( true, count );
+    // ducklings( true, count );
   }
 
   y_velocity += gravity;
@@ -365,12 +396,44 @@ int Scene::lateral_screen_jump( int x_unit_vector, int y_velocity, uint count )
   SDL_RenderClear( renderer );
   background -> draw();
   draw_npcs();
-  main_character -> jump( x_velocity, y_velocity );
-  int main_char_pos_x = main_character -> get_screen_position().at( 0 );
-  int main_char_pos_y = main_character -> get_screen_position().at( 1 );
 
-  main_character -> set_screen_position( main_char_pos_x + x_velocity, main_char_pos_y - y_velocity );
+  int initial_y_velocity = 30;
 
+  if( y_velocity >= -1 * initial_y_velocity )
+  {
+    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+    main_character -> jump( x_velocity, y_velocity );
+    main_character -> set_screen_position( main_char_pos_x + x_velocity, main_char_pos_y - y_velocity );
+  }
+  else
+  {
+    main_character -> stand();
+  }
+  
+  int jump_offset = 3;
+
+  if( y_velocity <= initial_y_velocity + jump_offset * gravity &&
+      y_velocity >= -1 * initial_y_velocity + jump_offset * gravity )
+  {
+    for( uint i = 0; i < following_characters.size(); i++ )
+    {
+      following_characters.at( i ) -> jump( x_velocity, y_velocity + abs( jump_offset * gravity ) );
+      int char_pos_x = following_characters.at( i ) -> get_screen_position().at( 0 );
+      int char_pos_y = following_characters.at( i ) -> get_screen_position().at( 1 );
+
+      following_characters.at( i ) -> set_screen_position( char_pos_x, char_pos_y -
+                                                           ( y_velocity + abs( jump_offset * gravity ) ) ); 
+    }
+  }
+  else
+  {
+    for( uint i = 0; i < following_characters.size(); i++ )
+    {
+      following_characters.at( i ) -> stand();
+    }
+  }
+  
   ducklings( count );
 
   y_velocity += gravity;
@@ -385,11 +448,13 @@ void Scene::air_right( uint count )
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character -> get_position().at( 0 );
 
+  int gravity = -4;
   int initial_y_velocity = 30;
   int y_velocity = initial_y_velocity;
   double increment = 0.1;
+  int jump_offset = 3;
 
-  while( y_velocity >= -1 * (initial_y_velocity) )
+  while( y_velocity >= -1 * (initial_y_velocity) + jump_offset * gravity )
   {
     main_char_pos = main_character -> get_position().at( 0 );
     if( main_char_pos < ( -1 * stage_center_edge ) ||
@@ -448,11 +513,13 @@ void Scene::air_left( uint count )
   int stage_center_edge = maximum_stage_displacement - ( window_size / 2 );
   int main_char_pos = main_character -> get_position().at( 0 );
 
+  int gravity = -4;
   int initial_y_velocity = 30;
   int y_velocity = initial_y_velocity;
   double increment = 0.1;
+  int jump_offset = 3;
   
-  while( y_velocity >= -1 * ( initial_y_velocity ) )
+  while( y_velocity >= -1 * ( initial_y_velocity ) + jump_offset * gravity )
   {
     main_char_pos = main_character -> get_position().at( 0 );
     if( main_char_pos < ( -1 * stage_center_edge ) ||
