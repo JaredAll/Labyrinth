@@ -1,10 +1,12 @@
 CXX = clang++
 SDL_LIB = -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lcppunit
 SDL_INCLUDE = -I/usr/include/SDL2
-CXX_FLAGS = -Werror -pedantic-errors -O0 -Wno-c++98-compat-pedantic -Wno-padded -std=c++11 $(SDL_INCLUDE)
+INC_INCLUDE = -I../inc
+CXX_FLAGS = -Werror -pedantic-errors -O0 -Wno-c++98-compat-pedantic -Wno-padded -std=c++11 $(SDL_INCLUDE) $(INC_INCLUDE)
 LINKER_FLAGS = $(SDL_LIB)
 OBJ_FILES = sprite.o sprite_layer.o background.o character.o conversation.o scene.o game.o script.o sceneJunction.o text_box.o panel.o interaction.o easy_sdl.o
 TEST_OBJ_FILES = test_background.o
+VPATH = ../src
 
 all: sketch_1 tests
 

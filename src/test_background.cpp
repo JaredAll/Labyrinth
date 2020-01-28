@@ -25,7 +25,7 @@ public:
 
   void runTestFalse()
   {
-    CPPUNIT_ASSERT( false );   
+    CPPUNIT_ASSERT( false );
   }
 
   void runTestTrue()
