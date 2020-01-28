@@ -9,7 +9,7 @@ Panel::Panel( Background *param_background,
   renderer( param_ren )
 {
   TTF_Init();
-  font = TTF_OpenFont( "../resources/OpenSans-Bold.ttf", 16 );
+  font = TTF_OpenFont( "/home/jared/Games/Labyrinth/resources/OpenSans-Bold.ttf", 16 );
 
   if( font == NULL )
   {

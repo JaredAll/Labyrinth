@@ -9,7 +9,7 @@ Interaction::Interaction( vector< string > param_messages,
   renderer( param_renderer )
 {
   TTF_Init();
-  font = TTF_OpenFont( "../resources/OpenSans-Bold.ttf", 16 );
+  font = TTF_OpenFont( "/home/jared/Games/Labyrinth/resources/OpenSans-Bold.ttf", 16 );
 
   if( font == NULL )
   {
