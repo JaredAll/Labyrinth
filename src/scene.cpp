@@ -289,20 +289,50 @@ void Scene::jump()
   int initial_y_velocity = 30;
   int gravity = -4;
 
+  int jump_offset = 3;
+
   int y_velocity = initial_y_velocity;
-  while( y_velocity > ( ( -1 * initial_y_velocity ) + gravity ) )
+  while( y_velocity >= ( -1 * initial_y_velocity ) + jump_offset * gravity )
   {
     SDL_RenderClear( renderer );
     background -> draw();
     draw_npcs();
     ducklings( 1 );
-  
-    main_character -> jump( y_velocity );
 
-    int main_char_pos_x = main_character -> get_screen_position().at( 0 );
-    int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+    if( y_velocity >= -1 * initial_y_velocity )
+    {
+      main_character -> jump( y_velocity );
 
-    main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+      int main_char_pos_x = main_character -> get_screen_position().at( 0 );
+      int main_char_pos_y = main_character -> get_screen_position().at( 1 );
+
+      main_character -> set_screen_position( main_char_pos_x, main_char_pos_y - y_velocity );
+    }
+    else
+    {
+      main_character -> stand();
+    }
+
+    if( y_velocity <= initial_y_velocity + jump_offset * gravity &&
+        y_velocity >= -1 * initial_y_velocity + jump_offset * gravity )
+    {
+      for( uint i = 0; i < following_characters.size(); i++ )
+      {
+        following_characters.at( i ) -> jump( y_velocity + -1 * jump_offset * gravity );
+        int char_pos_x = following_characters.at( i ) -> get_screen_position().at( 0 );
+        int char_pos_y = following_characters.at( i ) -> get_screen_position().at( 1 );
+
+        following_characters.at( i ) -> set_screen_position( char_pos_x, char_pos_y -
+                                                             ( y_velocity + -1 * jump_offset * gravity ) ); 
+      }
+    }
+    else
+    {
+      for( uint i = 0; i < following_characters.size(); i++ )
+      {
+        following_characters.at( i ) -> stand();
+      }
+    }
 
     y_velocity += gravity;
 
