@@ -2,7 +2,7 @@
 Background::Background( vector< SpriteLayer* > param_layers,
                         SDL_Renderer *ren )
   : layers( param_layers ), blank_screen(
-    new SpriteLayer( "../resources/sprites/blank_screen.png", ren, 0, 0, 0 ) )
+    new SpriteLayer( "/home/jared/Games/Labyrinth/resources/sprites/blank_screen.png", ren, 0, 0, 0 ) )
 {
 
 }
@@ -20,7 +20,7 @@ Background::~Background()
 }
 
 Background::Background( SDL_Renderer *ren ) :
-blank_screen( new SpriteLayer( "../resources/sprites/blank_screen.png", ren,
+blank_screen( new SpriteLayer( "/home/jared/Games/Labyrinth/resources/sprites/blank_screen.png", ren,
                            0, 0, 0 ) )
 {
   vector< SpriteLayer* > new_layers;

@@ -701,7 +701,7 @@ Scene::Scene(SDL_Renderer *param_renderer,
   previous_junction_position = INT_MAX;
   
   TTF_Init();
-  font = TTF_OpenFont( "../resources/OpenSans-Bold.ttf", 16 );
+  font = TTF_OpenFont( "/home/jared/Games/Labyrinth/resources/OpenSans-Bold.ttf", 16 );
 
   if( font == NULL )
   {

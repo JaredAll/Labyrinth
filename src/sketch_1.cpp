@@ -68,7 +68,7 @@ int main( int argc, char* argv[] )
   uint al_x = 1950;
   uint al_y = character_plane_x - 50;
 
-  string resources_uri = "../resources/";
+  string resources_uri = "/home/jared/Games/Labyrinth/resources/";
 
   Sprite* doug_s =
     new Sprite( resources_uri + "sprites/dougsheet.png", ren, doug_x, doug_y );
@@ -107,37 +107,37 @@ int main( int argc, char* argv[] )
   /* Create Conversations */
 
   Conversation *lunius_s1_c1 =
-    new Conversation( "convos/lunius_s1_c1.txt", ren );
+    new Conversation( resources_uri + "convos/lunius_s1_c1.txt", ren );
 
   Conversation *lunius_s1_c2 =
-    new Conversation( "convos/lunius_s1_c2.txt", ren );
+    new Conversation( resources_uri + "convos/lunius_s1_c2.txt", ren );
 
   Conversation *al_s1_c1 =
-    new Conversation( "convos/al_s1_c1.txt", ren );
+    new Conversation( resources_uri + "convos/al_s1_c1.txt", ren );
 
   Conversation *al_s2_c1 =
-    new Conversation( "convos/al_s2_c1.txt", ren );
+    new Conversation( resources_uri + "convos/al_s2_c1.txt", ren );
   
   char lunius_angry_response[ 100 ] = "I hate humans.";
   lunius_s1_c1 -> set_angry_response( lunius_angry_response, ren );
   lunius_s1_c2 -> set_angry_response( lunius_angry_response, ren);
   
   Conversation *doug_s1_c1 =
-    new Conversation( "convos/doug_s1_c1.txt", ren );
+    new Conversation( resources_uri + "convos/doug_s1_c1.txt", ren );
   
   Conversation *doug_s1_c2 =
-    new Conversation( "convos/doug_s1_c2.txt", ren );
+    new Conversation( resources_uri + "convos/doug_s1_c2.txt", ren );
 
   char doug_angry_response[ 100 ] = "I need some oil.";
   doug_s1_c1 -> set_angry_response( doug_angry_response, ren );
   doug_s1_c2 -> set_angry_response( doug_angry_response, ren );
 
   Conversation *doug_s2_c1 =
-    new Conversation( "convos/doug_s2_c1.txt", ren );
+    new Conversation( resources_uri + "convos/doug_s2_c1.txt", ren );
   doug_s2_c1 -> set_angry_response( doug_angry_response, ren );
 
   Conversation *lunius_s2_c1 =
-    new Conversation( "convos/lunius_s2_c1.txt", ren );
+    new Conversation( resources_uri + "convos/lunius_s2_c1.txt", ren );
   lunius_s2_c1 -> set_angry_response( lunius_angry_response, ren );
 
   /* End Conversations */
