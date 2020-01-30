@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include "sprite.h"
+#include "render_component.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ using namespace std;
  * @version 8 February 2019
  */
 
-class SpriteLayer
+class SpriteLayer : RenderComponent
 {
 public:
 
@@ -62,6 +63,8 @@ public:
    * @param renderer the renderer
    */
   void draw();
+
+  void draw( SDL_Renderer* renderer );
   
 private:
 

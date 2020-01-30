@@ -9,7 +9,10 @@
 #include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/XmlOutputter.h>
+#include <fakeit.hpp>
 #include "background.h"
+
+using namespace fakeit;
 
 class BackgroundTest : public CppUnit::TestCase
 {
