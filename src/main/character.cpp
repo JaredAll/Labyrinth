@@ -39,6 +39,7 @@ Character::Character( string param_name,
   facing_left = false;
   recruited = false;
 
+  setRenderComponent( full_body );
 }
 
 Character::~Character()
@@ -58,14 +59,12 @@ void Character::happy()
 {
   uint face = 0;
   torso -> set_source( talking_clips.at( face ) );
-  torso -> draw();
 }
 
 void Character::gasp()
 {
   uint face = 1;
   torso -> set_source( talking_clips.at( face ) );
-  torso -> draw();
 }
 
 void Character::walk_right( uint speed, uint count )
@@ -76,7 +75,6 @@ void Character::walk_right( uint speed, uint count )
   }
 
   full_body -> set_source( walking_clips.at( stride ) );
-  full_body -> draw();
   
   set_position( x_pos + speed,
                 y_pos );
@@ -92,7 +90,6 @@ void Character::walk_left( uint speed, uint count )
   }
 
   full_body -> set_source( walking_clips.at( stride ) );
-  full_body -> flip_draw();
   set_position( x_pos - speed,
                 y_pos );
   facing_left = true;
@@ -102,15 +99,6 @@ void Character::jump( int x_velocity, int y_velocity )
 {
   stride = 2;
   full_body -> set_source( walking_clips.at( stride ) );
-
-  if( !facing_left )
-  {
-    full_body -> draw();
-  }
-  else
-  {
-    full_body -> flip_draw();
-  }
 
   y_pos = y_pos + y_velocity;
   x_pos = x_pos + x_velocity;
@@ -123,14 +111,6 @@ void Character::jump( int y_velocity )
   stride = 2;
   full_body -> set_source( walking_clips.at( stride ) );
 
-  if( !facing_left )
-  {
-    full_body -> draw();
-  }
-  else
-  {
-    full_body -> flip_draw();
-  }
   y_pos = y_pos + y_velocity;
   set_position( x_pos, y_pos );
 }
@@ -139,15 +119,6 @@ void Character::stand()
 {
   stride = 1;
   full_body -> set_source( walking_clips.at( stride ) );
-  if( facing_left )
-  {
-    full_body -> flip_draw();
-  }
-  else
-  {
-    full_body -> draw();
-  }
-
 }
 
 void Character::set_position( int new_x, int new_y )
@@ -203,6 +174,11 @@ void Character::follow( Character* leader, uint speed, uint count )
   {
     stand();
   }
+}
+
+void Character::update()
+{
+  
 }
 
 void Character::update_pos( bool left, uint speed )

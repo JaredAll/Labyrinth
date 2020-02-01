@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <vector>
+#include "render_component.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ using namespace std;
  * @author Jared Allen
  * @version 8 February 2019
  */
-class Sprite
+class Sprite : public RenderComponent
 {
 public:
 
@@ -49,7 +50,7 @@ public:
    * method to draw sprite
    * @param renderer the pointer to renderer
    */
-  void draw();
+  void draw( SDL_Renderer* renderer );
 
   /**
    * method to draw sprite

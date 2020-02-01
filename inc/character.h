@@ -8,6 +8,7 @@
 #include <vector>
 #include "sprite.h"
 #include <unistd.h>
+#include "game_component.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ using namespace std;
  * @author Jared Allen
  * @version 9 February 2019
  */
-class Character
+class Character : public GameComponent
 {
 public:
 
@@ -29,6 +30,8 @@ public:
              Sprite *full_body, Sprite *torso, uint force,
              uint diversion, uint stealth, uint num_walking_sprites,
              uint num_talking_sprites );
+
+  void update();
 
   /**
    * Destructor

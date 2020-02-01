@@ -57,7 +57,7 @@ void Sprite::draw( SDL_Rect *destination )
   renderTexture( sprite_texture, renderer, destination, source );
 }
 
-void Sprite::draw()
+void Sprite::draw( SDL_Renderer* renderer )
 {  
   renderTexture( sprite_texture, renderer, x, y, source, destination );
 }
