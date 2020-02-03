@@ -37,19 +37,6 @@ int main( int argc, char* argv[] )
     return 1;
   }
 
-  //create renderer
-  SDL_Renderer *ren =
-    SDL_CreateRenderer(win, -1,
-                       SDL_RENDERER_ACCELERATED
-                       | SDL_RENDERER_PRESENTVSYNC);
-  if (ren == nullptr)
-  {
-    cleanup( win );
-    logSDLError( std::cout, "CreateRenderer" );
-    SDL_Quit();
-    return 1;
-  }
-
   /* End Window Setup */
 
   /* Set Character Sprites */

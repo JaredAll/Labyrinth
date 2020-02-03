@@ -26,8 +26,10 @@ public:
    * @param x the x coordinate
    * @param y the y coordinate
    */
-  Sprite( std::string image_path, SDL_Renderer *renderer,
-          int x, int y );
+  Sprite( std::string image_path,
+          int x,
+          int y,
+          SDL_Texture* sprite_texture );
 
   /**
    * Destructor

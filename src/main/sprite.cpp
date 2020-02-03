@@ -2,13 +2,14 @@
 #include "easy_sdl.h"
 
 Sprite::Sprite( std::string image_path,
-                SDL_Renderer *param_renderer,
-                int param_x, int param_y )
-: renderer( param_renderer ), x( param_x ), y( param_y )
+                int param_x,
+                int param_y,
+                SDL_Texture* sprite_texture )
+  : x( param_x ), y( param_y )
 {
   source = NULL;
   destination = new SDL_Rect();
-  sprite_texture = loadTexture( image_path, renderer );
+  this -> sprite_texture = sprite_texture;
   initial_x = x;
   initial_y = y;
 }

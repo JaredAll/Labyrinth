@@ -1,11 +1,10 @@
 #include "sprite_layer.h"
 
-SpriteLayer::SpriteLayer( std::string image_path,
-                          SDL_Renderer *renderer, int x, int y,
+SpriteLayer::SpriteLayer( Sprite* sprite,
                           uint param_distance )
   : distance( param_distance )
 {
-  sprite = new Sprite( image_path, renderer, x, y );
+  this -> sprite = sprite;
   destination = new SDL_Rect();
 }
 

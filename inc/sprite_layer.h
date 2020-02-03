@@ -26,8 +26,7 @@ public:
    * @param sprite the sprite 
    * @param distance the distance
    */
-  SpriteLayer( std::string image_path,
-               SDL_Renderer *renderer, int x, int y,
+  SpriteLayer( Sprite* sprite,
                uint distance );
 
   /**

@@ -23,3 +23,8 @@ void GameRenderer::render( std::vector<GameComponent*> gameComponents )
     gameComponents.at( i ) -> draw( renderer );
   }
 }
+
+SDL_Texture* GameRenderer::load_texture( std::string image_path )
+{
+  return load_texture( image_path, renderer );
+}
